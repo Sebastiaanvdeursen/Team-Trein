@@ -62,6 +62,7 @@ def run_random_traject():
         random_int_2 = random.randint(0, 9)
         if random_int_2 == 9:
             break
+
     random_traject.show_current_traject()
 
     time = random_traject.total_time
@@ -69,10 +70,10 @@ def run_random_traject():
 
 def run_random_amount_of_trajects():
     random_number = random.randint(1, 7)
+
     time = []
     for i in range(1, random_number):
         time.append(run_random_traject()[0])
-    print(sum(time))
 
     n_done = 0
     n_not_done = 0
@@ -89,12 +90,10 @@ def run_random_amount_of_trajects():
 
 # Main script
 if __name__ == "__main__":
+    print("train,stations")
     Min, T, p = run_random_amount_of_trajects()
-    print(f"Min = {Min}")
-    print(f"T = {T}")
-    print(f"p = {p}")
     K = p*10000 - (T*100 + Min)
-    print(f"K = {K}")
+    print(f"score,{K}")
                 
 
 
