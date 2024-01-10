@@ -1,5 +1,6 @@
 import csv
 from station import Station
+from traject import Traject
 
 class Rail_NL:
     def __init__(self):
@@ -16,8 +17,9 @@ class Rail_NL:
     def display_connections(self):
         for station_name, station in self.stations.items():
             print(f"Station: {station_name}")
-            for destination, time in station.connections.items():
-                print(f"  To: {destination}, Time: {time} minutes")
+            for destination, connection in station.connections.items():
+                status = "Done" if connection.done else "Not Done"
+                print(f"  To: {destination}, Time: {connection.time} minutes, Status: {status}")
 
     def load_connections(self, filename):
         with open(filename) as csv_bestand:
@@ -31,6 +33,11 @@ class Rail_NL:
                     self.add_connection(row[1], row[0], int(row[2]))
                 line_count += 1
 
+    def create_traject(self, starting_station_name, rail_instance):
+        starting_station = self.stations[starting_station_name]
+        traject = Traject(starting_station, rail_instance)
+        return traject
+
 # Main script
 if __name__ == "__main__":
     from Rail_NL import Rail_NL
@@ -40,5 +47,15 @@ if __name__ == "__main__":
     # Toon verbindingen
     Noord_Holland.display_connections()
 
-    print(Noord_Holland.stations["Amsterdam Zuid"].connections)
+    traject_1 = Noord_Holland.create_traject("Amsterdam Zuid", Noord_Holland)
+
+    traject_1.show_current_traject()
+
+    traject_1.move("Schiphol Airport")
+
+    traject_1.move("Leiden Centraal")
+
+    traject_1.show_current_traject()
+
+    Noord_Holland.display_connections()
 
