@@ -90,9 +90,11 @@ def run_random_amount_of_trajects():
 # Main script
 if __name__ == "__main__":
     Min, T, p = run_random_amount_of_trajects()
-    print(Min, T, p)
+    print(f"Min = {Min}")
+    print(f"T = {T}")
+    print(f"p = {p}")
     K = p*10000 - (T*100 + Min)
-    print(K)
+    print(f"K = {K}")
                 
 
 
