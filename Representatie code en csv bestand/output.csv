@@ -1,3 +1,4 @@
 train,stations
-train_1,"[Leiden Centraal, Heemstede-Aerdenhout, Leiden Centraal, Alphen a/d Rijn, Gouda, Alphen a/d Rijn]"
-score,792.8571428571429
+train_1,"[Castricum, Alkmaar, Hoorn, Alkmaar, Hoorn, Alkmaar]"
+train_2,"[Rotterdam Alexander, Gouda, Alphen a/d Rijn, Leiden Centraal, Heemstede-Aerdenhout, Haarlem, Amsterdam Sloterdijk, Zaandam, Hoorn]"
+score,3161.4285714285716
