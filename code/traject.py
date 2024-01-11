@@ -14,8 +14,6 @@ class Traject:
         connection = self.current_station.connections[destination]
         connection2 = self.rail_instance.stations[destination].connections[self.current_station.name]
 
-        assert self.total_time + connection.time <= 120, "Went over time limit of 2 hours"
-
         connection.done = True
         connection2.done = True
 
