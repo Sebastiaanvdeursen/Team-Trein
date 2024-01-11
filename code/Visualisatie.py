@@ -16,7 +16,7 @@ if __name__ == "__main__":
             lines = "Holland"
 
     places = {}
-    with open(f"coordinates{coords}.csv") as data:
+    with open(f"../data/coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         line_count = 0
         for row in csv_read:
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     plt.scatter(l_x, l_y)
 
-    with open(f"Connecties{lines}.csv") as line_info:
+    with open(f"../data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
         for row in csv_file:
