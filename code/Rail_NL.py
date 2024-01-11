@@ -8,7 +8,7 @@ random.seed(8)
 class Rail_NL:
     def __init__(self):
         self.stations = {}
-        self.load_connections("ConnectiesHolland.csv")
+        self.load_connections("../data/ConnectiesHolland.csv")
     
     
     def load_connections(self, filename):
@@ -19,8 +19,8 @@ class Rail_NL:
                 if line_count != 0:
                     self.add_station(row[0])
                     self.add_station(row[1])
-                    self.add_connection(row[0], row[1], int(row[2]))
-                    self.add_connection(row[1], row[0], int(row[2]))
+                    self.add_connection(row[0], row[1], int(float(row[2])))
+                    self.add_connection(row[1], row[0], int(float(row[2])))
                 line_count += 1
         self.total_connections = line_count - 1
 
