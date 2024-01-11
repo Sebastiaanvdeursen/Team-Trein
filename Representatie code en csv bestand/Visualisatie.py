@@ -1,10 +1,22 @@
+import sys
 import csv
 import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "large":
+            coords = "Long"
+            lines = "NL"
+        else:
+            coords = "Short"
+            lines = "Holland"
+    else:
+            coords = "Short"
+            lines = "Holland"
+
     places = {}
-    with open("coordinatesLong.csv") as data:
+    with open(f"coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         line_count = 0
         for row in csv_read:
@@ -20,7 +32,7 @@ if __name__ == "__main__":
 
     plt.scatter(l_x, l_y)
 
-    with open("ConnectiesNL.csv") as line_info:
+    with open(f"Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
         for row in csv_file:
@@ -31,7 +43,9 @@ if __name__ == "__main__":
                 plt.plot([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]], 'k-', lw=2)
             line_count += 1
 
-    ##plt.xlim(51.7, 53.5)
-    plt.ylim(50.5, 54)
+    if coords == "Short":
+        plt.ylim(51.7, 53.5)
+    else:
+        plt.ylim(50.5, 54)
     plt.show()
 
