@@ -23,8 +23,8 @@ class Rail_NL:
                 if line_count != 0:
                     self.add_station(row[0])
                     self.add_station(row[1])
-                    self.add_connection(row[0], row[1], int(float(row[2])))
-                    self.add_connection(row[1], row[0], int(float(row[2])))
+                    self.add_connection_stations(row[0], row[1], int(float(row[2])))
+                    self.add_connection_stations(row[1], row[0], int(float(row[2])))
                 line_count += 1
         self.total_connections = line_count - 1
 
@@ -32,7 +32,7 @@ class Rail_NL:
         if station_name not in self.stations:
             self.stations[station_name] = Station(station_name)
 
-    def add_connection(self, source, destination, time):
+    def add_connection_stations(self, source, destination, time):
         self.stations[source].add_connection(destination, time)
 
     def display_connections(self):

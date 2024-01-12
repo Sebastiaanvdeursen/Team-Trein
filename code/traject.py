@@ -6,7 +6,7 @@ class Traject:
     def __init__(self, starting_station, rail_instance):
         self.total_time = 0
         self.current_station = starting_station
-        self.connections = [starting_station.name]
+        self.traject_connections = [starting_station.name]
         self.rail_instance = rail_instance
         Traject.train_count += 1
 
@@ -17,11 +17,11 @@ class Traject:
         connection.done = True
         connection2.done = True
 
-        self.connections.append(connection.destination)
+        self.traject_connections.append(connection.destination)
         self.total_time += connection.time
         self.current_station = self.rail_instance.stations.get(connection.destination)
     
     def show_current_traject(self):
-        stations_str = ', '.join(self.connections)
+        stations_str = ', '.join(self.traject_connections)
         print(f"train_{self.train_count},\"[{stations_str}]\"")
 
