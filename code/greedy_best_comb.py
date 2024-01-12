@@ -13,6 +13,8 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
     for i in range(0, amount_stations):
         areas.append(Rail_NL(map, amount_trajects, amount_stations, max_time))
         possible.append(run_greedy_track(areas[i], max_time, i))
+
+    print(possible[1], possible[2], possible[3])
     results = []
     possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
     amount = comb(amount_stations, amount_trajects)
@@ -22,9 +24,9 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
             visit.append(possible[j])
         results.append(run_trajects(map, amount_trajects, amount_stations, max_time, visit, False))
     max_index = results.index(max(results))
-
     visit = []
     for j in possible_trajects_combs[max_index]:
+        print(j)
         visit.append(possible[j])
     run_trajects(map, amount_trajects, amount_stations, max_time, visit, True)
     print(f"score,{max(results)}")
@@ -39,6 +41,8 @@ def run_greedy_track(Area, max_time, number):
 
 
     random_traject = Area.create_traject(list_stations[number], Area)
+    print(list_stations[number])
+    passed.append(list_stations[number])
     went_back = 0
     while True:
         list_stations_current = []
@@ -67,6 +71,7 @@ def run_greedy_track(Area, max_time, number):
             went_back = 0
             passed.append(destination)
             random_traject.move(destination)
+    print(passed)
     return passed
 
 def run_trajects(map, amount_trajects, amount_stations, max_time, trajects, printed: bool):
