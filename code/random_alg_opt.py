@@ -4,7 +4,7 @@ import sys
 from station import Station
 from traject import Traject
 
-def run_random_traject(Area, amount_stations, max_time):
+def run_random_traject_opt(Area, amount_stations, max_time):
     list_stations = []
 
     for station_name in Area.stations:
@@ -16,15 +16,18 @@ def run_random_traject(Area, amount_stations, max_time):
 
     while True:
         list_stations_current = []
+        list_stations_current_not_done = []
         for station_name in random_traject.current_station.connections:
+            if random_traject.current_station.connections[station_name].done == False:
+                list_stations_current_not_done.append(station_name)
             list_stations_current.append(station_name)
-        random_number = random.randint(0, len(random_traject.current_station.connections) - 1)
-        if random_traject.total_time + random_traject.current_station.connections[list_stations_current[random_number]].time > max_time:
+        if len(list_stations_current_not_done) == 0:
             break
-        random_traject.move(list_stations_current[random_number])
-        random_int_2 = random.randint(0, 9)
-        if random_int_2 == 9:
+
+        random_number = random.randint(0, len(list_stations_current_not_done) - 1)
+        if random_traject.total_time + random_traject.current_station.connections[list_stations_current_not_done[random_number]].time > max_time:
             break
+        random_traject.move(list_stations_current_not_done[random_number])
 
 
     random_traject.show_current_traject()
@@ -35,12 +38,12 @@ def run_random_traject(Area, amount_stations, max_time):
 
 
 
-def run_random_amount_of_trajects(Area, amount_trajects, max_time, amount_stations):
+def run_random_amount_of_trajects_opt(Area, amount_trajects, max_time, amount_stations):
     random_number = random.randint(1, amount_trajects)
 
     time = []
     for i in range(0, random_number):
-        time.append(run_random_traject(Area, amount_stations, max_time)[0])
+        time.append(run_random_traject_opt(Area, amount_stations, max_time)[0])
 
     n_done = 0
     for station in Area.stations.values():
