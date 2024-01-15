@@ -11,7 +11,7 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
     possible = []
     area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     for i in range(0, amount_stations):
-        possible.append(run_greedy_track(area, max_time, i))
+        possible.append(run_greedy_track(area, max_time, i, False)[0])
         area.reset()
 
     results = []
@@ -25,15 +25,24 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
         results.append(run_trajects(area, amount_trajects, amount_stations, max_time, visit, False))
         area.reset()
     max_index = results.index(max(results))
-    visit = []
+    area.reset()
+    time  = 0
     for j in possible_trajects_combs[max_index]:
-        print(j)
-        visit.append(possible[j])
-    run_trajects(area, amount_trajects, amount_stations, max_time, visit, True)
-    print(f"score,{max(results)}")
+        time += run_greedy_track(area, max_time, j, True)[1]
 
 
-def run_greedy_track(Area, max_time, number):
+    n_done = 0
+    for station in area.stations.values():
+            for connection in station.connections.values():
+                if connection.done == True:
+                    n_done += 1
+
+    fraction_done = (n_done / 2) / area.total_connections
+    score =  fraction_done * 10000 - time - ((amount_trajects) * 100)
+    print(f"score, {score}")
+
+
+def run_greedy_track(Area, max_time, number, printed: bool):
     passed = []
     list_stations = []
 
@@ -42,7 +51,6 @@ def run_greedy_track(Area, max_time, number):
 
 
     random_traject = Area.create_traject(list_stations[number], Area)
-    print(list_stations[number])
     passed.append(list_stations[number])
     went_back = 0
     while True:
@@ -72,8 +80,9 @@ def run_greedy_track(Area, max_time, number):
             went_back = 0
             passed.append(destination)
             random_traject.move(destination)
-    print(passed)
-    return passed
+    if printed:
+        random_traject.show_current_traject()
+    return passed, random_traject.total_time
 
 def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
     time = 0
