@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from greedy_random_start import run_greedy_random
 from greedy_best_comb import run_greedy_combinations
 from hill_climbing_alg import hill_climbing
-from copy import deepcopy
+from fitter import Fitter
 
 # Main script
 if __name__ == "__main__":
@@ -40,7 +40,11 @@ if __name__ == "__main__":
                 p_scores.append(p)
                 results.append(p*10000 - (T*100 + Min))
             print(max(p_scores))
-            plt.hist(results, int(int(sys.argv[3]) / 1000))
+            ##f = Fitter(results)
+            ##f.fit()
+            ##f.summary()
+
+            plt.hist(results, int(20))
             plt.show()
         else:
             if sys.argv[2] == "random":
