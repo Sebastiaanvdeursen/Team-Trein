@@ -4,8 +4,6 @@ import sys
 from station import Station
 from traject import Traject
 
-random.seed(8)
-
 class Rail_NL:
     def __init__(self, map, amount_trajects, amount_stations, max_time):
         self.stations = {}
