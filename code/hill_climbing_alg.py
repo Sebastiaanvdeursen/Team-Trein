@@ -53,10 +53,9 @@ def evaluate_solution(solution, area):
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
-    for _ in range(amount_trajects):
+    for i in range(amount_trajects):
         neighbor = deepcopy(solution)
-        random_index = random.randint(0, amount_trajects - 1)
-        neighbor[random_index] = run_random_traject(area, amount_stations, max_time)[2]
+        neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
         neighbors.append(neighbor)
     return neighbors
 
