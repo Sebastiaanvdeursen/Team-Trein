@@ -6,6 +6,7 @@ import random
 def hill_climbing(area, amount_trajects, amount_stations, max_time):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area)
+    area.reset()
 
     while True:
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
@@ -20,6 +21,7 @@ def hill_climbing(area, amount_trajects, amount_stations, max_time):
         else:
             # Stop als er geen verbetering is
             break
+        area.reset()
 
     for i in range(0, amount_trajects):
         stations_str = ', '.join(current_solution[i].traject_connections)
