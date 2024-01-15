@@ -15,8 +15,8 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
         area.reset()
 
     results = []
-    possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects - 1))
-    amount = comb(amount_stations, amount_trajects - 1)
+    possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
+    amount = comb(amount_stations, amount_trajects)
     area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     for i in range(amount):
         visit = []
@@ -38,7 +38,8 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
                     n_done += 1
 
     fraction_done = (n_done / 2) / area.total_connections
-    score =  fraction_done * 10000 - time - ((amount_trajects - 1) * 100)
+    print(f"p value = {fraction_done}")
+    score =  fraction_done * 10000 - time - ((amount_trajects - 2) * 100)
     print(f"score, {score}")
 
 
@@ -86,7 +87,7 @@ def run_greedy_track(Area, max_time, number, printed: bool):
 
 def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
     time = 0
-    for i in range(amount_trajects - 1):
+    for i in range(amount_trajects):
         traject = area.create_traject(trajects[i][0], area)
         for j in range(1, len(trajects[i])):
             traject.move(trajects[i][j])

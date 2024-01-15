@@ -32,21 +32,49 @@ if __name__ == "__main__":
     print("train,stations")
     if len(sys.argv) > 2:
         if len(sys.argv) > 3:
-            results = []
-            p_scores = []
-            for i in range(0, int(sys.argv[3])):
-                print(i)
-                Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations - 1)
-                area.reset()
-                p_scores.append(p)
-                results.append(p*10000 - (T*100 + Min))
-            print(max(p_scores))
-            ##f = Fitter(results)
-            ##f.fit()
-            ##f.summary()
+            if sys.argv[2] == "random_optim":
+                results = []
+                p_scores = []
+                for i in range(0, int(sys.argv[3])):
+                    print(i)
+                    Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations - 1)
+                    area.reset()
+                    p_scores.append(p)
+                    results.append(p*10000 - (T*100 + Min))
+                print(max(p_scores))
+                print(max(results))
+                f = Fitter(results, distributions = ["norm"])
+                f.fit()
+                f.summary()
+                ##plt.hist(results, int(20))
+                ##plt.show()
+            if sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
+                results = []
+                p_scores = []
+                for i in range(0, int(sys.argv[3])):
+                    Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+                    area.reset()
+                    p_scores.append(p)
+                    results.append( p * 10000 - (T * 100 + Min))
 
-            plt.hist(results, int(20))
-            plt.show()
+                print(f"highest = {max(results)}")
+
+            else:
+                results = []
+                p_scores = []
+                for i in range(0, int(sys.argv[3])):
+                    print(i)
+                    Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations - 1)
+                    area.reset()
+                    p_scores.append(p)
+                    results.append(p*10000 - (T*100 + Min))
+                print(max(p_scores))
+                ##f = Fitter(results)
+                ##f.fit()
+                ##f.summary()
+
+                plt.hist(results, int(20))
+                plt.show()
         else:
             if sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
