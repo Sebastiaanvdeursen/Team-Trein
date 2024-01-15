@@ -21,6 +21,10 @@ def hill_climbing(area, amount_trajects, amount_stations, max_time):
             # Stop als er geen verbetering is
             break
 
+    for i in range(0, amount_trajects):
+        stations_str = ', '.join(current_solution[i].traject_connections)
+        print(f"train_{i + 1},\"[{stations_str}]\"")
+    
     return current_solution, current_score
 
 def generate_random_solution(area, amount_trajects, amount_stations, max_time):
