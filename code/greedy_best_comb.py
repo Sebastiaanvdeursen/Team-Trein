@@ -9,26 +9,27 @@ from math import comb
 
 def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
     possible = []
-    areas = []
+    area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     for i in range(0, amount_stations):
-        areas.append(Rail_NL(map, amount_trajects, amount_stations, max_time))
-        possible.append(run_greedy_track(areas[i], max_time, i))
+        possible.append(run_greedy_track(area, max_time, i))
+        area.reset()
 
-    print(possible[1], possible[2], possible[3])
     results = []
-    possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
-    amount = comb(amount_stations, amount_trajects)
+    possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects - 3))
+    amount = comb(amount_stations, amount_trajects - 3)
+    area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     for i in range(amount):
         visit = []
         for j in possible_trajects_combs[i]:
             visit.append(possible[j])
-        results.append(run_trajects(map, amount_trajects, amount_stations, max_time, visit, False))
+        results.append(run_trajects(area, amount_trajects, amount_stations, max_time, visit, False))
+        area.reset()
     max_index = results.index(max(results))
     visit = []
     for j in possible_trajects_combs[max_index]:
         print(j)
         visit.append(possible[j])
-    run_trajects(map, amount_trajects, amount_stations, max_time, visit, True)
+    run_trajects(area, amount_trajects, amount_stations, max_time, visit, True)
     print(f"score,{max(results)}")
 
 
@@ -74,11 +75,10 @@ def run_greedy_track(Area, max_time, number):
     print(passed)
     return passed
 
-def run_trajects(map, amount_trajects, amount_stations, max_time, trajects, printed: bool):
+def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
     time = 0
-    new_area = Rail_NL(map, amount_trajects, amount_stations, max_time)
-    for i in range(amount_trajects):
-        traject = new_area.create_traject(trajects[i][0], new_area)
+    for i in range(amount_trajects - 3):
+        traject = area.create_traject(trajects[i][0], area)
         for j in range(1, len(trajects[i])):
             traject.move(trajects[i][j])
         time += traject.total_time
@@ -87,10 +87,13 @@ def run_trajects(map, amount_trajects, amount_stations, max_time, trajects, prin
 
 
     n_done = 0
-    for station in new_area.stations.values():
+    for station in area.stations.values():
             for connection in station.connections.values():
                 if connection.done == True:
                     n_done += 1
 
-    fraction_done = (n_done / 2) / new_area.total_connections
+    fraction_done = (n_done / 2) / area.total_connections
     return fraction_done * 10000 - time - (len(trajects) * 100)
+
+
+

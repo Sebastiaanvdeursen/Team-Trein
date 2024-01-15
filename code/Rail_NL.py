@@ -48,3 +48,9 @@ class Rail_NL:
         traject = Traject(starting_station, rail_instance)
         return traject
 
+    def reset(self):
+        for i in self.stations:
+            for j in self.stations[i].connections:
+                self.stations[i].connections[j].done = False
+
+
