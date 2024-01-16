@@ -74,7 +74,7 @@ if __name__ == "__main__":
                 print(f"highest = {max(results)}")
 
             if sys.argv[2] == "simulated_annealing":
-                K = simulated_annealing(map, amount_trajects, amount_stations, max_time, 20, 1)[1]
+                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 20, 1)[1]
                 print(f"score, {K}")
 
             else:

@@ -2,6 +2,7 @@ from copy import deepcopy
 from random_alg import run_random_amount_of_trajects
 from rail_NL import Rail_NL
 import random
+import math
 
 def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature, cooling_rate):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
