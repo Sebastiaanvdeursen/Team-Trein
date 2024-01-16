@@ -100,9 +100,5 @@ def run_greedy_track(Area, amount_stations, max_time):
             went_back = 0
             random_traject.move(destination)
 
-
-    random_traject.show_current_traject()
-
     time = random_traject.total_time
-    print(time)
     return [time, Area, random_traject]
