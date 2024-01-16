@@ -10,6 +10,7 @@ from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
 from hill_climbing_alg import hill_climbing
 from fitter import Fitter
 
+
 # Main script
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -89,6 +90,14 @@ if __name__ == "__main__":
                 Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
+            elif sys.argv[2] == "greedy_random_max":
+                K_list = []
+                for i in range(10000):
+                    Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+                    K = p*10000 - (T*100 + Min)
+                    K_list.append(K)
+                    area.reset()
+                print(max(K_list))
             elif sys.argv[2] == "greedy_optim":
                 run_greedy_combinations(map, amount_trajects, max_time, amount_stations)
             elif sys.argv[2] == "hill_climbing":
@@ -97,9 +106,23 @@ if __name__ == "__main__":
             elif sys.argv[2] == "hill_climbing/greedy":
                 K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
+            elif sys.argv[2] == "hill_climbing/greedy_max":
+                K_list = []
+                for i in range(10000):
+                    K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
+                    K_list.append(K)
+                    area.reset()
+                print(max(K_list))
             elif sys.argv[2] == "hill_climbing/greedy_optim":
                 K = hill_climbing_greedy_optim(map, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
+            elif sys.argv[2] == "hill_climbing/greedy_optim_max":
+                K_list = []
+                for i in range(10):
+                    K = hill_climbing_greedy_optim(map, amount_trajects, amount_stations, max_time)[1]
+                    K_list.append(K)
+                    area.reset()
+                print(max(K_list))
             else:
                 print("usage python3 main.py size algorithm")
     else:

@@ -10,7 +10,7 @@ def run_random_traject_opt(Area, amount_stations, max_time):
     for station_name in Area.stations:
         list_stations.append(station_name)
 
-    random_number = random.randint(0, amount_stations)
+    random_number = random.randint(0, amount_stations - 1)
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
 
