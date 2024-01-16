@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from greedy_random_start import run_greedy_random
 from greedy_best_comb import run_greedy_combinations
 from hill_climbing_greedy_alg import hill_climbing_greedy
+from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
 from hill_climbing_alg import hill_climbing
 from fitter import Fitter
 
@@ -95,6 +96,9 @@ if __name__ == "__main__":
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy":
                 K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
+                print(f"score,{K}")
+            elif sys.argv[2] == "hill_climbing/greedy_optim":
+                K = hill_climbing_greedy_optim(map, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
             else:
                 print("usage python3 main.py size algorithm")

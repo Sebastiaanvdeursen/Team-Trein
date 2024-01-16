@@ -87,8 +87,10 @@ def run_greedy_track(Area, max_time, number, printed: bool):
 
 def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
     time = 0
+    solution = []
     for i in range(amount_trajects):
         traject = area.create_traject(trajects[i][0], area)
+        solution.append(traject)
         for j in range(1, len(trajects[i])):
             traject.move(trajects[i][j])
         time += traject.total_time

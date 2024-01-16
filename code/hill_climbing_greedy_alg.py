@@ -22,7 +22,7 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
         else:
             # Stop als er geen verbetering is
             break
-        area.reset
+        area.reset()
 
     for i in range(0, amount_trajects):
         stations_str = ', '.join(current_solution[i].traject_connections)
