@@ -72,8 +72,8 @@ if __name__ == "__main__":
                 ##f = Fitter(results)
                 ##f.fit()
                 ##f.summary()
-
-                plt.hist(results, int(20))
+                print(sum(results) / int(sys.argv[3]))
+                plt.hist(results, int(100))
                 plt.show()
         else:
             if sys.argv[2] == "random":
