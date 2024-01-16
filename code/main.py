@@ -73,10 +73,6 @@ if __name__ == "__main__":
 
                 print(f"highest = {max(results)}")
 
-            if sys.argv[2] == "simulated_annealing":
-                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 20, 1)[1]
-                print(f"score, {K}")
-
             else:
                 results = []
                 p_scores = []
@@ -94,7 +90,10 @@ if __name__ == "__main__":
                 plt.hist(results, int(100))
                 plt.show()
         else:
-            if sys.argv[2] == "random":
+            if sys.argv[2] == "simulated_annealing":
+                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 30, 0.05)[1]
+                print(f"score, {K}")
+            elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
