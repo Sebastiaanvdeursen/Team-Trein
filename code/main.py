@@ -9,8 +9,11 @@ from hill_climbing_greedy_alg import hill_climbing_greedy
 from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
 from hill_climbing_alg import hill_climbing
 from double_greedy import double_greedy_random
+from sim_annealing_alg import simulated_annealing
 from fitter import Fitter
+import random
 
+random.seed(8)
 
 # Main script
 if __name__ == "__main__":
@@ -69,6 +72,10 @@ if __name__ == "__main__":
                     results.append( p * 10000 - (T * 100 + Min))
 
                 print(f"highest = {max(results)}")
+
+            if sys.argv[2] == "simulated_annealing":
+                K = simulated_annealing(map, amount_trajects, amount_stations, max_time, 20, 1)[1]
+                print(f"score, {K}")
 
             else:
                 results = []

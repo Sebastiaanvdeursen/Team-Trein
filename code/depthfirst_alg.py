@@ -29,9 +29,10 @@ def depth_first_search(Area):
             visited.append(connection_names[1])
             print(f"3{visited}")
 
-map = "Holland"
-amount_trajects = 7
-amount_stations = 22
-max_time = 120
-area = Rail_NL(map, amount_trajects, amount_stations, max_time)
-depth_first_search(area)
+if __name__ == "__main__":
+    map = "Holland"
+    amount_trajects = 7
+    amount_stations = 22
+    max_time = 120
+    area = Rail_NL(map, amount_trajects, amount_stations, max_time)
+    depth_first_search(area)
