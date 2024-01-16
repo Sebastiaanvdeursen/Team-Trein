@@ -8,6 +8,7 @@ from greedy_best_comb import run_greedy_combinations
 from hill_climbing_greedy_alg import hill_climbing_greedy
 from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
 from hill_climbing_alg import hill_climbing
+from double_greedy import double_greedy_random
 from fitter import Fitter
 
 
@@ -33,7 +34,15 @@ if __name__ == "__main__":
     area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     print("train,stations")
     if len(sys.argv) > 2:
-        if len(sys.argv) > 3:
+        if sys.argv[2] == "find_p":
+            while True:
+                print("new random attempt")
+                Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+                if p == 1:
+                    print(p * 10000 - (T * 100 + Min))
+                    break
+                area.reset()
+        elif len(sys.argv) > 3:
             if sys.argv[2] == "random_optim":
                 results = []
                 p_scores = []
@@ -123,6 +132,10 @@ if __name__ == "__main__":
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
+            elif sys.argv[2] == "double_greedy":
+                Min, T, p = double_greedy_random(area, amount_trajects, max_time, amount_stations)
+                K = p*10000 - (T*100 + Min)
+                print(f"score,{K}")
             else:
                 print("usage python3 main.py size algorithm")
     else:
