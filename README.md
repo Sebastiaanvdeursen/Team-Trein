@@ -2,8 +2,8 @@
 
 Dit is onze README!
 
-##Getting started
-###Requirements
+## Getting started
+### Requirements
 Please run the following line of code in your terminal:
 sudo apt-get install tcl-dev tk-dev python-tk python3-tk
 Therafter, run 
@@ -12,7 +12,7 @@ or
 conda install --file requirements.txt
 to get everything you need.
 
-###Usage
+### Usage
 Run the code by typing python main.py large/small algorithm size. You can also opt to not include size, then one iteration will be ran.
 By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland. For algorithms you can choose
 between find_p, annealing, random, random_optim, greedy_random, greedy_random_max, greedy_optim, hill_climbing, hill_climbing/greedy,
