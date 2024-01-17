@@ -10,6 +10,7 @@ from hill_climbing_alg import hill_climbing
 from double_greedy import double_greedy_random
 from sim_annealing_alg import simulated_annealing
 import random
+import matplotlib.pyplot as plt
 
 def iterate(area, amount_trajects, max_time, amount_stations):
     if sys.argv[2] == "random_optim":
@@ -91,7 +92,7 @@ if __name__ == "__main__":
             iterate(area, amount_trajects, max_time, amount_stations)
         else:
             if sys.argv[2] == "simulated" or "annealing":
-                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 30, 0.05)[1]
+                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
