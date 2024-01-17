@@ -14,6 +14,7 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations):
 
     time = []
     for i in range(0, amount_trajects):
+        numbers = []
         time.append(run_greedy_track(Area, amount_stations, max_time)[0])
 
     n_done = 0

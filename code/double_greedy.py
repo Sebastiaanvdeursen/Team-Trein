@@ -5,7 +5,6 @@ from station import Station
 from traject import Traject
 from rail_NL import Rail_NL
 
-
 def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
     list_stations = []
 
@@ -14,7 +13,13 @@ def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
 
     time = []
     for i in range(0, amount_trajects):
-        time.append(run_greedy_track(Area, amount_stations, max_time)[0])
+        numbers = []
+        while True:
+            random_number = random.randint(0, amount_stations - 1)
+            if random_number not in numbers:
+                numbers.append(random_number)
+                break
+        time.append(run_greedy_track(Area, amount_stations, max_time, random_number)[0])
 
     n_done = 0
     for station in Area.stations.values():
@@ -25,13 +30,11 @@ def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
     fraction_done = (n_done / 2) / Area.total_connections
     return sum(time), amount_trajects, fraction_done
 
-def run_greedy_track(Area, amount_stations, max_time):
+def run_greedy_track(Area, amount_stations, max_time, random_number):
     list_stations = []
 
     for station_name in Area.stations:
         list_stations.append(station_name)
-
-    random_number = random.randint(0, amount_stations - 1)
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
     went_back = 0
@@ -45,14 +48,15 @@ def run_greedy_track(Area, amount_stations, max_time):
         for i in range(len(random_traject.current_station.connections)):
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
                 going_back = list_stations_current[i]
-            for j in Area.stations[list_stations_current[i]].connections:
-                if  Area.stations[list_stations_current[i]].connections[j].done == True:
-                    if random_traject.current_station.connections[list_stations_current[i]].time + 3 * Area.stations[list_stations_current[i]].connections[j].time < time:
+            else:
+                for j in Area.stations[list_stations_current[i]].connections:
+                    if  Area.stations[list_stations_current[i]].connections[j].done == True:
+                        if random_traject.current_station.connections[list_stations_current[i]].time + 3 * Area.stations[list_stations_current[i]].connections[j].time < time:
+                            destination = list_stations_current[i]
+                            time = 2 * random_traject.current_station.connections[list_stations_current[i]].time
+                    elif random_traject.current_station.connections[list_stations_current[i]].time + Area.stations[list_stations_current[i]].connections[j].time < time:
                         destination = list_stations_current[i]
-                        time = 2 * random_traject.current_station.connections[list_stations_current[i]].time
-                elif random_traject.current_station.connections[list_stations_current[i]].time + Area.stations[list_stations_current[i]].connections[j].time < time:
-                    destination = list_stations_current[i]
-                    time = random_traject.current_station.connections[list_stations_current[i]].time
+                        time = random_traject.current_station.connections[list_stations_current[i]].time
 
         if destination == "":
             went_back += 1
@@ -66,7 +70,6 @@ def run_greedy_track(Area, amount_stations, max_time):
                 break
             went_back = 0
             random_traject.move(destination)
-
 
     random_traject.show_current_traject()
 

@@ -2,7 +2,6 @@ from random_alg import run_random_amount_of_trajects
 from random_alg_opt import run_random_amount_of_trajects_opt
 from rail_NL import Rail_NL
 import sys
-import matplotlib.pyplot as plt
 from greedy_random_start import run_greedy_random
 from greedy_best_comb import run_greedy_combinations
 from hill_climbing_greedy_alg import hill_climbing_greedy
@@ -10,10 +9,18 @@ from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
 from hill_climbing_alg import hill_climbing
 from double_greedy import double_greedy_random
 from sim_annealing_alg import simulated_annealing
-from fitter import Fitter
 import random
+from multiple_iterations import iterate
 
-random.seed(8)
+
+def find_p(area, amount_trajects, max_time, amount_stations):
+    while True:
+        print("new random attempt")
+        Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+        if p == 1:
+            print(p * 10000 - (T * 100 + Min))
+            break
+        area.reset()
 
 # Main script
 if __name__ == "__main__":
@@ -38,59 +45,11 @@ if __name__ == "__main__":
     print("train,stations")
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p":
-            while True:
-                print("new random attempt")
-                Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
-                if p == 1:
-                    print(p * 10000 - (T * 100 + Min))
-                    break
-                area.reset()
+            find_p(area, amount_trajects, max_time, amount_stations)
         elif len(sys.argv) > 3:
-            if sys.argv[2] == "random_optim":
-                results = []
-                p_scores = []
-                for i in range(0, int(sys.argv[3])):
-                    print(i)
-                    Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations - 1)
-                    area.reset()
-                    p_scores.append(p)
-                    results.append(p*10000 - (T*100 + Min))
-                print(max(p_scores))
-                print(max(results))
-                f = Fitter(results, distributions = ["norm"])
-                f.fit()
-                f.summary()
-                ##plt.hist(results, int(20))
-                ##plt.show()
-            if sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
-                results = []
-                p_scores = []
-                for i in range(0, int(sys.argv[3])):
-                    Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
-                    area.reset()
-                    p_scores.append(p)
-                    results.append( p * 10000 - (T * 100 + Min))
-
-                print(f"highest = {max(results)}")
-
-            else:
-                results = []
-                p_scores = []
-                for i in range(0, int(sys.argv[3])):
-                    print(i)
-                    Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations - 1)
-                    area.reset()
-                    p_scores.append(p)
-                    results.append(p*10000 - (T*100 + Min))
-                print(max(p_scores))
-                ##f = Fitter(results)
-                ##f.fit()
-                ##f.summary()
-                print(sum(results) / int(sys.argv[3]))
-                plt.hist(results, int(100))
-                plt.show()
+            iterate(area, amount_trajects, max_time, amount_stations)
         else:
-            if sys.argv[2] == "simulated_annealing":
+            if sys.argv[2] == "simulated" or "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 30, 0.05)[1]
                 print(f"score, {K}")
             elif sys.argv[2] == "random":
@@ -148,8 +107,4 @@ if __name__ == "__main__":
         Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
         K = p*10000 - (T*100 + Min)
         print(f"score,{K}")
-
-
-
-
 
