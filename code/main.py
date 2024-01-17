@@ -12,6 +12,7 @@ from sim_annealing_alg import simulated_annealing
 import random
 from multiple_iterations import iterate
 
+random.seed(8)
 
 def find_p(area, amount_trajects, max_time, amount_stations):
     while True:

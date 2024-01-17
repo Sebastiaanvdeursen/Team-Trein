@@ -22,7 +22,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         neighbor_score = evaluate_solution(neighbor, area)
         delta_score = neighbor_score - current_score
 
-        if delta_score > 0 or random.uniform(0, 1) < math.exp(delta_score / temperature):
+        if delta_score > 0 or 2**(delta_score) < math.exp(delta_score / temperature):
             current_solution = neighbor
             current_score = neighbor_score
 
@@ -34,4 +34,3 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         print(f"train_{i + 1},\"[{stations_str}]\"")
 
     return current_solution, current_score
-
