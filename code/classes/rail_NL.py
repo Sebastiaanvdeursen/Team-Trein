@@ -7,7 +7,7 @@ from code.classes.traject import Traject
 class Rail_NL:
     def __init__(self, map, amount_trajects, amount_stations, max_time):
         self.stations = {}
-        self.load_connections(f"../data/Connecties{map}.csv")
+        self.load_connections(f"data/Connecties{map}.csv")
         self.amount_trajects = amount_trajects
         self.max_time = max_time
         self.amount_stations = amount_stations
