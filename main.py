@@ -1,16 +1,18 @@
-from random_alg import run_random_amount_of_trajects
-from random_alg_opt import run_random_amount_of_trajects_opt
-from rail_NL import Rail_NL
-import sys
-from greedy_random_start import run_greedy_random
-from greedy_best_comb import run_greedy_combinations
-from hill_climbing_greedy_alg import hill_climbing_greedy
-from hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
-from hill_climbing_alg import hill_climbing
-from double_greedy import double_greedy_random
-from sim_annealing_alg import simulated_annealing
+from code.algorithms.random_alg import run_random_amount_of_trajects
+from code.algorithms.random_alg_opt import run_random_amount_of_trajects_opt
+from code.algorithms.greedy_random_start import run_greedy_random
+from code.algorithms.greedy_best_comb import run_greedy_combinations
+from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
+from code.algorithms.hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
+from code.algorithms.hill_climbing_alg import hill_climbing
+from code.algorithms.double_greedy import double_greedy_random
+from code.algorithms.sim_annealing_alg import simulated_annealing
+
+from code.classes.rail_NL import Rail_NL
+
 import random
 import matplotlib.pyplot as plt
+import sys
 
 def iterate(area, amount_trajects, max_time, amount_stations):
     if sys.argv[2] == "random_optim":

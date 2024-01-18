@@ -1,4 +1,4 @@
-from rail_NL import Rail_NL
+from code.classes.rail_NL import Rail_NL
 import random
 
 random.seed(1)

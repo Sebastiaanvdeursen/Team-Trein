@@ -1,9 +1,9 @@
 import csv
 import random
 import sys
-from station import Station
-from traject import Traject
-from rail_NL import Rail_NL
+from code.classes.station import Station
+from code.classes.traject import Traject
+from code.classes.rail_NL import Rail_NL
 import itertools as iter
 from math import comb
 

@@ -1,9 +1,9 @@
 import csv
 import random
 import sys
-from station import Station
-from traject import Traject
-from rail_NL import Rail_NL
+from code.classes.station import Station
+from code.classes.traject import Traject
+from code.classes.rail_NL import Rail_NL
 
 def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
     list_stations = []

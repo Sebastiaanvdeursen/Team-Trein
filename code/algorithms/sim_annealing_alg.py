@@ -1,10 +1,11 @@
-from copy import deepcopy
-from random_alg import run_random_amount_of_trajects
-from rail_NL import Rail_NL
-from hill_climbing_alg import evaluate_solution
-from hill_climbing_alg import generate_random_solution
-from hill_climbing_alg import get_neighbors
-from hill_climbing_alg import run_random_traject
+from code.algorithms.random_alg import run_random_amount_of_trajects
+from code.algorithms.hill_climbing_alg import evaluate_solution
+from code.algorithms.hill_climbing_alg import generate_random_solution
+from code.algorithms.hill_climbing_alg import get_neighbors
+from code.algorithms.hill_climbing_alg import run_random_traject
+
+from code.classes.rail_NL import Rail_NL
+
 import random
 import math
 

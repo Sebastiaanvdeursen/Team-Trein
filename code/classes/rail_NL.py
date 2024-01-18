@@ -1,8 +1,8 @@
 import csv
 import random
 import sys
-from station import Station
-from traject import Traject
+from code.classes.station import Station
+from code.classes.traject import Traject
 
 class Rail_NL:
     def __init__(self, map, amount_trajects, amount_stations, max_time):

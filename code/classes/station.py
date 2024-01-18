@@ -1,4 +1,4 @@
-from connection import Connection
+from code.classes.connection import Connection
 
 class Station:
     def __init__(self, name):

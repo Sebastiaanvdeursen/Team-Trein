@@ -1,4 +1,4 @@
-from station import Station
+from code.classes.station import Station
 
 class Traject:
     train_count = 0

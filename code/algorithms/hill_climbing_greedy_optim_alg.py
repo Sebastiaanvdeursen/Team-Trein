@@ -1,6 +1,6 @@
 from copy import deepcopy
-from random_alg import run_random_amount_of_trajects
-from rail_NL import Rail_NL
+from code.algorithms.random_alg import run_random_amount_of_trajects
+from code.classes.rail_NL import Rail_NL
 import random
 import itertools as iter
 from math import comb
