@@ -41,9 +41,10 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations, use
                     n_done += 1
 
     fraction_done = (n_done / 2) / area.total_connections
-    print(f"p value = {fraction_done}")
     score =  fraction_done * 10000 - time - ((amount_trajects - 2) * 100)
-    print(f"score, {score}")
+    if used_for_hill_climbing == False:
+        print(f"p value = {fraction_done}")
+        print(f"score, {score}")
 
     if used_for_hill_climbing:
         return solution

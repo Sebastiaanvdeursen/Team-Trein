@@ -127,7 +127,7 @@ if __name__ == "__main__":
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_max":
                 K_list = []
-                for i in range(1000):
+                for i in range(10000):
                     K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
                     K_list.append(K)
                     area.reset()
@@ -139,6 +139,7 @@ if __name__ == "__main__":
                 K_list = []
                 for i in range(10):
                     K = hill_climbing_greedy_optim(map, amount_trajects, amount_stations, max_time)[1]
+                    print(K)
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
