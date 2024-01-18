@@ -1,5 +1,6 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.greedy_random_start import run_greedy_track_random
 import random
 
 
@@ -32,7 +33,7 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
 def generate_random_solution(area, amount_trajects, amount_stations, max_time):
     solution = []
     for i in range(amount_trajects):
-        solution.append(run_greedy_track(area, amount_stations, max_time)[2])
+        solution.append(run_greedy_track_random(area, amount_stations, max_time, True)[2])
 
     return solution
 
@@ -61,43 +62,3 @@ def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
         neighbor[i] = run_greedy_track(area, amount_stations, max_time)[2]
         neighbors.append(neighbor)
     return neighbors
-
-
-def run_greedy_track(Area, amount_stations, max_time):
-    list_stations = []
-
-    for station_name in Area.stations:
-        list_stations.append(station_name)
-
-    random_number = random.randint(0, amount_stations - 1)
-
-    random_traject = Area.create_traject(list_stations[random_number], Area)
-    went_back = 0
-    while True:
-        list_stations_current = []
-        for station_name in random_traject.current_station.connections:
-            list_stations_current.append(station_name)
-        destination = ""
-        time = 200
-
-        for i in range(len(random_traject.current_station.connections)):
-            if random_traject.current_station.connections[list_stations_current[i]].done == True:
-                going_back = list_stations_current[i]
-            elif random_traject.current_station.connections[list_stations_current[i]].time < time:
-                destination = list_stations_current[i]
-                time = random_traject.current_station.connections[list_stations_current[i]].time
-        if destination == "":
-            went_back += 1
-            if went_back > 1:
-                break
-            if random_traject.total_time + random_traject.current_station.connections[going_back].time > max_time:
-                break
-            random_traject.move(going_back)
-        else:
-            if random_traject.total_time + random_traject.current_station.connections[destination].time > max_time:
-                break
-            went_back = 0
-            random_traject.move(destination)
-
-    time = random_traject.total_time
-    return [time, Area, random_traject]
