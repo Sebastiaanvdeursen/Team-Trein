@@ -14,6 +14,7 @@ import random
 import matplotlib.pyplot as plt
 import sys
 
+random.seed(8)
 def iterate(area, amount_trajects, max_time, amount_stations):
     if sys.argv[2] == "random_optim":
         results = []
@@ -93,7 +94,7 @@ if __name__ == "__main__":
         elif len(sys.argv) > 3:
             iterate(area, amount_trajects, max_time, amount_stations)
         else:
-            if sys.argv[2] == "simulated" or "annealing":
+            if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
             elif sys.argv[2] == "random":
