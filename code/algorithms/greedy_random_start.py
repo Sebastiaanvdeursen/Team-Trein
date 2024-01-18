@@ -6,7 +6,7 @@ from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 
 
-def run_greedy_random(Area, amount_trajects, max_time, amount_stations):
+def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing):
     list_stations = []
 
     for station_name in Area.stations:
@@ -15,7 +15,7 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations):
     time = []
     for i in range(0, amount_trajects):
         numbers = []
-        time.append(run_greedy_track(Area, amount_stations, max_time)[0])
+        time.append(run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing)[0])
 
     n_done = 0
     for station in Area.stations.values():
@@ -26,7 +26,7 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations):
     fraction_done = (n_done / 2) / Area.total_connections
     return sum(time), amount_trajects, fraction_done
 
-def run_greedy_track(Area, amount_stations, max_time):
+def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing):
     list_stations = []
 
     for station_name in Area.stations:
@@ -62,8 +62,8 @@ def run_greedy_track(Area, amount_stations, max_time):
             went_back = 0
             random_traject.move(destination)
 
-
-    random_traject.show_current_traject()
+    if used_for_hill_climbing == False:
+        random_traject.show_current_traject()
 
     time = random_traject.total_time
-    return [time, Area]
+    return [time, Area, random_traject]

@@ -14,7 +14,7 @@ import random
 import matplotlib.pyplot as plt
 import sys
 
-random.seed(8)
+
 def iterate(area, amount_trajects, max_time, amount_stations):
     if sys.argv[2] == "random_optim":
         results = []
@@ -127,10 +127,11 @@ if __name__ == "__main__":
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_max":
                 K_list = []
-                for i in range(10000):
+                for i in range(100000):
                     K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
                     K_list.append(K)
                     area.reset()
+                print(K_list)
                 print(max(K_list))
             elif sys.argv[2] == "hill_climbing/greedy_optim":
                 K = hill_climbing_greedy_optim(map, amount_trajects, amount_stations, max_time)[1]

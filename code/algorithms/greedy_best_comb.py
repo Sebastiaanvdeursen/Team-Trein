@@ -7,11 +7,11 @@ from code.classes.rail_NL import Rail_NL
 import itertools as iter
 from math import comb
 
-def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
+def run_greedy_combinations(map, amount_trajects, max_time, amount_stations, used_for_hill_climbing):
     possible = []
     area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     for i in range(0, amount_stations):
-        possible.append(run_greedy_track(area, max_time, i, False)[0])
+        possible.append(run_greedy_track_comb(area, max_time, i, False)[0])
         area.reset()
 
     results = []
@@ -27,8 +27,11 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
     max_index = results.index(max(results))
     area.reset()
     time  = 0
+    solution = []
     for j in possible_trajects_combs[max_index]:
-        time += run_greedy_track(area, max_time, j, True)[1]
+        passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
+        time += time_track
+        solution.append(track)
 
 
     n_done = 0
@@ -42,8 +45,11 @@ def run_greedy_combinations(map, amount_trajects, max_time, amount_stations):
     score =  fraction_done * 10000 - time - ((amount_trajects - 2) * 100)
     print(f"score, {score}")
 
+    if used_for_hill_climbing:
+        return solution
 
-def run_greedy_track(Area, max_time, number, printed: bool):
+
+def run_greedy_track_comb(Area, max_time, number, printed: bool):
     passed = []
     list_stations = []
 
@@ -83,7 +89,7 @@ def run_greedy_track(Area, max_time, number, printed: bool):
             random_traject.move(destination)
     if printed:
         random_traject.show_current_traject()
-    return passed, random_traject.total_time
+    return passed, random_traject.total_time, random_traject
 
 def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
     time = 0
