@@ -1,10 +1,9 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
+from code.algorithms.random_alg_opt import run_random_traject_opt
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.greedy_random_start import run_greedy_track_random
 import random
 
-
-def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
+def hill_climbing_opt(area, amount_trajects, amount_stations, max_time):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area, True)
 
@@ -31,7 +30,7 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
 def generate_random_solution(area, amount_trajects, amount_stations, max_time):
     solution = []
     for i in range(amount_trajects):
-        solution.append(run_greedy_track_random(area, amount_stations, max_time, True)[2])
+        solution.append(run_random_traject_opt(area, amount_stations, max_time, True)[2])
 
     return solution
 
@@ -55,11 +54,10 @@ def evaluate_solution(solution, area, reset):
 
     return fraction_done * 10000 - (len(solution) * 100 + total_time)
 
-
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = solution
-        neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
+        neighbor = solution[:]
+        neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
     return neighbors

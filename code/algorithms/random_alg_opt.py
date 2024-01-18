@@ -4,7 +4,7 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 
-def run_random_traject_opt(Area, amount_stations, max_time):
+def run_random_traject_opt(Area, amount_stations, max_time, used_for_hill_climbing):
     list_stations = []
 
     for station_name in Area.stations:
@@ -29,11 +29,11 @@ def run_random_traject_opt(Area, amount_stations, max_time):
             break
         random_traject.move(list_stations_current_not_done[random_number])
 
-
-    random_traject.show_current_traject()
+    if used_for_hill_climbing == False:
+        random_traject.show_current_traject()
 
     time = random_traject.total_time
-    return [time, Area]
+    return [time, Area, random_traject]
 
 
 
