@@ -1,4 +1,3 @@
-from copy import deepcopy
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
 import random
@@ -58,7 +57,7 @@ def evaluate_solution(solution, area):
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = deepcopy(solution)
+        neighbor = solution
         neighbor[i] = run_greedy_track(area, amount_stations, max_time)[2]
         neighbors.append(neighbor)
     return neighbors
