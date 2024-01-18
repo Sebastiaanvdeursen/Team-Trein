@@ -14,6 +14,7 @@ import random
 import matplotlib.pyplot as plt
 import sys
 
+random.seed(8)
 def iterate(area, amount_trajects, max_time, amount_stations):
     if sys.argv[2] == "random_optim":
         results = []
