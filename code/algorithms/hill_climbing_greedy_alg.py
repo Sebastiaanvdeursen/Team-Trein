@@ -59,6 +59,6 @@ def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
         neighbor = solution
-        neighbor[i] = run_greedy_track(area, amount_stations, max_time)[2]
+        neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
     return neighbors
