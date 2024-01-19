@@ -16,54 +16,91 @@ import matplotlib.pyplot as plt
 import sys
 
 
-def iterate(area, amount_trajects, max_time, amount_stations):
+def iterate(area, amount_trajects, max_time, amount_stations,
+             fitter: bool = False, histogram: bool = False, group_info: bool = False ):
+    results = []
+    best = []
     if sys.argv[2] == "random_optim":
-        results = []
-        p_scores = []
         for i in range(0, int(sys.argv[3])):
-            print(i)
-            Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations - 1)
+            Min, T, p, current = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area.reset()
-            p_scores.append(p)
             results.append(p*10000 - (T*100 + Min))
-        print(max(p_scores))
-        print(max(results))
-        f = Fitter(results, distributions = ["norm"])
-        f.fit()
-        f.summary()
-        ##plt.hist(results, int(20))
-        ##plt.show()
+            if results[i] == max(results):
+                best = current
+
+        if fitter:
+            f = Fitter(results, distributions = ["norm"])
+            f.fit()
+            f.summary()
+
+        if histogram:
+            plt.hist(results, int(20))
+            plt.show()
+
+        for a in best:
+            print(a)
+        print(f"score,{max(results)}")
+
+        if group_info:
+            print(f"average = {sum(results) / int(sys.argv[3])}")
+
+
     if sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
-        results = []
-        p_scores = []
         for i in range(0, int(sys.argv[3])):
-            Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+            Min, T, p, current = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area.reset()
-            p_scores.append(p)
             results.append( p * 10000 - (T * 100 + Min))
-        print(f"highest = {max(results)}")
+            if results[i] == max(results):
+                best = current
+
+        if fitter:
+            f = Fitter(results, distributions = ["norm"])
+            f.fit()
+            f.summary()
+
+        if histogram:
+            plt.hist(results, int(20))
+            plt.show()
+
+        for a in best:
+            print(a)
+        print(f"score,{max(results)}")
+
+        if group_info:
+            print(f"average = {sum(results) / int(sys.argv[3])}")
+
+
+
     else:
-        results = []
-        p_scores = []
         for i in range(0, int(sys.argv[3])):
-            print(i)
-            Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations - 1)
+            Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area.reset()
-            p_scores.append(p)
             results.append(p*10000 - (T*100 + Min))
-        print(max(p_scores))
-        ##f = Fitter(results)
-        ##f.fit()
-        ##f.summary()
-        print(sum(results) / int(sys.argv[3]))
-        plt.hist(results, int(100))
-        plt.show()
+            if results[i] == max(results):
+                best = current
+
+        if fitter:
+            f = Fitter(results, distributions = ["norm"])
+            f.fit()
+            f.summary()
+
+        if histogram:
+            plt.hist(results, int(20))
+            plt.show()
+
+        for a in best:
+            print(a)
+        print(f"score,{max(results)}")
+
+        if group_info:
+            print(f"average = {sum(results) / int(sys.argv[3])}")
 
 def find_p(area, amount_trajects, max_time, amount_stations):
     while True:
-        print("new random attempt")
-        Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
+        Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
         if p == 1:
+            for a in trajects:
+                print(a)
             print(p * 10000 - (T * 100 + Min))
             break
         area.reset()
@@ -89,19 +126,32 @@ if __name__ == "__main__":
 
     area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     print("train,stations")
+
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p":
             find_p(area, amount_trajects, max_time, amount_stations)
+
         elif len(sys.argv) > 3:
-            iterate(area, amount_trajects, max_time, amount_stations)
+            if len(sys.argv) > 4:
+                if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
+                    iterate(area, amount_trajects, max_time, amount_stations, histogram = True)
+                elif sys.argv[4] == "all":
+                    iterate(area, amount_trajects, max_time, amount_stations, histogram = True, group_info = True)
+                else:
+                    iterate(area, amount_trajects, max_time, amount_stations)
+            else:
+                iterate(area, amount_trajects, max_time, amount_stations)
+
         else:
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
+
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
+
             elif sys.argv[2] == "random_max":
                 K_list = []
                 for i in range(10000):
@@ -110,6 +160,7 @@ if __name__ == "__main__":
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
+
             elif sys.argv[2] == "random_optim":
                 Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
@@ -154,7 +205,7 @@ if __name__ == "__main__":
                     print(f"train_{max_solution[i].train_count},\"[{stations_str}]\"")
                 print(K_max)
                 K_max = 0
-            
+
             elif sys.argv[2] == "hill_climbing/greedy":
                 K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
