@@ -37,8 +37,10 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             plt.hist(results, int(20))
             plt.show()
 
+        count = 1
         for a in best:
-            print(a)
+            print(f"train_{count},{a}")
+            count += 1
         print(f"score,{max(results)}")
 
         if group_info:
@@ -62,8 +64,10 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             plt.hist(results, int(20))
             plt.show()
 
+        count = 1
         for a in best:
-            print(a)
+            print(f"train_{count},{a}")
+            count += 1
         print(f"score,{max(results)}")
 
         if group_info:
@@ -88,8 +92,10 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             plt.hist(results, int(20))
             plt.show()
 
+        count = 1
         for a in best:
-            print(a)
+            print(f"train_{count},{a}")
+            count += 1
         print(f"score,{max(results)}")
 
         if group_info:
