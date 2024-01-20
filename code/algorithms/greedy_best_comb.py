@@ -7,7 +7,7 @@ from code.classes.rail_NL import Rail_NL
 import itertools as iter
 from math import comb
 
-def run_greedy_combinations(area, amount_trajects, max_time, amount_stations, used_for_hill_climbing):
+def run_greedy_combinations(area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False):
     possible = []
     for i in range(0, amount_stations):
         possible.append(run_greedy_track_comb(area, max_time, i, False)[0])

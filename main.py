@@ -205,7 +205,7 @@ if __name__ == "__main__":
                     area.reset()
                 print(max(K_list))
             elif sys.argv[2] == "greedy_optim":
-                run_greedy_combinations(map, amount_trajects, max_time, amount_stations)
+                run_greedy_combinations(area, amount_trajects, max_time, amount_stations)
             elif sys.argv[2] == "hill_climbing":
                 K = hill_climbing(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
