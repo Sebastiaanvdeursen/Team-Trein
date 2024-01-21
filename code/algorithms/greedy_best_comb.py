@@ -90,7 +90,7 @@ def run_greedy_track_comb(Area, max_time, number, printed: bool):
         random_traject.show_current_traject()
     return passed, random_traject.total_time, random_traject
 
-def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool):
+def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, printed: bool, final = False):
     time = 0
     solution = []
     for i in range(amount_trajects):
@@ -110,7 +110,10 @@ def run_trajects(area, amount_trajects, amount_stations, max_time, trajects, pri
                     n_done += 1
 
     fraction_done = (n_done / 2) / area.total_connections
-    return fraction_done * 10000 - time - (len(trajects) * 100)
+    if final:
+        return fraction_done, time
+    else:
+        return fraction_done * 10000 - time - (len(trajects) * 100)
 
 
 

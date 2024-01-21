@@ -4,7 +4,8 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.greedy_best_comb import run_trajects
 
 def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False, printed = True, info = False):
     list_stations = []
@@ -19,18 +20,23 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
         track_info = run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing, printed)
         time.append(track_info[0])
         trajects.append(track_info[2].traject_connections)
+    time = sum(time)
 
-
-    n_done = 0
-    for station in Area.stations.values():
+    if used_for_hill_climbing == False:
+        Area.reset()
+        trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
+        Area.reset()
+        fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects, False, True)
+    else:
+        n_done = 0
+        for station in Area.stations.values():
             for connection in station.connections.values():
                 if connection.done == True:
                     n_done += 1
-
-    fraction_done = (n_done / 2) / Area.total_connections
+        fraction_done = (n_done / 2) / Area.total_connections
     if info:
-        return sum(time), amount_trajects, fraction_done, trajects
-    return sum(time), amount_trajects, fraction_done
+        return time, len(trajects), fraction_done, trajects
+    return time, len(trajects), fraction_done
 
 def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing, printed = True):
     list_stations = []
