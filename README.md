@@ -1,8 +1,8 @@
 # Team-Trein
 
 The assignment of RailNL is to create a lining system of intercity trains in the Netherlands or Holland utilizing heuristics and various constructive or iterative algorithms. 
-The goal is to maximize the objective function\ K = p \*10000 - (T\*100 + Min) 
-by trying out different algorithms. In this objective function, K is the quality of the lining system, 
+The goal is to maximize the objective function    
+K = p \*10000 - (T\*100 + Min) by trying out different algorithms. In this objective function, K is the quality of the lining system, 
 p is the fraction of connections that have been ridden, T is the amount of routes used and Min is the total amount of minutes used by all the routes together. This object function has two 
 constrictions, namely a maximum amount of routes we can choose (so T has an upper bound) and a maximum amount of minutes we can use per route.
 
