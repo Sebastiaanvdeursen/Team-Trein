@@ -8,7 +8,9 @@ constrictions, namely a maximum amount of routes we can choose (so T has an uppe
 ## Getting started
 ### Requirements
 Please run the following line of code in your terminal:
+```
 sudo apt-get install tcl-dev tk-dev python-tk python3-tk
+```
 Therafter, run
 ```
 pip install -r requirements.txt
@@ -39,7 +41,7 @@ The following list shows where you can find the most important files and folders
 - **/code:** holds all the code of our project
     - **/code/algorithms:** posseses the code of all the algorithms we used
     - **/code/classes:** contains the 4 classes we use, this describes the inherent structure of our problem
-    - **/code/visualisation::** contains the code for the visualisation of the stations and corresponding connections
+    - **/code/visualisation:** contains the code for the visualisation of the stations and corresponding connections
 - **/data:** contains all the data files that are used to run the algorithms and perform the visualisation
 
 ## Authors
