@@ -23,8 +23,8 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         neighbor = random.choice(neighbors)
 
         neighbor_score = evaluate_solution(neighbor, area)
-        delta_score = neighbor_score - current_score
-        if delta_score > 0 or (2**(delta_score/1000))/temperature < random.random():
+        delta_score = current_score - neighbor_score
+        if delta_score < 0 or (2**(delta_score/1000))/temperature < random.random():
             current_solution = neighbor
             current_score = neighbor_score
 
