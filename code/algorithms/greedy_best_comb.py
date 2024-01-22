@@ -4,10 +4,11 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
+
 import itertools as iter
 from math import comb
 
-def run_greedy_combinations(area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False):
+def run_greedy_combinations(area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False, longer = False):
     possible = []
     for i in range(0, amount_stations):
         possible.append(run_greedy_track_comb(area, max_time, i, False)[0])
@@ -16,20 +17,28 @@ def run_greedy_combinations(area, amount_trajects, max_time, amount_stations, us
     results = []
     possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
     amount = comb(amount_stations, amount_trajects)
-    for i in range(amount):
-        visit = []
-        for j in possible_trajects_combs[i]:
-            visit.append(possible[j])
-        results.append(run_trajects(area, amount_trajects, amount_stations, max_time, visit, False))
+    if longer == False:
+        for i in range(amount):
+            visit = []
+            for j in possible_trajects_combs[i]:
+                visit.append(possible[j])
+            results.append(run_trajects(area, amount_trajects, amount_stations, max_time, visit, False))
+            area.reset()
+        max_index = results.index(max(results))
         area.reset()
-    max_index = results.index(max(results))
-    area.reset()
-    time  = 0
-    solution = []
-    for j in possible_trajects_combs[max_index]:
-        passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
-        time += time_track
-        solution.append(track)
+        time  = 0
+        solution = []
+        for j in possible_trajects_combs[max_index]:
+            passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
+            time += time_track
+            solution.append(track)
+
+    if longer == True:
+        best_track = []
+        for i in possible_trajects_combs:
+            area.reset()
+            for j in i:
+                passed, time_track, track
 
 
     n_done = 0

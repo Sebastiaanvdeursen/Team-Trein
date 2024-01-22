@@ -18,6 +18,7 @@ import time
 import pickle
 
 
+
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
     results = []
@@ -58,7 +59,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
             if k > current_max:
                 current_max = k
                 best = current
-            results.append(p*10000 - (T*100 + Min))
+            results.append(p * 10000 - (T * 100 + Min))
 
     count = 1
     for a in best:
@@ -109,7 +110,8 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     count = 1
     for a in best:
-        print(f"train_{count},{a}")
+        stations_str = ', '.join(a)
+        print(f"train_{count},\"[{stations_str}]\"")
         count += 1
     print(f"score,{max(results)}")
 
@@ -122,7 +124,8 @@ def find_p(area, amount_trajects, max_time, amount_stations):
         if p == 1:
             count = 1
             for a in trajects:
-                print(f"train_{count},{a}")
+                stations_str = ', '.join(a)
+                print(f"train_{count},\"[{stations_str}]\"")
                 count += 1
             print(f"score,{p * 10000 - (T * 100 + Min)}")
             break
@@ -130,6 +133,7 @@ def find_p(area, amount_trajects, max_time, amount_stations):
 
 # Main script
 if __name__ == "__main__":
+    random.seed(1)
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
             map = "NL"
@@ -193,8 +197,13 @@ if __name__ == "__main__":
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
             elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
-                Min, T, p = run_greedy_random(area, amount_trajects, max_time, amount_stations)
-                K = p*10000 - (T*100 + Min)
+                Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
+                count = 0
+                for a in trajects:
+                    stations_str = ', '.join(a)
+                    print(f"train_{count},\"[{stations_str}]\"")
+                    count += 1
+                K = p * 10000 - (T * 100 + Min)
                 print(f"score,{K}")
             elif sys.argv[2] == "greedy_random_max":
                 K_list = []
