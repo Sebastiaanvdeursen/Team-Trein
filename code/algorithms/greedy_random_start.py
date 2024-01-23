@@ -54,10 +54,13 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
             list_stations_current.append(station_name)
         destination = ""
         time = 200
-
+        going_back = ""
         for i in range(len(random_traject.current_station.connections)):
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
-                going_back = list_stations_current[i]
+                if going_back == "":
+                    going_back = list_stations_current[i]
+                elif random_traject.current_station.connections[going_back].time > random_traject.current_station.connections[list_stations_current[i]].time:
+                    going_back = list_stations_current[i]
             elif random_traject.current_station.connections[list_stations_current[i]].time < time:
                 destination = list_stations_current[i]
                 time = random_traject.current_station.connections[list_stations_current[i]].time

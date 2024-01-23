@@ -10,21 +10,18 @@ def removing_lines(area, amount_trajects, amount_stations, max_time, trajects):
     loop_counter = amount_trajects -1
     i = 0
     while True:
-        if i == loop_counter:
+        if i == loop_counter or len(trajects) == 1:
             break
         current = []
-        j = 0
+        j = amount_trajects - 1
         for a in trajects:
             if j != i:
                 current.append(a)
-            j += 1
+            j -= 1
         test = run_trajects(area, len(current), amount_stations, max_time, current, False)
         area.reset()
         if score < test:
             trajects = current
-            loop_counter -= 1
             score = test
-            j -= 1
-        else:
-            i += 1
+        i += 1
     return trajects
