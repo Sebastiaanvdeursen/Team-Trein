@@ -18,8 +18,6 @@ import sys
 import time
 import pickle
 
-random.seed(0)
-
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
     results = []
@@ -185,6 +183,13 @@ if __name__ == "__main__":
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
+            
+            elif sys.argv[2] == "simulatedplot":
+                plt.plot(range(simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[2]), simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[3])
+                plt.xlabel('Iterations')
+                plt.ylabel('Current Score')
+                plt.title('Simulated Annealing Convergence')
+                plt.show()
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 70)

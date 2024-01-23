@@ -4,6 +4,8 @@ from code.algorithms.hill_climbing_alg import generate_random_solution
 from code.algorithms.hill_climbing_alg import run_random_traject
 
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.remove_unnecessary import removing_lines
 
 import random
 import math
@@ -15,23 +17,23 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area)[0]
     area.reset()
-    # print(evaluate_solution(current_solution, area)[1])
-    # print(evaluate_solution(current_solution, area)[2])
-    # print(evaluate_solution(current_solution, area)[3])
-    
     temperature = initial_temperature
 
-    total_iteraties = 2000
+    total_iteraties = 20000
     iteraties = 0
+    scores = []
     while iteraties < total_iteraties:
+        scores.append(current_score)
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
         neighbor = random.choice(neighbors)
 
-        neighbor_score = evaluate_solution(neighbor, area)[0]
+        tracks = []
+        for track in neighbor:
+            tracks.append(track.traject_connections)
+
         area.reset()
-        # print(evaluate_solution(neighbor, area)[1])
-        # print(evaluate_solution(neighbor, area)[2])
-        # print(evaluate_solution(neighbor, area)[3])
+        neighbor_score = run_trajects(area, amount_trajects, amount_stations, max_time, tracks, False)
+        area.reset()
         delta_score = current_score - neighbor_score
 
         if delta_score/temperature > 100:
@@ -48,16 +50,28 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         temperature = initial_temperature - (initial_temperature/total_iteraties) * iteraties
         iteraties += 1
 
-    for i in range(0, amount_trajects):
-        stations_str = ', '.join(current_solution[i].traject_connections)
-        print(f"train_{i + 1},\"[{stations_str}]\"")
-    # print(evaluate_solution(current_solution, area, False)[1])
-    return current_solution, current_score
+    # for i in range(0, amount_trajects):
+    #     stations_str = ', '.join(current_solution[i].traject_connections)
+    #     print(f"train_{i + 1},\"[{stations_str}]\"")
+
+    finaltracks = []
+    for track in current_solution:
+        finaltracks.append(track.traject_connections)
+    area.reset()
+    trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
+    area.reset()
+    current_score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
+    count = 1
+    for a in trajects:
+        stations_str = ', '.join(a)
+        print(f"train_{count},\"[{stations_str}]\"")
+        count += 1
+    return trajects, current_score, total_iteraties, scores
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = copy.deepcopy(solution)
+        neighbor = solution[:]
         neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
         neighbors.append(neighbor)
     return neighbors
