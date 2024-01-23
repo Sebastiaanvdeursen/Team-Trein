@@ -1,6 +1,7 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
 import random
+import copy
 
 def hill_climbing(area, amount_trajects, amount_stations, max_time):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
@@ -56,9 +57,10 @@ def evaluate_solution(solution, area, reset):
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = solution[:]
+        neighbor = copy.deepcopy(solution)
         neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
         neighbors.append(neighbor)
+        area.reset()
     return neighbors
 
 def run_random_traject(Area, amount_stations, max_time):
