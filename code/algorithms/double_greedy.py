@@ -4,10 +4,12 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.greedy_best_comb import run_trajects
 
-def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
+def double_greedy_random(Area, amount_trajects, max_time, amount_stations, printed = True):
     list_stations = []
-
+    trajects = []
     for station_name in Area.stations:
         list_stations.append(station_name)
 
@@ -19,18 +21,19 @@ def double_greedy_random(Area, amount_trajects, max_time, amount_stations):
             if random_number not in numbers:
                 numbers.append(random_number)
                 break
-        time.append(run_greedy_track(Area, amount_stations, max_time, random_number)[0])
+        info = run_greedy_track(Area, amount_stations, max_time, random_number, printed)
+        trajects.append(info[2])
 
-    n_done = 0
-    for station in Area.stations.values():
-            for connection in station.connections.values():
-                if connection.done == True:
-                    n_done += 1
+    Area.reset()
+    trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
+    Area.reset()
+    fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects, False, True)
 
-    fraction_done = (n_done / 2) / Area.total_connections
-    return sum(time), amount_trajects, fraction_done
 
-def run_greedy_track(Area, amount_stations, max_time, random_number):
+
+    return time, amount_trajects, fraction_done, trajects
+
+def run_greedy_track(Area, amount_stations, max_time, random_number, printed):
     list_stations = []
 
     for station_name in Area.stations:
@@ -71,7 +74,8 @@ def run_greedy_track(Area, amount_stations, max_time, random_number):
             went_back = 0
             random_traject.move(destination)
 
-    random_traject.show_current_traject()
+    if printed:
+        random_traject.show_current_traject()
 
     time = random_traject.total_time
-    return [time, Area]
+    return [time, Area, random_traject.traject_connections]
