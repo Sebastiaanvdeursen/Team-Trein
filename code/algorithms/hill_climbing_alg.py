@@ -52,7 +52,7 @@ def evaluate_solution(solution, area, reset):
     if reset == True:
         area.reset()
 
-    return fraction_done * 10000 - (len(solution) * 100 + total_time)
+    return fraction_done * 10000 - (len(solution) * 100 + total_time), fraction_done, total_time, len(solution)
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
