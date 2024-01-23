@@ -9,27 +9,29 @@ import random
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import copy
 
 def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
-    current_score = evaluate_solution(current_solution, area, False)[0]
-    print(evaluate_solution(current_solution, area, False)[1])
-    print(evaluate_solution(current_solution, area, False)[2])
-    print(evaluate_solution(current_solution, area, False)[3])
-
+    current_score = evaluate_solution(current_solution, area)[0]
+    area.reset()
+    # print(evaluate_solution(current_solution, area)[1])
+    # print(evaluate_solution(current_solution, area)[2])
+    # print(evaluate_solution(current_solution, area)[3])
+    
     temperature = initial_temperature
 
-    total_iteraties = 50
+    total_iteraties = 2000
     iteraties = 0
     while iteraties < total_iteraties:
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
         neighbor = random.choice(neighbors)
 
-        neighbor_score = evaluate_solution(neighbor, area, False)[0]
-        print(evaluate_solution(neighbor, area, False)[1])
-        print(evaluate_solution(neighbor, area, False)[2])
-        print(evaluate_solution(neighbor, area, False)[3])
-
+        neighbor_score = evaluate_solution(neighbor, area)[0]
+        area.reset()
+        # print(evaluate_solution(neighbor, area)[1])
+        # print(evaluate_solution(neighbor, area)[2])
+        # print(evaluate_solution(neighbor, area)[3])
         delta_score = current_score - neighbor_score
 
         if delta_score/temperature > 100:
@@ -42,7 +44,6 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         if delta_score < 0 or p_accept > random.random():
             current_solution = neighbor
             current_score = neighbor_score
-            area.reset()
 
         temperature = initial_temperature - (initial_temperature/total_iteraties) * iteraties
         iteraties += 1
