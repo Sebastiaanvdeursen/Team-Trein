@@ -18,10 +18,6 @@ import sys
 import time
 import pickle
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e80f8d5d220bf34a7c009491b535f89d8cdf473a
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
     results = []
@@ -225,7 +221,7 @@ if __name__ == "__main__":
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing_max":
                 K_list = []
-                for i in range(10000):
+                for i in range(1000):
                     K = hill_climbing(area, amount_trajects, amount_stations, max_time)[1]
                     K_list.append(K)
                     area.reset()

@@ -11,7 +11,6 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-random.seed(0)
 
 def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
