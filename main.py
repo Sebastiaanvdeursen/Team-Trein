@@ -8,6 +8,7 @@ from code.algorithms.hill_climbing_alg import hill_climbing
 from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.double_greedy import double_greedy_random
 from code.algorithms.sim_annealing_alg import simulated_annealing
+from code.algorithms.PlantPropagation import plant
 
 from code.classes.rail_NL import Rail_NL
 
@@ -17,7 +18,10 @@ import sys
 import time
 import pickle
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e80f8d5d220bf34a7c009491b535f89d8cdf473a
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
     results = []
@@ -176,6 +180,9 @@ if __name__ == "__main__":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
 
+            elif sys.argv[2] == "plant":
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 70)
+                plantprop.run_program()
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
