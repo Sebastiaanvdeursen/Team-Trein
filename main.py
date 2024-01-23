@@ -17,8 +17,6 @@ import sys
 import time
 import pickle
 
-
-
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
     results = []
@@ -133,7 +131,6 @@ def find_p(area, amount_trajects, max_time, amount_stations):
 
 # Main script
 if __name__ == "__main__":
-    random.seed(1)
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
             map = "NL"
