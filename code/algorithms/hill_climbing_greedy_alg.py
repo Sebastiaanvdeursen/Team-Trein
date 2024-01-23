@@ -6,21 +6,28 @@ import random
 
 def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
-    current_score = evaluate_solution(current_solution, area, True)
+    current_score = evaluate_solution(current_solution, area)
+    area.reset()
 
     while True:
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
         
         # Selecteer het beste buur
-        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area, True))
+        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
 
         # Als het beste buur beter is dan de huidige oplossing, update de oplossing en score
-        if evaluate_solution(best_neighbor, area, False) > current_score:
+        eval_sol = evaluate_solution(best_neighbor, area)
+
+        if eval_sol > current_score:
             current_solution = best_neighbor
-            current_score = evaluate_solution(current_solution, area, True)
+            current_score = eval_sol
+
         else:
+            current_score = eval_sol
             # Stop als er geen verbetering is
             break
+        
+        area.reset()
 
     for i in range(0, amount_trajects):
         stations_str = ', '.join(current_solution[i].traject_connections)
@@ -35,7 +42,7 @@ def generate_random_solution(area, amount_trajects, amount_stations, max_time):
 
     return solution
 
-def evaluate_solution(solution, area, reset):
+def evaluate_solution(solution, area):
     # Hier implementeer je de evaluatie van de doelfunctie K voor de gegeven oplossing
     # Je kunt de p-waarde, T-waarde en Min-waarde berekenen zoals beschreven in je doelfunctie.
     total_time = 0
@@ -50,10 +57,8 @@ def evaluate_solution(solution, area, reset):
 
     fraction_done = (n_done / 2) / area.total_connections
 
-    if reset == True:
-        area.reset()
-
-    return fraction_done * 10000 - (len(solution) * 100 + total_time)
+    K = fraction_done * 10000 - (len(solution) * 100 + total_time)
+    return K
 
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
