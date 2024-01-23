@@ -82,11 +82,19 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    if sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
+    elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
         for i in range(0, int(sys.argv[3])):
             Min, T, p, current = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area.reset()
             results.append( p * 10000 - (T * 100 + Min))
+            if results[i] == max(results):
+                best = current
+
+    elif sys.argv[2] == "double" or sys.argv[2] == "double_greedy":
+        for i in range(0, int(sys.argv[3])):
+            Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False)
+            area.reset()
+            results.append(p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
 
