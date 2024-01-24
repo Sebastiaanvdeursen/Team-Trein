@@ -7,6 +7,7 @@ from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.greedy_best_comb import run_trajects
 
+
 def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False, printed = True, info = False):
     list_stations = []
 
