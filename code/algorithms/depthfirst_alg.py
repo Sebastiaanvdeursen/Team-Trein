@@ -1,8 +1,6 @@
 from code.classes.rail_NL import Rail_NL
 import random
 
-random.seed(1)
-
 def depth_first_search(Area):
     # Make a list of all stations and initialize stack
     visited = []

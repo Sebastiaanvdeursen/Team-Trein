@@ -63,10 +63,9 @@ def evaluate_solution(solution, area):
         for connection in station.connections.values():
             if connection.done:
                 n_done += 1
-
     fraction_done = (n_done / 2) / area.total_connections
 
-    return fraction_done * 10000 - (len(solution) * 100 + total_time)
+    return fraction_done * 10000 - (len(solution) * 100 + total_time), fraction_done, len(solution), total_time
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []

@@ -82,7 +82,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    if sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
+    elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
         for i in range(0, int(sys.argv[3])):
             Min, T, p, current = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area.reset()
@@ -111,6 +111,14 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             current, K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)
             area.reset()
             results.append(K)
+            if results[i] == max(results):
+                best = current
+
+    elif sys.argv[2] == "double" or sys.argv[2] == "double_greedy":
+        for i in range(0, int(sys.argv[3])):
+            Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False)
+            area.reset()
+            results.append(p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
 
@@ -199,6 +207,13 @@ if __name__ == "__main__":
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
+            
+            elif sys.argv[2] == "simulatedplot":
+                plt.plot(range(simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[2]), simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[3])
+                plt.xlabel('Iterations')
+                plt.ylabel('Current Score')
+                plt.title('Simulated Annealing Convergence')
+                plt.show()
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 70)
