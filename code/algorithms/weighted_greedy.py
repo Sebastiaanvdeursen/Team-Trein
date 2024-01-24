@@ -35,7 +35,7 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
     random_number = random.randint(0, amount_stations - 1)
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
-    power = 2
+    power = 1.25
     while True:
         list_stations_current = []
         for station_name in random_traject.current_station.connections:

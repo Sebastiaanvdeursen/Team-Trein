@@ -25,7 +25,7 @@ class plant:
         self.highest_score = 0
         self.best = []
         for _ in range(25):
-            self.children.append(run_weighted(self.area, amount_trajects,
+            self.children.append(run_greedy_random(self.area, amount_trajects,
                                                   max_time, amount_stations, printed = False, info = True)[3])
         self.select_children()
 

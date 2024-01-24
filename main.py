@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import sys
 import time
 import pickle
+random.seed(1)
 
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
@@ -36,7 +37,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
                 best = current
             results.append(p*10000 - (T*100 + Min))
 
-    if sys.argv[2] == "greedy" or sys.argv[2] == "greedy_random":
+    elif sys.argv[2] == "greedy" or sys.argv[2] == "greedy_random":
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
@@ -91,7 +92,17 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    if sys.argv[2] == "hill_climbing":
+    elif sys.argv[2] == "weighted":
+        for i in range(0, int(sys.argv[3])):
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
+            area.reset()
+            results.append( p * 10000 - (T * 100 + Min))
+            if results[i] == max(results):
+                best = current
+
+
+
+    elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing(area, amount_trajects, amount_stations, max_time)
             area.reset()
@@ -99,7 +110,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    if sys.argv[2] == "hill_climbing/greedy":
+    elif sys.argv[2] == "hill_climbing/greedy":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)
             area.reset()
@@ -107,7 +118,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    if sys.argv[2] == "hill_climbing_opt":
+    elif sys.argv[2] == "hill_climbing_opt":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)
             area.reset()
@@ -165,30 +176,55 @@ def find_p(area, amount_trajects, max_time, amount_stations):
 
 # Main script
 if __name__ == "__main__":
+    made_area = False
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
             map = "NL"
             amount_trajects = 20
             amount_stations = 61
             max_time = 180
-        else:
+        elif sys.argv[1] == "small":
             map = "Holland"
             amount_trajects = 7
             amount_stations = 22
             max_time = 120
+        elif sys.argv[1] == "small_random":
+            map = "Holland"
+            amount_trajects = 7
+            amount_stations = 22
+            max_time = 120
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            amount_stations = area.get_amount_stations()
+            made_area = True
+        elif sys.argv[1] == "large_random":
+            map = "NL"
+            amount_trajects = 20
+            amount_stations = 61
+            max_time = 180
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            amount_stations = area.get_amount_stations()
+            made_area = True
+        elif sys.argv[1] == "utrecht":
+            map = "NL"
+            amount_trajects = 20
+            amount_stations = 61
+            max_time = 180
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, utrecht = False)
+            amount_stations = area.get_amount_stations()
+            made_area = True
     else:
         map = "Holland"
         amount_trajects = 7
         amount_stations = 22
         max_time = 120
 
-    area = Rail_NL(map, amount_trajects, amount_stations, max_time)
+    if made_area == False:
+        area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     print("train,stations")
 
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p":
             find_p(area, amount_trajects, max_time, amount_stations)
-
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
