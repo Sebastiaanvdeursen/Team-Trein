@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def scatterplot(coords):
     places = {}
-    with open(f"../data/coordinates{coords}.csv") as data:
+    with open(f"../../data/coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         line_count = 0
         for row in csv_read:
@@ -24,7 +24,7 @@ def scatterplot(coords):
 
 
 def draw_lines(lines, places):
-    with open(f"../data/Connecties{lines}.csv") as line_info:
+    with open(f"../../data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
         for row in csv_file:

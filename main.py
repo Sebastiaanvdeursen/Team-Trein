@@ -185,7 +185,7 @@ if __name__ == "__main__":
                 print(f"score, {K}")
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 70)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 10000)
                 plantprop.run_program()
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
