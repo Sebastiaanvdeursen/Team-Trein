@@ -19,9 +19,11 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     area.reset()
     temperature = initial_temperature
 
-    total_iteraties = 20000
+    total_iteraties = 2000
     iteraties = 0
     scores = []
+    temperature_list = []
+    p_acceptlist = []
     while iteraties < total_iteraties:
         scores.append(current_score)
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
@@ -42,17 +44,15 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             p_accept = 1
         else:
             p_accept = math.exp(1)**(-delta_score/temperature)
+            p_acceptlist.append(p_accept)
 
         if delta_score < 0 or p_accept > random.random():
             current_solution = neighbor
             current_score = neighbor_score
 
         temperature = initial_temperature - (initial_temperature/total_iteraties) * iteraties
+        temperature_list.append(temperature)
         iteraties += 1
-
-    # for i in range(0, amount_trajects):
-    #     stations_str = ', '.join(current_solution[i].traject_connections)
-    #     print(f"train_{i + 1},\"[{stations_str}]\"")
 
     finaltracks = []
     for track in current_solution:
@@ -66,7 +66,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         stations_str = ', '.join(a)
         print(f"train_{count},\"[{stations_str}]\"")
         count += 1
-    return trajects, current_score, total_iteraties, scores
+    return trajects, current_score, scores, temperature_list, p_acceptlist
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []

@@ -220,14 +220,31 @@ if __name__ == "__main__":
                 print(f"score,{K}")
 
             elif sys.argv[2] == "simulatedplot":
-                plt.plot(range(simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[2]), simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[3])
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                print(f"score, {result[1]}")
+                scoresplot = result[2]
+                temperatureplot = result[3]
+                pacceptplot = result[4]
+                iterationstemperatureplot = range(len(temperatureplot))
+                iterationsplot = range(len(scoresplot))
+                iterationspplot = range(len(pacceptplot))
+                plt.plot(iterationstemperatureplot, temperatureplot)
+                plt.plot(iterationspplot, pacceptplot)
+                plt.plot(iterationsplot, scoresplot)
                 plt.xlabel('Iterations')
                 plt.ylabel('Current Score')
-                plt.title('Simulated Annealing Convergence')
+                plt.title('Simulated Annealing Holland')
+                plt.show()
+            elif sys.argv[2] == "simulatedprobplot":
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                print(f"score, {result[1]}")
+                pacceptplot = result[4]
+                iterationsprobplot = range(len(pacceptplot))
+                plt.plot(iterationsprobplot, pacceptplot)
                 plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 10000)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 1000)
                 plantprop.run_program()
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)

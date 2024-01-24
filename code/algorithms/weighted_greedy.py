@@ -35,7 +35,7 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
     random_number = random.randint(0, amount_stations - 1)
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
-    went_back = 0
+    power = 2
     while True:
         list_stations_current = []
         for station_name in random_traject.current_station.connections:
@@ -45,42 +45,33 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
         for i in range(len(random_traject.current_station.connections)):
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
                 if random_traject.current_station.connections[list_stations_current[i]].time * 2 + random_traject.total_time < max_time:
-                    list_possibilities.append([list_stations_current[i], 5 * random_traject.current_station.connections[list_stations_current[i]].time])
-                    summation += 5 * random_traject.current_station.connections[list_stations_current[i]].time
+                    list_possibilities.append([list_stations_current[i], (25 * random_traject.current_station.connections[list_stations_current[i]].time) ** power] )
+                    summation += (25 * random_traject.current_station.connections[list_stations_current[i]].time) ** power
             else:
                 if random_traject.current_station.connections[list_stations_current[i]].time + random_traject.total_time < max_time:
-                    list_possibilities.append([list_stations_current[i], random_traject.current_station.connections[list_stations_current[i]].time])
-                    summation += random_traject.current_station.connections[list_stations_current[i]].time
+                    list_possibilities.append([list_stations_current[i], random_traject.current_station.connections[list_stations_current[i]].time ** power])
+                    summation += (random_traject.current_station.connections[list_stations_current[i]].time) ** power
         if len(list_possibilities) == 0:
             break
-        if len(list_possibilities) == 1:
+        elif len(list_possibilities) == 1:
             random_traject.move(list_possibilities[0][0])
         else:
             length = len(list_possibilities)
             fractions = []
             probabilities = []
             for i in range(length):
-                fractions.append(list_possibilities[i][1] / summation)
+                fractions.append(1 / list_possibilities[i][1])
             total = sum(fractions)
             for j in range(length):
-                probabilities.append(((1 / fractions[j]) / total) * 100)
+                probabilities.append((fractions[j] / total) * 100)
             selected = random.randint(0, 100)
             for q in range(length):
                 if q > 0:
                     probabilities[q] += probabilities[q - 1]
             for w in range(length):
-                if w == 0:
-                    if selected < probabilities[1]:
-                        random_traject.move(list_possibilities[0][0])
-                        break
-                elif w < length - 1:
-                    if selected < probabilities[w + 1] and selected > probabilities[w]:
-                        random_traject.move(list_possibilities[w][0])
-                        break
-                else:
-                    if selected > probabilities[w]:
-                        random_traject.move(list_possibilities[w][0])
-                        break
+                if selected < probabilities[w]:
+                    random_traject.move(list_possibilities[w][0])
+                    break
 
 
 
