@@ -1,5 +1,7 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.greedy_best_comb import run_trajects
 import random
 import copy
 
@@ -25,12 +27,22 @@ def hill_climbing(area, amount_trajects, amount_stations, max_time):
         else:
             # Stop als er geen verbetering is
             break
+        
+    current_solution_list = []
+    for i in range(amount_trajects):
+        current_solution_list.append(current_solution[i].traject_connections)
+    
+    current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
 
-    for i in range(0, amount_trajects):
-        stations_str = ', '.join(current_solution[i].traject_connections)
+    for i in range(len(current_solution_list)):
+        stations_str = ', '.join(current_solution_list[i])
         print(f"train_{i + 1},\"[{stations_str}]\"")
     
-    return current_solution, current_score
+    area.reset()
+
+    K = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
+
+    return current_solution, K, current_solution_list
 
 def generate_random_solution(area, amount_trajects, amount_stations, max_time):
     solution = []
