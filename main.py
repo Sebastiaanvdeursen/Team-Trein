@@ -9,6 +9,7 @@ from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.double_greedy import double_greedy_random
 from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
+from code.algorithms.weighted_greedy import run_weighted
 
 from code.classes.rail_NL import Rail_NL
 
@@ -89,7 +90,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append( p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
-    
+
     if sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing(area, amount_trajects, amount_stations, max_time)
@@ -97,7 +98,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append(K)
             if results[i] == max(results):
                 best = current
-    
+
     if sys.argv[2] == "hill_climbing/greedy":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)
@@ -105,7 +106,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append(K)
             if results[i] == max(results):
                 best = current
-    
+
     if sys.argv[2] == "hill_climbing_opt":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)
@@ -207,7 +208,17 @@ if __name__ == "__main__":
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
                 K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
                 print(f"score, {K}")
-            
+
+            elif sys.argv[2] == "weighted":
+                Min, T, p, trajects = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
+                count = 0
+                for a in trajects:
+                    stations_str = ', '.join(a)
+                    print(f"train_{count},\"[{stations_str}]\"")
+                    count += 1
+                K = p * 10000 - (T * 100 + Min)
+                print(f"score,{K}")
+
             elif sys.argv[2] == "simulatedplot":
                 plt.plot(range(simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[2]), simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[3])
                 plt.xlabel('Iterations')
@@ -271,7 +282,7 @@ if __name__ == "__main__":
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-                
+
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
@@ -308,7 +319,7 @@ if __name__ == "__main__":
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-                
+
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")

@@ -44,12 +44,12 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
         summation = 0
         for i in range(len(random_traject.current_station.connections)):
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
-                if random_traject.current_station.connections[list_stations_current[i]].time * 2 + random_traject.total_time > max_time:
-                    list_possibilities.append(list_stations_current[i], 5 * random_traject.current_station.connections[list_stations_current[i]].time)
+                if random_traject.current_station.connections[list_stations_current[i]].time * 2 + random_traject.total_time < max_time:
+                    list_possibilities.append([list_stations_current[i], 5 * random_traject.current_station.connections[list_stations_current[i]].time])
                     summation += 5 * random_traject.current_station.connections[list_stations_current[i]].time
             else:
-                if random_traject.current_station.connections[list_stations_current[i]].time + random_traject.total_time > max_time:
-                    list_possibilities.append(list_stations_current[i], random_traject.current_station.connections[list_stations_current[i]].time)
+                if random_traject.current_station.connections[list_stations_current[i]].time + random_traject.total_time < max_time:
+                    list_possibilities.append([list_stations_current[i], random_traject.current_station.connections[list_stations_current[i]].time])
                     summation += random_traject.current_station.connections[list_stations_current[i]].time
         if len(list_possibilities) == 0:
             break
