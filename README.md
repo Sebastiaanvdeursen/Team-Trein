@@ -1,9 +1,9 @@
 # Team-Trein
 
-The assignment of RailNL is to create a lining system of intercity trains in the Netherlands or Holland utilizing heuristics and various constructive or iterative algorithms. 
-The goal is to maximize the objective function    
-K = p \*10000 - (T\*100 + Min) by trying out different algorithms. In this objective function, K is the quality of the lining system, 
-p is the fraction of connections that have been ridden, T is the amount of routes used and Min is the total amount of minutes used by all the routes together. This object function has two 
+The assignment of RailNL is to create a lining system of intercity trains in the Netherlands or Holland utilizing heuristics and various constructive or iterative algorithms.
+The goal is to maximize the objective function
+K = p \*10000 - (T\*100 + Min) by trying out different algorithms. In this objective function, K is the quality of the lining system,
+p is the fraction of connections that have been ridden, T is the amount of routes used and Min is the total amount of minutes used by all the routes together. This object function has two
 constrictions, namely a maximum amount of routes we can choose (so T has an upper bound) and a maximum amount of minutes we can use per route.
 
 ## Getting started
@@ -23,16 +23,16 @@ conda install --file requirements.txt
 to get everything you need.
 
 ### Usage
-Run the code by typing 
+Run the code by typing
 ```
-python main.py large/small algorithm size all/hist
+python main.py large/large_random/small/small_random/utrecht algorithm size all/hist
 ```
 You can also opt to not include size, then one iteration will be ran.
-By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland. 
+By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland. Using large_random randomizes three connections on the national map, small_random randomizes two connections on the Holland map. If you enter utrecht the large map will be used but Utrecht Centraal will be excluded.
 
 For algorithms you can choose
 between find_p, annealing, random, random_optim, greedy_random, greedy_random_max, greedy_optim, hill_climbing, hill_climbing/greedy,
-hill_climbing/greedy_max, hill_climbing/greedy_optim, hill_climbing/greedy_optim_max or double_greedy. 
+hill_climbing/greedy_max, hill_climbing/greedy_optim, hill_climbing/greedy_optim_max or double_greedy.
 Adding hist to the command creates a histogram using the result, adding all also gives the average.
 
 You can also use main.py large/small algorithm time minutes, to make the algorithm run for a certain amount of time, it saves all the results in a pickle file and displays the top result.
