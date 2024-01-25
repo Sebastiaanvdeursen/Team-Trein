@@ -7,10 +7,7 @@ from code.algorithms.remove_unnecessary import removing_lines
 
 from code.classes.rail_NL import Rail_NL
 
-import copy
 import math
-import matplotlib.pyplot as plt
-import numpy as np
 import random
 
 def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature):
