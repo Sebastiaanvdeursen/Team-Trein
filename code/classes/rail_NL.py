@@ -5,9 +5,9 @@ from code.classes.station import Station
 from code.classes.traject import Traject
 
 class Rail_NL:
-    def __init__(self, map, amount_trajects, amount_stations, max_time, randomizer = False, utrecht = True):
+    def __init__(self, map, amount_trajects, amount_stations, max_time, randomizer = False, removing = ""):
+        self.removing = removing
         self.map = map
-        self.utrecht = utrecht
         self.stations = {}
         self.randomizer = randomizer
         self.load_connections(f"data/Connecties{map}.csv")
@@ -17,7 +17,41 @@ class Rail_NL:
 
 
     def load_connections(self, filename):
-        remove ="Utrecht Centraal"
+        remove = ""
+        if self.removing != "":
+            if self.removing =="Utrecht":
+                remove ="Utrecht Centraal"
+            elif self.removing =="Almere":
+                remove ="Almere Centrum"
+            elif self.removing =="Amstel":
+                remove ="Amsterdam Amstel"
+            elif self.removing =="Centraal":
+                remove ="Amsterdam Centraal"
+            elif self.removing =="Sloterdijk":
+                remove ="Amsterdam Sloterdijk"
+            elif self.removing =="Zuid":
+                remove ="Amsterdam Zuid"
+            elif self.removing =="Arnhem":
+                remove ="Amsterdam Centraal"
+            elif self.removing =="Den_haag":
+                remove ="Den Haag Centraal"
+            elif self.removing == "NOI":
+                remove = "Den Haag Laan v NOI"
+            elif self.removing == "HS":
+                remove = "Den Haag HS"
+            elif self.removing == "leiden":
+                remove = "Leiden Centraal"
+            elif self.removing == "Alexander":
+                remove = "Rotterdam Alexander"
+            elif self.removing == "Rotterdam":
+                remove = "Rotterdam Centraal"
+            elif self.removing == "Blaak":
+                remove = "Rotterdam Blaak"
+            elif self.removing == "Schiedam":
+                remove = "Schiedam Centrum"
+            else:
+                remove = self.removing
+
         with open(filename) as csv_bestand:
             csv_read = csv.reader(csv_bestand, delimiter=',')
             line_count = 0
@@ -46,7 +80,7 @@ class Rail_NL:
                             self.add_station(row[1])
                             self.add_connection_stations(row[0], row[1], int(float(row[2])))
                             self.add_connection_stations(row[1], row[0], int(float(row[2])))
-                    if self.utrecht == False:
+                    if remove != "":
                         if row[0] != remove and row[1] != remove:
                             self.add_station(row[0])
                             self.add_station(row[1])

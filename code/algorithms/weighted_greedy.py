@@ -7,7 +7,7 @@ from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.greedy_best_comb import run_trajects
 
-def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = True, info = False):
+def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = True, info = False, power = 1):
     list_stations = []
 
     for station_name in Area.stations:
@@ -17,7 +17,7 @@ def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = Tru
     track_info = []
     trajects = []
     for i in range(0, amount_trajects):
-        track_info = weighted_track(Area, amount_stations, max_time, list_stations, printed)
+        track_info = weighted_track(Area, amount_stations, max_time, list_stations, printed, power)
         time.append(track_info[0])
         trajects.append(track_info[2].traject_connections)
     time = sum(time)
@@ -31,11 +31,10 @@ def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = Tru
         return time, len(trajects), fraction_done, trajects
     return time, len(trajects), fraction_done
 
-def weighted_track(Area, amount_stations, max_time, list_stations, printed = True):
+def weighted_track(Area, amount_stations, max_time, list_stations, printed = True, power = 1):
     random_number = random.randint(0, amount_stations - 1)
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
-    power = 1.25
     while True:
         list_stations_current = []
         for station_name in random_traject.current_station.connections:
