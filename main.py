@@ -9,6 +9,7 @@ from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.double_greedy import double_greedy_random
 from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
+from code.algorithms.weighted_greedy import run_weighted
 
 from code.classes.rail_NL import Rail_NL
 
@@ -35,13 +36,24 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
                 best = current
             results.append(p*10000 - (T*100 + Min))
 
-    if sys.argv[2] == "greedy" or sys.argv[2] == "greedy_random":
+    elif sys.argv[2] == "greedy" or sys.argv[2] == "greedy_random":
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
             Min, T, p, current = run_greedy_random(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
             area.reset()
             k = p*10000 - (T*100 + Min)
+            if k > current_max:
+                current_max = k
+                best = current
+            results.append(p * 10000 - (T * 100 + Min))
+    elif sys.argv[2] == "weighted":
+        while True:
+            if (time.time() - start) / 60 > time_to_run:
+                break
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
+            area.reset()
+            k = p * 10000 - (T * 100 + Min)
             if k > current_max:
                 current_max = k
                 best = current
@@ -89,24 +101,34 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append( p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
-    
-    if sys.argv[2] == "hill_climbing":
+
+    elif sys.argv[2] == "weighted":
+        for i in range(0, int(sys.argv[3])):
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
+            area.reset()
+            results.append( p * 10000 - (T * 100 + Min))
+            if results[i] == max(results):
+                best = current
+
+
+
+    elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing(area, amount_trajects, amount_stations, max_time)
             area.reset()
             results.append(K)
             if results[i] == max(results):
                 best = current
-    
-    if sys.argv[2] == "hill_climbing/greedy":
+
+    elif sys.argv[2] == "hill_climbing/greedy":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)
             area.reset()
             results.append(K)
             if results[i] == max(results):
                 best = current
-    
-    if sys.argv[2] == "hill_climbing_opt":
+
+    elif sys.argv[2] == "hill_climbing_opt":
         for i in range(0, int(sys.argv[3])):
             current, K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)
             area.reset()
@@ -164,30 +186,51 @@ def find_p(area, amount_trajects, max_time, amount_stations):
 
 # Main script
 if __name__ == "__main__":
+    made_area = False
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
             map = "NL"
             amount_trajects = 20
             amount_stations = 61
             max_time = 180
-        else:
+        elif sys.argv[1] == "small":
             map = "Holland"
             amount_trajects = 7
             amount_stations = 22
             max_time = 120
-    else:
-        map = "Holland"
-        amount_trajects = 7
-        amount_stations = 22
-        max_time = 120
+        elif sys.argv[1] == "small_random":
+            map = "Holland"
+            amount_trajects = 7
+            amount_stations = 22
+            max_time = 120
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            amount_stations = area.get_amount_stations()
+            made_area = True
+        elif sys.argv[1] == "large_random":
+            map = "NL"
+            amount_trajects = 20
+            amount_stations = 61
+            max_time = 180
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            amount_stations = area.get_amount_stations()
+            made_area = True
+        else:
+            map = "NL"
+            amount_trajects = 20
+            amount_stations = 61
+            max_time = 180
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, removing = sys.argv[1])
+            amount_stations = area.get_amount_stations()
+            made_area = True
 
-    area = Rail_NL(map, amount_trajects, amount_stations, max_time)
+
+    if made_area == False:
+        area = Rail_NL(map, amount_trajects, amount_stations, max_time)
     print("train,stations")
 
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p":
             find_p(area, amount_trajects, max_time, amount_stations)
-
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -205,18 +248,43 @@ if __name__ == "__main__":
 
         else:
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
-                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
+                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 10000)[1]
                 print(f"score, {K}")
-            
+
+            elif sys.argv[2] == "weighted":
+                Min, T, p, trajects = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
+                count = 0
+                for a in trajects:
+                    stations_str = ', '.join(a)
+                    print(f"train_{count},\"[{stations_str}]\"")
+                    count += 1
+                K = p * 10000 - (T * 100 + Min)
+                print(f"score,{K}")
+
             elif sys.argv[2] == "simulatedplot":
-                plt.plot(range(simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[2]), simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[3])
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
+                print(f"score, {result[1]}")
+                scoresplot = result[2]
+                temperatureplot = result[3]
+                iterationstemperatureplot = range(len(temperatureplot))
+                iterationsplot = range(len(scoresplot))
+                plt.plot(iterationstemperatureplot, temperatureplot)
+                plt.plot(iterationsplot, scoresplot)
                 plt.xlabel('Iterations')
                 plt.ylabel('Current Score')
-                plt.title('Simulated Annealing Convergence')
+                plt.title('Simulated Annealing Holland')
+                plt.show()
+
+            elif sys.argv[2] == "simulatedprobplot":
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 5)
+                print(f"score, {result[1]}")
+                pacceptplot = result[4]
+                iterationsprobplot = range(len(pacceptplot))
+                plt.plot(iterationsprobplot, pacceptplot)
                 plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 10000)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 1000)
                 plantprop.run_program()
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
@@ -271,7 +339,7 @@ if __name__ == "__main__":
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-                
+
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
@@ -308,7 +376,7 @@ if __name__ == "__main__":
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-                
+
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
