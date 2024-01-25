@@ -266,23 +266,21 @@ if __name__ == "__main__":
                 print(f"score,{K}")
 
             elif sys.argv[2] == "simulatedplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
                 print(f"score, {result[1]}")
                 scoresplot = result[2]
                 temperatureplot = result[3]
-                pacceptplot = result[4]
                 iterationstemperatureplot = range(len(temperatureplot))
                 iterationsplot = range(len(scoresplot))
-                iterationspplot = range(len(pacceptplot))
                 plt.plot(iterationstemperatureplot, temperatureplot)
-                plt.plot(iterationspplot, pacceptplot)
                 plt.plot(iterationsplot, scoresplot)
                 plt.xlabel('Iterations')
                 plt.ylabel('Current Score')
                 plt.title('Simulated Annealing Holland')
                 plt.show()
+
             elif sys.argv[2] == "simulatedprobplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 5)
                 print(f"score, {result[1]}")
                 pacceptplot = result[4]
                 iterationsprobplot = range(len(pacceptplot))
