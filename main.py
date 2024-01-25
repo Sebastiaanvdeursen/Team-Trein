@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 import sys
 import time
 import pickle
-random.seed(1)
 
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
@@ -44,6 +43,17 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
             Min, T, p, current = run_greedy_random(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
             area.reset()
             k = p*10000 - (T*100 + Min)
+            if k > current_max:
+                current_max = k
+                best = current
+            results.append(p * 10000 - (T * 100 + Min))
+    elif sys.argv[2] == "weighted":
+        while True:
+            if (time.time() - start) / 60 > time_to_run:
+                break
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
+            area.reset()
+            k = p * 10000 - (T * 100 + Min)
             if k > current_max:
                 current_max = k
                 best = current
