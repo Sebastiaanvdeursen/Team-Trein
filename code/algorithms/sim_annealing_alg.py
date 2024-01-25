@@ -19,7 +19,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     area.reset()
     temperature = initial_temperature
 
-    total_iteraties = 2000
+    total_iteraties = 20000
     iteraties = 0
     scores = []
     temperature_list = []
@@ -50,7 +50,9 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             current_solution = neighbor
             current_score = neighbor_score
 
-        temperature = initial_temperature - (initial_temperature/total_iteraties) * iteraties
+        # temperature = initial_temperature - (initial_temperature/total_iteraties) * iteraties
+        # temperature = initial_temperature * (0.99 ** iteraties)
+        temperature = initial_temperature / ((iteraties + 1) ** 0.48)
         temperature_list.append(temperature)
         iteraties += 1
 
