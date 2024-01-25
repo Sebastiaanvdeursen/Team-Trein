@@ -28,7 +28,8 @@ class plant:
         start_power = 0.5
         for _ in range(25):
             self.children.append(run_weighted(self.area, amount_trajects,
-                                                  max_time, amount_stations, printed = False, info = True, power = start_power)[3])
+                                                  max_time, amount_stations, printed = False, info = True,
+                                                    power = start_power)[3])
             start_power += 0.1
         self.select_children()
 
@@ -62,8 +63,11 @@ class plant:
                         additions = random.randint(0, max_additions)
                         if additions > 0:
                             for i in range(additions):
-                                current.append(weighted_track(self.area, self.amount_stations, self.max_time, self.list_stations, printed = False, power= self.power + iterations)[2].traject_connections)
+                                current.append(weighted_track(self.area, self.amount_stations, self.max_time,
+                                                               self.list_stations, printed = False, power= self.power
+                                                                 + iterations)[2].traject_connections)
                     self.power += 0.001
+
                 else:
                     first = False
                 replace = -1
@@ -71,9 +75,12 @@ class plant:
                 if replace_random > 95:
                     replace = random.randint(0, len(parent) - 1)
                 count = 0
+
                 for i in parent:
                     if count == replace and len(current) < self.amount_trajects:
-                        current.append(weighted_track(self.area, self.amount_stations, self.max_time, self.list_stations, printed = False)[2].traject_connections)
+                        current.append(weighted_track(self.area, self.amount_stations,
+                                                       self.max_time, self.list_stations,
+                                                         printed = False)[2].traject_connections)
                     elif len(current) < self.amount_trajects:
                         current.append(i)
                     count += 1
@@ -91,7 +98,8 @@ class plant:
             self.area.reset()
             self.selected.append([self.children[i],
                                  run_trajects(self.area, len(self.children[i]),
-                                               self.amount_stations, self.max_time, self.children[i], False)])
+                                               self.amount_stations, self.max_time,
+                                                 self.children[i], False)])
         self.selected.sort(key = lambda x: x[1])
         if self.selected[4][1] > self.highest_score:
              self.highest_score = self.selected[4][1]
@@ -99,7 +107,8 @@ class plant:
         for i in range(5, 25):
             self.area.reset()
             score = run_trajects(self.area, len(self.children[i]),
-                                               self.amount_stations, self.max_time, self.children[i], False)
+                                               self.amount_stations,
+                                                 self.max_time, self.children[i], False)
             if score > self.selected[0][1]:
                 self.selected[0]= [self.children[i], score]
                 if score > self.selected[1][1]:

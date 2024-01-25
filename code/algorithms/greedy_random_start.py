@@ -8,7 +8,8 @@ from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.greedy_best_comb import run_trajects
 
 
-def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False, printed = True, info = False):
+def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False,
+                       printed = True, info = False):
     list_stations = []
 
     for station_name in Area.stations:
@@ -18,7 +19,8 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
     track_info = []
     trajects = []
     for i in range(0, amount_trajects):
-        track_info = run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing, printed)
+        track_info = run_greedy_track_random(Area, amount_stations, max_time,
+                                              used_for_hill_climbing, printed)
         time.append(track_info[0])
         trajects.append(track_info[2].traject_connections)
     time = sum(time)
@@ -27,7 +29,8 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
         Area.reset()
         trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
         Area.reset()
-        fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects, False, True)
+        fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time,
+                                            trajects, False, True)
     else:
         n_done = 0
         for station in Area.stations.values():
@@ -39,7 +42,8 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
         return time, len(trajects), fraction_done, trajects
     return time, len(trajects), fraction_done
 
-def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing, printed = True):
+def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing,
+                             printed = True):
     list_stations = []
 
     for station_name in Area.stations:
@@ -60,7 +64,8 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
                 if going_back == "":
                     going_back = list_stations_current[i]
-                elif random_traject.current_station.connections[going_back].time > random_traject.current_station.connections[list_stations_current[i]].time:
+                elif (random_traject.current_station.connections[going_back].time >
+                       random_traject.current_station.connections[list_stations_current[i]].time):
                     going_back = list_stations_current[i]
             elif random_traject.current_station.connections[list_stations_current[i]].time < time:
                 destination = list_stations_current[i]
@@ -72,12 +77,14 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
             if went_back > 1:
                 break
 
-            if random_traject.total_time + random_traject.current_station.connections[going_back].time > max_time:
+            if (random_traject.total_time + random_traject.current_station.connections[going_back].time
+                 > max_time):
                 break
 
             random_traject.move(going_back)
         else:
-            if random_traject.total_time + random_traject.current_station.connections[destination].time > max_time:
+            if (random_traject.total_time + random_traject.current_station.connections[destination].time
+            > max_time):
                 break
             went_back = 0
             random_traject.move(destination)
