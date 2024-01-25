@@ -1,9 +1,55 @@
 import sys
 import csv
 import numpy as np
+import json
 from PIL import Image
+from random import randint
 from bokeh.plotting import figure, show, output_file
 from bokeh.models import Range1d
+
+
+def convert_list_to_string(string_list):
+    list = []
+    number_of_comma = 0
+    comma_index = 0
+    for i in range(len(string_list)):
+        if string_list[i] == "[":
+            index = i
+            while True:
+                i += 1
+                if string_list[i] == "," and index == 0:
+                    list.append(string_list[index + 1: i])
+                    index = i
+                elif string_list[i] == ",":
+                    list.append(string_list[index + 2: i])
+                    index = i
+                elif string_list[i] == "]":
+                    list.append(string_list[index + 2: i])
+                    break
+    return list
+
+
+
+def read_train_data(filename):
+    train_data = {}
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            train_name = row['train']
+            string_stations = row['stations']
+            stations = convert_list_to_string(string_stations)
+            train_data[train_name] = stations
+    return train_data
+
+def assign_colors(train_data):
+    train_colors = {}
+    palette = []
+    for i in range(len(train_data)):
+        palette.append('#%06X' % randint(0, 0xFFFFFF))
+    for i, train_name in enumerate(train_data):
+        train_colors[train_name] = palette[i]
+    return train_colors
+
 
 def scatterplot(coords):
     places = {}
@@ -29,7 +75,7 @@ def scatterplot(coords):
     # return places  # If not used, you can remove this line
     return p, places
 
-def draw_lines(lines, places, p):
+def draw_lines1(lines, places, p):
     with open(f"../../data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
@@ -37,7 +83,19 @@ def draw_lines(lines, places, p):
             if line_count != 0:
                 p.line([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]], color = "black")
             line_count += 1
-    show(p)  # Show the lines plot immediately
+    return p
+
+def draw_lines2(train_data, train_colors, places, p):
+    for train_name, stations in train_data.items():
+        color = train_colors[train_name]
+        for i in range(len(stations) - 1):
+            start_station = stations[i]
+            end_station = stations[i + 1]
+            p.line([places[start_station][1], places[end_station][1]],
+                   [places[start_station][0], places[end_station][0]],
+                   color=color, line_width=2)
+
+    show(p)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -53,5 +111,12 @@ if __name__ == "__main__":
 
     # places = scatterplot(coords)  # Uncomment this line if you want to use the places variable elsewhere
     p, places = scatterplot(coords)
-    draw_lines(lines, places, p)  # If places is not used elsewhere, you can remove it from the arguments
+    p = draw_lines1(lines, places, p)  # If places is not used elsewhere, you can remove it from the arguments
+
+    input_filename = "../../output.csv"
+
+    train_data = read_train_data(input_filename)
+
+    train_colors = assign_colors(train_data)
+    draw_lines2(train_data, train_colors, places, p)
 
