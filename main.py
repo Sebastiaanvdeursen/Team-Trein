@@ -46,6 +46,17 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
             if k > current_max:
                 current_max = k
                 best = current
+            results.append(p * 10000 - (T * 100 + Min))
+    elif sys.argv[2] == "weighted":
+        while True:
+            if (time.time() - start) / 60 > time_to_run:
+                break
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
+            area.reset()
+            k = p * 10000 - (T * 100 + Min)
+            if k > current_max:
+                current_max = k
+                best = current
             results.append(p*10000 - (T*100 + Min))
 
     else:
@@ -203,19 +214,15 @@ if __name__ == "__main__":
             area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
             amount_stations = area.get_amount_stations()
             made_area = True
-        elif sys.argv[1] == "utrecht":
+        else:
             map = "NL"
             amount_trajects = 20
             amount_stations = 61
             max_time = 180
-            area = Rail_NL(map, amount_trajects, amount_stations, max_time, utrecht = False)
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, removing = sys.argv[1])
             amount_stations = area.get_amount_stations()
             made_area = True
-    else:
-        map = "Holland"
-        amount_trajects = 7
-        amount_stations = 22
-        max_time = 120
+
 
     if made_area == False:
         area = Rail_NL(map, amount_trajects, amount_stations, max_time)
@@ -241,7 +248,7 @@ if __name__ == "__main__":
 
         else:
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
-                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)[1]
+                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 10000)[1]
                 print(f"score, {K}")
 
             elif sys.argv[2] == "weighted":

@@ -10,6 +10,7 @@ import random
 
 class plant:
     def __init__(self, area, amount_trajects, max_time, amount_stations, iterations):
+        self.power = 0.25
         self.amount_stations = amount_stations
         self.amount_trajects = amount_trajects
         self.max_time = max_time
@@ -24,9 +25,11 @@ class plant:
         self.tracks = []
         self.highest_score = 0
         self.best = []
+        start_power = 0.5
         for _ in range(25):
-            self.children.append(run_greedy_random(self.area, amount_trajects,
-                                                  max_time, amount_stations, printed = False, info = True)[3])
+            self.children.append(run_weighted(self.area, amount_trajects,
+                                                  max_time, amount_stations, printed = False, info = True, power = start_power)[3])
+            start_power += 0.1
         self.select_children()
 
 
@@ -49,6 +52,7 @@ class plant:
         for parent in self.tracks:
             max_additions = self.amount_trajects - len(parent)
             current = []
+            iterations = 2.5
             for _ in range(5):
 
                 run_trajects(self.area, len(parent),
@@ -58,7 +62,8 @@ class plant:
                         additions = random.randint(0, max_additions)
                         if additions > 0:
                             for i in range(additions):
-                                current.append(weighted_track(self.area, self.amount_stations, self.max_time, self.list_stations, printed = False)[2].traject_connections)
+                                current.append(weighted_track(self.area, self.amount_stations, self.max_time, self.list_stations, printed = False, power= self.power + iterations)[2].traject_connections)
+                    self.power += 0.001
                 else:
                     first = False
                 replace = -1
@@ -75,6 +80,7 @@ class plant:
                 self.area.reset()
                 current = removing_lines(self.area, len(current), self.amount_stations, self.max_time, current)
                 self.children.append(current)
+                iterations -= 0.5
         self.select_children()
 
 
