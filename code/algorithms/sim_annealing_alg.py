@@ -79,11 +79,6 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
     area.reset()
     current_score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
-    count = 1
-    for a in trajects:
-        stations_str = ', '.join(a)
-        print(f"train_{count},\"[{stations_str}]\"")
-        count += 1
     return trajects, current_score, scores, temperature_list, p_acceptlist
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
