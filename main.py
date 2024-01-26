@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import sys
 import time
 import pickle
+random.seed(1)
 
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
@@ -109,7 +110,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append( p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
-    
+
     elif sys.argv[2] == "simulated":
         for i in range(0, int(sys.argv[3])):
             current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
