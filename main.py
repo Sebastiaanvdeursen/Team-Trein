@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 import sys
 import time
 import pickle
-random.seed(1)
 
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
@@ -59,7 +58,29 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
                 current_max = k
                 best = current
             results.append(p*10000 - (T*100 + Min))
-
+    elif sys.argv[2] == "simulated":
+        while True:
+            if (time.time() - start) / 60 > time_to_run:
+                break
+            result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
+            current_traject = result[0]
+            score = result[1]
+            print(score)
+            scoresplot = result[2]
+            temperatureplot = result[3]
+            iterationstemperatureplot = range(len(temperatureplot))
+            iterationsplot = range(len(scoresplot))
+            plt.plot(iterationstemperatureplot, temperatureplot)
+            plt.plot(iterationsplot, scoresplot)
+            plt.xlabel('Iterations')
+            plt.ylabel('Current Score')
+            plt.title('Simulated Annealing Holland')
+            plt.show()
+            area.reset()
+            if score > current_max:
+                current_max = score
+                best = current_traject
+            results.append(score)
     else:
         while True:
             if (time.time() - start) / 60 > time_to_run:
@@ -113,9 +134,11 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     elif sys.argv[2] == "simulated":
         for i in range(0, int(sys.argv[3])):
-            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
-            print(current)
-            results.append(current)
+            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[0] 
+            score = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
+            area.reset()
+            print(score)
+            results.append(score)
             if results[i] == max(results):
                 best = current
 
@@ -256,8 +279,15 @@ if __name__ == "__main__":
 
         else:
             if sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
-                K = simulated_annealing(area, amount_trajects, amount_stations, max_time, 10000)[1]
-                print(f"score, {K}")
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
+                trajects = result[0]
+                score = result[1]
+                count = 1
+                for a in trajects:
+                    stations_str = ', '.join(a)
+                    print(f"train_{count},\"[{stations_str}]\"")
+                    count += 1
+                print(f"score, {score}")
 
             elif sys.argv[2] == "weighted":
                 Min, T, p, trajects = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
