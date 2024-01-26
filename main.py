@@ -300,7 +300,7 @@ if __name__ == "__main__":
                 print(f"score,{K}")
 
             elif sys.argv[2] == "simulatedplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 2000)
                 trajects = result[0]
                 count = 1
                 for a in trajects:
