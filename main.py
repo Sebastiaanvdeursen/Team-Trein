@@ -109,8 +109,14 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append( p * 10000 - (T * 100 + Min))
             if results[i] == max(results):
                 best = current
-
-
+    
+    elif sys.argv[2] == "simulated":
+        for i in range(0, int(sys.argv[3])):
+            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
+            print(current)
+            results.append(current)
+            if results[i] == max(results):
+                best = current
 
     elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
@@ -158,6 +164,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
         f.summary()
 
     if histogram:
+        print(best)
         plt.hist(results, int(20))
         plt.show()
 
