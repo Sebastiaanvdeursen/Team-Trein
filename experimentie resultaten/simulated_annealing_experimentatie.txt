@@ -1,0 +1,6 @@
+Simulated Annealing experimentatie voor large
+
+Er wordt geëxperimenteerd voor de parameterwaardes van de begin temperatuur en r bij de formule:
+temperature = initial_temperature / ((iteraties + 1) ** r)
+Voor de eerste testen kijken we voor initiële temperaturen van [500, 1000, 1500, 2000].
+

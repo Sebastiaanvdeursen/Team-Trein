@@ -1,7 +1,7 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.algorithms.hill_climbing_alg import evaluate_solution
 from code.algorithms.hill_climbing_alg import generate_random_solution
-from code.algorithms.hill_climbing_alg import run_random_traject
+from code.algorithms.random_alg_opt import run_random_traject_opt
 from code.algorithms.greedy_best_comb import run_trajects
 from code.algorithms.remove_unnecessary import removing_lines
 
@@ -99,6 +99,6 @@ def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
         neighbor = solution[:]
-        neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
+        neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
     return neighbors

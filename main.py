@@ -300,7 +300,13 @@ if __name__ == "__main__":
                 print(f"score,{K}")
 
             elif sys.argv[2] == "simulatedplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1000)
+                trajects = result[0]
+                count = 1
+                for a in trajects:
+                    stations_str = ', '.join(a)
+                    print(f"train_{count},\"[{stations_str}]\"")
+                    count += 1
                 print(f"score, {result[1]}")
                 scoresplot = result[2]
                 temperatureplot = result[3]
@@ -309,8 +315,8 @@ if __name__ == "__main__":
                 plt.plot(iterationstemperatureplot, temperatureplot)
                 plt.plot(iterationsplot, scoresplot)
                 plt.xlabel('Iterations')
-                plt.ylabel('Current Score')
-                plt.title('Simulated Annealing Holland')
+                plt.ylabel('Score')
+                plt.title('Simulated Annealing for the Netherlands')
                 plt.show()
 
             elif sys.argv[2] == "simulatedprobplot":
