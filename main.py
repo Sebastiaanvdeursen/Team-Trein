@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 import sys
 import time
 import pickle
-random.seed(1)
 
 def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     start = time.time()
@@ -63,8 +62,20 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
-            current_traject = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[0]
-            score = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
+            result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)
+            current_traject = result[0]
+            score = result[1]
+            print(score)
+            scoresplot = result[2]
+            temperatureplot = result[3]
+            iterationstemperatureplot = range(len(temperatureplot))
+            iterationsplot = range(len(scoresplot))
+            plt.plot(iterationstemperatureplot, temperatureplot)
+            plt.plot(iterationsplot, scoresplot)
+            plt.xlabel('Iterations')
+            plt.ylabel('Current Score')
+            plt.title('Simulated Annealing Holland')
+            plt.show()
             area.reset()
             if score > current_max:
                 current_max = score
