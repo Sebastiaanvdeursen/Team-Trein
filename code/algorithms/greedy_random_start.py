@@ -80,8 +80,10 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
             if (random_traject.total_time + random_traject.current_station.connections[going_back].time
                  > max_time):
                 break
-
-            random_traject.move(going_back)
+            if going_back != "":
+                random_traject.move(going_back)
+            else:
+                break
         else:
             if (random_traject.total_time + random_traject.current_station.connections[destination].time
             > max_time):

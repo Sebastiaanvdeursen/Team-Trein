@@ -1,7 +1,7 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.algorithms.hill_climbing_alg import evaluate_solution
 from code.algorithms.hill_climbing_alg import generate_random_solution
-from code.algorithms.hill_climbing_alg import run_random_traject
+from code.algorithms.random_alg_opt import run_random_traject_opt
 from code.algorithms.greedy_best_comb import run_trajects
 from code.algorithms.remove_unnecessary import removing_lines
 
@@ -68,7 +68,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             current_solution = neighbor
             current_score = neighbor_score
 
-        temperature = initial_temperature / ((iteraties + 1) ** 0.48)
+        temperature = initial_temperature / ((iteraties + 1) ** 0.55)
         temperature_list.append(temperature)
         iteraties += 1
 
@@ -79,11 +79,6 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
     area.reset()
     current_score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
-    count = 1
-    for a in trajects:
-        stations_str = ', '.join(a)
-        print(f"train_{count},\"[{stations_str}]\"")
-        count += 1
     return trajects, current_score, scores, temperature_list, p_acceptlist
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
@@ -104,6 +99,6 @@ def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
         neighbor = solution[:]
-        neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
+        neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
     return neighbors
