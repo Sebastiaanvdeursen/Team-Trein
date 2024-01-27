@@ -3,7 +3,6 @@ from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.greedy_best_comb import run_trajects
 import random
-import copy
 
 def hill_climbing(area, amount_trajects, amount_stations, max_time):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
@@ -70,10 +69,11 @@ def evaluate_solution(solution, area):
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = copy.deepcopy(solution)
-        neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
-        neighbors.append(neighbor)
-        area.reset()
+        for j in range(3):
+            neighbor = solution[:]
+            neighbor[i] = run_random_traject(area, amount_stations, max_time)[2]
+            neighbors.append(neighbor)
+            area.reset()
     return neighbors
 
 def run_random_traject(Area, amount_stations, max_time):

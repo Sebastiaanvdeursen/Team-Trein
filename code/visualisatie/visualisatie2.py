@@ -75,7 +75,7 @@ def scatterplot(coords):
     # return places  # If not used, you can remove this line
     return p, places
 
-def draw_lines1(lines, places, p):
+def draw_lines_connections(lines, places, p):
     with open(f"../../data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
@@ -85,14 +85,27 @@ def draw_lines1(lines, places, p):
             line_count += 1
     return p
 
-def draw_lines2(train_data, train_colors, places, p):
+def draw_lines_trajects(train_data, train_colors, places, p):
+    start_to_end_station = {}
+    trajectory_counts = {}
+
     for train_name, stations in train_data.items():
         color = train_colors[train_name]
         for i in range(len(stations) - 1):
             start_station = stations[i]
             end_station = stations[i + 1]
+
+            trajectory_key = (start_station, end_station)
+            count = trajectory_counts.get(trajectory_key, 0)
+            trajectory_counts[trajectory_key] = count + 1
+
+            vertical_offset = count * 0.025
+            start_y = places[start_station][0] + vertical_offset
+            end_y = places[end_station][0] + vertical_offset
+
+            start_to_end_station[start_station] = end_station
             p.line([places[start_station][1], places[end_station][1]],
-                   [places[start_station][0], places[end_station][0]],
+                   [start_y, end_y],
                    color=color, line_width=2)
 
     show(p)
@@ -111,12 +124,12 @@ if __name__ == "__main__":
 
     # places = scatterplot(coords)  # Uncomment this line if you want to use the places variable elsewhere
     p, places = scatterplot(coords)
-    p = draw_lines1(lines, places, p)  # If places is not used elsewhere, you can remove it from the arguments
+    p = draw_lines_connections(lines, places, p)  # If places is not used elsewhere, you can remove it from the arguments
 
     input_filename = "../../output.csv"
 
     train_data = read_train_data(input_filename)
 
     train_colors = assign_colors(train_data)
-    draw_lines2(train_data, train_colors, places, p)
+    draw_lines_trajects(train_data, train_colors, places, p)
 

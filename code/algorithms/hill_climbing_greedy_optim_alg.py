@@ -5,7 +5,6 @@ from code.algorithms.greedy_best_comb import run_greedy_combinations
 import random
 import itertools as iter
 from math import comb
-import copy
 
 
 def hill_climbing_greedy_optim(area, amount_trajects, amount_stations, max_time):
@@ -62,7 +61,7 @@ def evaluate_solution(solution, area):
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = copy.deepcopy(solution)
+        neighbor = solution[:]
         neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
         area.reset()
