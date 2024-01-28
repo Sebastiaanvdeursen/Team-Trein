@@ -1,4 +1,5 @@
 from code.algorithms.greedy_random_start import run_greedy_random
+from code.algorithms.greedy_random_start import run_greedy_track_random
 from code.algorithms.greedy_best_comb import run_trajects
 from code.algorithms.random_alg import run_random_traject
 from code.algorithms.remove_unnecessary import removing_lines
@@ -10,7 +11,9 @@ import random
 
 class plant:
     def __init__(self, area, amount_trajects, max_time, amount_stations, iterations):
+        self.data = []
         self.power = 0.25
+        self.power_increase = 15 / (iterations)
         self.amount_stations = amount_stations
         self.amount_trajects = amount_trajects
         self.max_time = max_time
@@ -25,7 +28,7 @@ class plant:
         self.tracks = []
         self.highest_score = 0
         self.best = []
-        start_power = 0.5
+        start_power = 0.25
         for _ in range(25):
             self.children.append(run_weighted(self.area, amount_trajects,
                                                   max_time, amount_stations, printed = False, info = True,
@@ -50,11 +53,15 @@ class plant:
     def create_children(self):
         self.children  = []
         first = True
+        chance = [99, 85, 75, 50, 25]
+        amount_children = [7, 6, 5, 4, 3, 3]
+        counter = 0
+        probs_remove = [1, 3, 5, 6, 7]
         for parent in self.tracks:
             max_additions = self.amount_trajects - len(parent)
             current = []
-            iterations = 2.5
-            for _ in range(5):
+            iterations = 4.5
+            for _ in range(amount_children[counter]):
 
                 run_trajects(self.area, len(parent),
                                            self.amount_stations, self.max_time, parent, False)
@@ -66,28 +73,35 @@ class plant:
                                 current.append(weighted_track(self.area, self.amount_stations, self.max_time,
                                                                self.list_stations, printed = False, power= self.power
                                                                  + iterations)[2].traject_connections)
-                    self.power += 0.001
 
                 else:
                     first = False
                 replace = -1
                 replace_random = random.randint(0, 100)
-                if replace_random > 95:
+                if replace_random > chance[counter]:
                     replace = random.randint(0, len(parent) - 1)
+                chance[counter] -= 1
                 count = 0
 
                 for i in parent:
                     if count == replace and len(current) < self.amount_trajects:
-                        current.append(weighted_track(self.area, self.amount_stations,
+                        if random.randint(0, 10) > 5:
+                            current.append(weighted_track(self.area, self.amount_stations,
                                                        self.max_time, self.list_stations,
                                                          printed = False)[2].traject_connections)
+                        else:
+                            current.append(run_greedy_track_random(self.area, self.amount_stations, self.max_time,
+                              False, printed = False)[2].traject_connections)
                     elif len(current) < self.amount_trajects:
                         current.append(i)
                     count += 1
+                #if random.randint(0, 10) > probs_remove[counter]:
                 self.area.reset()
                 current = removing_lines(self.area, len(current), self.amount_stations, self.max_time, current)
                 self.children.append(current)
                 iterations -= 0.5
+            counter += 1
+            self.power += self.power_increase
         self.select_children()
 
 
@@ -128,10 +142,13 @@ class plant:
                                     self.best = self.children[i]
 
         self.selected.sort(key = lambda x: x[1], reverse = True)
-
+        self.data.append(self.selected[0][1])
         self.tracks = []
         for track in self.selected:
             self.tracks.append(track[0])
+
+    def get_data(self):
+        return self.data
 
 
 

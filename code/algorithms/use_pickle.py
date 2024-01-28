@@ -1,19 +1,23 @@
 import pickle
 import math
+import matplotlib.pyplot as plt
+
 
 if __name__ == "__main__":
-    file = open('../../results.pickle', 'rb')
+    file = open('results.pickle', 'rb')
     results = pickle.load(file)
     file.close()
     count = 0
     amount = 0
-    for i in results:
-        count += 1
-        print(i)
-        if i == 9199.0:
-            amount += 1
-    prob = amount/count
-    print(count)
+    plt.plot(range(len(results)), results)
+    plt.show()
+    #for i in results:
+    #    count += 1
+    #    print(i)
+    #    if i == 9199.0:
+    #        amount += 1
+    #prob = amount/count
+    #print(count)
     # confidence_int = prob - (1.96 * math.sqrt(((prob * (1 - prob)) / count)))
     # print(confidence_int)
     # print("using p")
