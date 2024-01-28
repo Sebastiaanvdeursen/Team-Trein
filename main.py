@@ -28,7 +28,8 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
-            Min, T, p, current = run_random_amount_of_trajects_opt(area, amount_trajects, max_time_train, amount_stations, printed = False, info = True)
+            Min, T, p, current = run_random_amount_of_trajects_opt(area, amount_trajects, max_time_train,
+                                                                    amount_stations, printed = False, info = True)
             area.reset()
             k = p*10000 - (T*100 + Min)
             if k > current_max:
@@ -134,7 +135,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     elif sys.argv[2] == "simulated":
         for i in range(0, int(sys.argv[3])):
-            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[0] 
+            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[0]
             score = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800)[1]
             area.reset()
             print(score)
@@ -188,7 +189,6 @@ def iterate(area, amount_trajects, max_time, amount_stations,
         f.summary()
 
     if histogram:
-        print(best)
         plt.hist(results, int(20))
         plt.show()
 
@@ -330,6 +330,9 @@ if __name__ == "__main__":
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 1000)
                 plantprop.run_program()
+                results = plantprop.get_data()
+                with open('results.pickle', 'wb') as f:
+                    pickle.dump(results, f)
             elif sys.argv[2] == "random":
                 Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
@@ -366,7 +369,13 @@ if __name__ == "__main__":
                     area.reset()
                 print(max(K_list))
             elif sys.argv[2] == "greedy_optim":
-                run_greedy_combinations(area, amount_trajects, max_time, amount_stations)
+                Min, T, p, tracks = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
+                                                            used_for_hill_climbing = False, longer= True)
+                K = p*10000 - (T*100 + Min)
+                for i in range(len(tracks)):
+                    stations_str = ', '.join(tracks[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
+                print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing":
                 K = hill_climbing(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
