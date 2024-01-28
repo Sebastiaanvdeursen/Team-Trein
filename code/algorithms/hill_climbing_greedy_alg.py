@@ -36,7 +36,6 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, print
         current_solution_list.append(current_solution[i].traject_connections)
     
     current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
-
     if printed:
         for i in range(len(current_solution_list)):
             stations_str = ', '.join(current_solution_list[i])

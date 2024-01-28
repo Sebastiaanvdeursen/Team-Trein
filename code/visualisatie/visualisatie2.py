@@ -5,7 +5,7 @@ import json
 from PIL import Image
 from random import randint
 from bokeh.plotting import figure, show, output_file
-from bokeh.models import Range1d
+from bokeh.models import Range1d, Arrow, VeeHead
 
 
 def convert_list_to_string(string_list):
@@ -29,7 +29,6 @@ def convert_list_to_string(string_list):
     return list
 
 
-
 def read_train_data(filename):
     train_data = {}
     with open(filename, newline='') as csvfile:
@@ -40,6 +39,7 @@ def read_train_data(filename):
             stations = convert_list_to_string(string_stations)
             train_data[train_name] = stations
     return train_data
+
 
 def assign_colors(train_data):
     train_colors = {}
@@ -52,6 +52,7 @@ def assign_colors(train_data):
 
 
 def scatterplot(coords):
+    p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
     places = {}
     with open(f"../../data/coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
@@ -67,13 +68,12 @@ def scatterplot(coords):
         l_x.append(places[a][1])
         l_y.append(places[a][0])
 
-    p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
-
     p.image_url(url=['map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
 
     p.circle(l_x, l_y, color = "black")
     # return places  # If not used, you can remove this line
     return p, places
+
 
 def draw_lines_connections(lines, places, p):
     with open(f"../../data/Connecties{lines}.csv") as line_info:
@@ -85,6 +85,7 @@ def draw_lines_connections(lines, places, p):
             line_count += 1
     return p
 
+
 def draw_lines_trajects(train_data, train_colors, places, p):
     start_to_end_station = {}
     trajectory_counts = {}
@@ -95,20 +96,30 @@ def draw_lines_trajects(train_data, train_colors, places, p):
             start_station = stations[i]
             end_station = stations[i + 1]
 
-            trajectory_key = (start_station, end_station)
-            count = trajectory_counts.get(trajectory_key, 0)
-            trajectory_counts[trajectory_key] = count + 1
-
-            vertical_offset = count * 0.025
-            start_y = places[start_station][0] + vertical_offset
-            end_y = places[end_station][0] + vertical_offset
+            trajectory_key_1 = (start_station, end_station)
+            trajectory_key_2 = (end_station, start_station)
+            count_1 = trajectory_counts.get(trajectory_key_1, 0)
+            count_2 = trajectory_counts.get(trajectory_key_2, 0)
+            trajectory_counts[trajectory_key_1] = count_1 + 1
+            trajectory_counts[trajectory_key_2] = count_2 + 1
+            offset = max([count_1, count_2])* 0.025
+            if abs(places[start_station][1] - places[end_station][1]) > abs(places[start_station][0] - places[end_station][0]):
+                start_y = places[start_station][0] + offset
+                end_y = places[end_station][0] + offset
+                start_x = places[start_station][1]
+                end_x = places[end_station][1]
+            else:
+                start_y = places[start_station][0]
+                end_y = places[end_station][0]
+                start_x = places[start_station][1] + offset
+                end_x = places[end_station][1] + offset
 
             start_to_end_station[start_station] = end_station
-            p.line([places[start_station][1], places[end_station][1]],
-                   [start_y, end_y],
-                   color=color, line_width=2)
+            p.add_layout(Arrow(end=VeeHead(size=5), line_color=color,
+                   x_start=start_x, y_start=start_y, x_end=end_x, y_end=end_y))
 
     show(p)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

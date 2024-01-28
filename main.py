@@ -148,7 +148,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             area.reset()
             results.append(K)
             if results[i] == max(results):
-                best = current
+                best = current_sol
 
     elif sys.argv[2] == "hill_climbing/greedy":
         for i in range(0, int(sys.argv[3])):
@@ -156,7 +156,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             area.reset()
             results.append(K)
             if results[i] == max(results):
-                best = current
+                best = current_sol
 
     elif sys.argv[2] == "hill_climbing_opt":
         for i in range(0, int(sys.argv[3])):
@@ -194,7 +194,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     count = 1
     for a in best:
-        stations_str = ', '.join(a.traject_connections)
+        stations_str = ', '.join(a)
         print(f"train_{count},\"[{stations_str}]\"")
         count += 1
     print(f"score,{max(results)}")
