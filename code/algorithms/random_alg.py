@@ -29,11 +29,9 @@ def run_random_traject(Area, amount_stations, max_time,  printed = True, info = 
         random_traject.show_current_traject()
 
     time = random_traject.total_time
-    if info:
+    if info == True:
         return [time, Area, random_traject]
     return [time, Area]
-
-
 
 
 def run_random_amount_of_trajects(Area, amount_trajects, max_time, amount_stations, printed = True, info = False):

@@ -1,42 +1,204 @@
 import sys
 import csv
-import matplotlib.pyplot as plt
+import numpy as np
+import json
+from PIL import Image
+from random import randint
+from bokeh.plotting import figure, show, output_file
+from bokeh.models import Range1d, Arrow, VeeHead
+
+
+def convert_list_to_string(string_list):
+    """
+    Convert a string representation of a list to a Python list.
+
+    pre:  string_list is a valid string representation of a list (for example: "[Gouda, Breda, Eindhoven]").
+    post: Returns the corresponding Python list (["Gouda", "Breda", "Eindhoven"]).
+    """
+    list = []
+    number_of_comma = 0
+    comma_index = 0
+    for i in range(len(string_list)):
+        if string_list[i] == "[":
+            index = i
+            while True:
+                i += 1
+                # When we encounter the first comma, add the entire word after the 
+                # "[" to the list
+                if string_list[i] == "," and index == 0:
+                    list.append(string_list[index + 1: i])
+                    index = i
+                # When encountering a comma later, add the word before it to the list
+                elif string_list[i] == ",":
+                    list.append(string_list[index + 2: i])
+                    index = i
+                # When encountering the "]", so the end of the input, add the word before
+                # it to the list
+                elif string_list[i] == "]":
+                    list.append(string_list[index + 2: i])
+                    break
+    return list
+
+
+def read_train_data(filename):
+    """
+    Read train data from a CSV file.
+
+    pre:  filename is a valid path to a CSV file containing train data.
+    post: Returns a dictionary with train names as keys and lists of stations as values.
+    """
+    train_data = {}
+    # open the CSV file
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        # for every line, add the train name and the corresponding
+        # traject to the train_data dictionary
+        for row in reader:
+            train_name = row['train']
+            string_stations = row['stations']
+            stations = convert_list_to_string(string_stations)
+            train_data[train_name] = stations
+    return train_data
+
+
+def assign_colors(train_data):
+    """
+    Assign random colors to each train in the given train data.
+
+    pre:  train_data is a dictionary with train names as keys and lists of stations as values.
+    post: Returns a dictionary mapping each train name to a randomly generated color.
+    """
+    train_colors = {}
+    # make a list palette, to store all the colors
+    palette = []
+    for i in range(len(train_data)):
+        # add a random color to the palette
+        palette.append('#%06X' % randint(0, 0xFFFFFF))
+    for i, train_name in enumerate(train_data):
+        # now link every traject to a color
+        train_colors[train_name] = palette[i]
+    return train_colors
 
 
 def scatterplot(coords):
+    """
+    Create a scatter plot of coordinates with a map background.
+
+    pre:  coords is either "Short" or "Long" indicating the type of coordinates to be plotted.
+    post: Returns a Bokeh plot object and a dictionary of places with their coordinates.
+    """
+    # make the empty figure
+    p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
     places = {}
+    # read the coördinates data
     with open(f"../../data/coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         line_count = 0
         for row in csv_read:
             if line_count != 0:
+                # now link the station names to the x and y coördinates
+                # in the dictionary places
                 places[row[0]] = [float(row[1]), float(row[2])]
             line_count += 1
 
     l_x = []
     l_y = []
+    # add all the x coördinates to l_x and y coördinates to l_y
     for a in places:
         l_x.append(places[a][1])
         l_y.append(places[a][0])
 
-    plt.scatter(l_x, l_y)
-    return places
+    # add the map of the Netherlands as background image
+    p.image_url(url=['map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
+
+    # add the coördinates as black circles to the figure
+    p.circle(l_x, l_y, color = "black")
+    return p, places
 
 
-def draw_lines(lines, places):
+def draw_lines_connections(lines, places, p):
+    """
+    Draw connections between places on the given Bokeh plot.
+
+    pre:  lines is either "NL" or "Holland" indicating the type of connections to be drawn.
+          places is a dictionary with place names as keys and their coordinates as values.
+          p is a Bokeh plot object.
+    post: Modifies the Bokeh plot to include lines connecting places based on the specified connections.
+    """
+    # open the connections data
     with open(f"../../data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         line_count = 0
+        # now draw a line for every connection
         for row in csv_file:
             if line_count != 0:
-                print(row[0], row[1])
-                print(places[row[0]])
-                print(places[row[1]])
-                plt.plot([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]], 'k-', lw=2)
+                p.line([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]], color = "black")
             line_count += 1
+    return p
+
+
+def draw_lines_trajects(train_data, train_colors, places, p):
+    """
+    Draw trajectories of trains on the given Bokeh plot.
+
+    pre:  train_data is a dictionary with train names as keys and lists of stations as values.
+          train_colors is a dictionary mapping train names to colors.
+          places is a dictionary with place names as keys and their coordinates as values.
+          p is a Bokeh plot object.
+    post: Modifies the Bokeh plot to include arrows representing train trajectories.
+    """
+    # initialize dictionary to keep track of the amount of times
+    # a trajectory has been drawn
+    trajectory_counts = {}
+
+    for train_name, stations in train_data.items():
+        # get the color of the traject
+        color = train_colors[train_name]
+        for i in range(len(stations) - 1):
+            start_station = stations[i]
+            end_station = stations[i + 1]
+
+            # there is no difference between a connection
+            # being done one way or the other, so we have
+            # to check both ways
+            trajectory_key_1 = (start_station, end_station)
+            trajectory_key_2 = (end_station, start_station)
+
+            # get the amount of times the connection has been
+            # done from the trajectory_counts dictionary
+            count_1 = trajectory_counts.get(trajectory_key_1, 0)
+            count_2 = trajectory_counts.get(trajectory_key_2, 0)
+
+            # add one to the count for both ways
+            trajectory_counts[trajectory_key_1] = count_1 + 1
+            trajectory_counts[trajectory_key_2] = count_2 + 1
+
+            # create an offset so the lines won't overlap
+            offset = max([count_1, count_2])* 0.025
+
+            # check if traject moves more in the x or y direction
+            # and add the offset accordingly
+            if abs(places[start_station][1] - places[end_station][1]) > abs(places[start_station][0] - places[end_station][0]):
+                start_y = places[start_station][0] + offset
+                end_y = places[end_station][0] + offset
+                start_x = places[start_station][1]
+                end_x = places[end_station][1]
+            else:
+                start_y = places[start_station][0]
+                end_y = places[end_station][0]
+                start_x = places[start_station][1] + offset
+                end_x = places[end_station][1] + offset
+
+            # add the trajects as arrows to the figure
+            p.add_layout(Arrow(end=VeeHead(size=5), line_color=color,
+                   x_start=start_x, y_start=start_y, x_end=end_x, y_end=end_y))
+
+    show(p)
 
 
 if __name__ == "__main__":
+    # use command line arguments to choose between
+    # Holland or the Netherlands
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
             coords = "Long"
@@ -45,16 +207,25 @@ if __name__ == "__main__":
             coords = "Short"
             lines = "Holland"
     else:
-            coords = "Short"
-            lines = "Holland"
+        coords = "Short"
+        lines = "Holland"
 
-    places = {}
-    places = scatterplot(coords)
-    draw_lines(lines, places)
+    # make a figure (p) containing the coördinates and
+    # the map of the Netherlands
+    p, places = scatterplot(coords)
 
-    if coords == "Short":
-        plt.ylim(51.7, 53.5)
-    else:
-        plt.ylim(50.5, 54)
-    plt.show()
+    # draw the possible connection lines
+    p = draw_lines_connections(lines, places, p)
+
+    # read the output data
+    input_filename = "../../output.csv"
+
+    # get the train_data
+    train_data = read_train_data(input_filename)
+
+    # get the traject colors
+    train_colors = assign_colors(train_data)
+
+    # draw the traject arrows
+    draw_lines_trajects(train_data, train_colors, places, p)
 
