@@ -1,63 +1,115 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.algorithms.random_alg_opt import run_random_traject_opt
+from code.algorithms.hill_climbing_alg import evaluate_solution
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.greedy_best_comb import run_trajects
 from code.classes.rail_NL import Rail_NL
 import random
 import copy
 
 def hill_climbing_opt(area, amount_trajects, amount_stations, max_time):
-    current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
+    """
+    Perform hill climbing optimization to improve a random optimized solution.
+
+    pre:
+    - area is an instance of Rail_NL.
+    - amount_trajects is a positive integer.
+    - amount_stations is a positive integer.
+    - max_time is a positive integer.
+
+    post:
+    - Returns a tuple containing the optimized solution, the objective function value K, and the list of trajectories.
+    """
+    # generate a random solution
+    current_solution = generate_random_optim_solution(area, amount_trajects, amount_stations, max_time)
+
+    # calculate the score of this solution
     current_score = evaluate_solution(current_solution, area)
 
+    # set all the connections to "not done"
+    area.reset()
+
+    # run algorithm until no improvements are found
     while True:
+        # make neighbours
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
         
-        # Selecteer het beste buur
+        # select the best neighbor (highest K)
         best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
 
-        # Als het beste buur beter is dan de huidige oplossing, update de oplossing en score
         eval_sol = evaluate_solution(best_neighbor, area)
 
+        # if best neighbor is better than current solution, replace current_solution
+        # by best neighbor and start again
         if eval_sol > current_score:
             current_solution = best_neighbor
             current_score = eval_sol
             area.reset()
+        
+        # if not, stop algorithm
         else:
-            # Stop als er geen verbetering is
             break
+    
+    # make a list of the trajects of the solution, containing the 
+    # station names (not traject objects)
+    current_solution_list = []
+    for i in range(amount_trajects):
+        current_solution_list.append(current_solution[i].traject_connections)
+    
+    # remove the trajects that make K lower
+    current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
 
-    for i in range(0, amount_trajects):
-        stations_str = ', '.join(current_solution[i].traject_connections)
+    # print the solution
+    for i in range(len(current_solution_list)):
+        stations_str = ', '.join(current_solution_list[i])
         print(f"train_{i + 1},\"[{stations_str}]\"")
     
-    return current_solution, current_score
+    area.reset()
 
-def generate_random_solution(area, amount_trajects, amount_stations, max_time):
+    # find K for the solution
+    K = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
+
+    return current_solution, K, current_solution_list
+
+def generate_random_optim_solution(area, amount_trajects, amount_stations, max_time):
+    """
+    Generate a random optimized solution for the hill climbing optimization.
+
+    pre:
+    - area is an instance of Rail_NL.
+    - amount_trajects is a positive integer.
+    - amount_stations is a positive integer.
+    - max_time is a positive integer.
+
+    post:
+    - Returns a list representing the random optimized solution.
+    """
     solution = []
     for i in range(amount_trajects):
         solution.append(run_random_traject_opt(area, amount_stations, max_time, True)[2])
 
     return solution
 
-def evaluate_solution(solution, area):
-    # Hier implementeer je de evaluatie van de doelfunctie K voor de gegeven oplossing
-    # Je kunt de p-waarde, T-waarde en Min-waarde berekenen zoals beschreven in je doelfunctie.
-    total_time = 0
-    for i in range(0, len(solution)):
-        total_time += solution[i].total_time
-
-    n_done = 0
-    for station in area.stations.values():
-        for connection in station.connections.values():
-            if connection.done:
-                n_done += 1
-
-    fraction_done = (n_done / 2) / area.total_connections
-
-    return fraction_done * 10000 - (len(solution) * 100 + total_time)
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
+    """
+    Generate neighbors for the hill climbing optimization.
+
+    pre:
+    - solution is a list representing the current solution.
+    - area is an instance of Rail_NL.
+    - amount_trajects is a positive integer.
+    - amount_stations is a positive integer.
+    - max_time is a positive integer.
+
+    post:
+    - Returns a list of neighbors.
+    """
     neighbors = []
+
+    # replace every traject of solution
     for i in range(amount_trajects):
+        # make 3 neighbors for every traject in solution
         neighbor = solution[:]
         neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, True)[2]
         neighbors.append(neighbor)
