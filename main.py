@@ -145,19 +145,19 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
-            current, K = hill_climbing(area, amount_trajects, amount_stations, max_time)
+            current, K, current_sol = hill_climbing(area, amount_trajects, amount_stations, max_time)
             area.reset()
             results.append(K)
             if results[i] == max(results):
-                best = current
+                best = current_sol
 
     elif sys.argv[2] == "hill_climbing/greedy":
         for i in range(0, int(sys.argv[3])):
-            current, K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)
+            current, K, current_sol = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, printed = False)
             area.reset()
             results.append(K)
             if results[i] == max(results):
-                best = current
+                best = current_sol
 
     elif sys.argv[2] == "hill_climbing_opt":
         for i in range(0, int(sys.argv[3])):

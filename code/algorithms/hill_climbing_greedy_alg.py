@@ -4,9 +4,8 @@ from code.algorithms.greedy_random_start import run_greedy_track_random
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.greedy_best_comb import run_trajects
 import random
-import copy
 
-def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
+def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, printed = True):
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     # area done gezet
     current_score = evaluate_solution(current_solution, area)
@@ -37,10 +36,10 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time):
         current_solution_list.append(current_solution[i].traject_connections)
     
     current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
-
-    for i in range(len(current_solution_list)):
-        stations_str = ', '.join(current_solution_list[i])
-        print(f"train_{i + 1},\"[{stations_str}]\"")
+    if printed:
+        for i in range(len(current_solution_list)):
+            stations_str = ', '.join(current_solution_list[i])
+            print(f"train_{i + 1},\"[{stations_str}]\"")
     
     area.reset()
 
@@ -76,8 +75,9 @@ def evaluate_solution(solution, area):
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     neighbors = []
     for i in range(amount_trajects):
-        neighbor = copy.deepcopy(solution)
-        neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
-        area.reset()
-        neighbors.append(neighbor)
+        for j in range(3):
+            neighbor = solution[:]
+            neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
+            area.reset()
+            neighbors.append(neighbor)
     return neighbors
