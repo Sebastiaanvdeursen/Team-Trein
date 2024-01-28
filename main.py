@@ -64,7 +64,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
-            result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 500, 0.4)
+            result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, 500, 0.55)
             current_traject = result[0]
             score = result[1]
             # scoresplot = result[2]
@@ -104,6 +104,37 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
 
+def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_to_run):
+    list_temperaturevalues = [500, 1000, 1500, 2000]
+    list_valuesexponent = [0.4, 0.45, 0.5, 0.55]
+    for j in range(1, 5):
+        for i in range(1, 5):
+            start = time.time()
+            results = []
+            best = []
+            current_max = 0
+            while True:
+                if (time.time() - start) / 60 > time_to_run:
+                    break
+                result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, list_temperaturevalues[j-1], list_valuesexponent[i-1])
+                current_traject = result[0]
+                score = result[1]
+                print(score)
+                area.reset()
+                if score > current_max:
+                    current_max = score
+                    best = current_traject
+                results.append(score)
+            count = 1
+            for a in best:
+                print(f"train_{count},{a}")
+                count += 1
+            print(f"score,{max(results)}")
+            print(results)
+
+            file_name = f'results_{list_temperaturevalues[j-1]}{list_valuesexponent[i-1]}.pickle'
+            with open(file_name, 'wb') as f:
+                pickle.dump(results, f)
 
 def iterate(area, amount_trajects, max_time, amount_stations,
              fitter: bool = False, histogram: bool = False, group_info: bool = False ):
@@ -266,6 +297,9 @@ if __name__ == "__main__":
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
                     timed(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
+            elif sys.argv[3] == "timemultiple":
+                if len(sys.argv) > 4:
+                    timed_multiple(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
             else:
                 if len(sys.argv) > 4:
                     if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
