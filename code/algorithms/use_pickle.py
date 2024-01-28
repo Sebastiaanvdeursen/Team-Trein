@@ -4,13 +4,20 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
-    file = open('results.pickle', 'rb')
+    file = open('../../results.pickle', 'rb')
     results = pickle.load(file)
     file.close()
-    count = 0
-    amount = 0
-    plt.plot(range(len(results)), results)
-    plt.show()
+    print(f"max, {max(results)}")
+    print(f"average, {sum(results) / len(results)}")
+
+    # file = open('results.pickle', 'rb')
+    # results = pickle.load(file)
+    # file.close()
+    # count = 0
+    # amount = 0
+    # plt.plot(range(len(results)), results)
+    # plt.show()
+
     #for i in results:
     #    count += 1
     #    print(i)

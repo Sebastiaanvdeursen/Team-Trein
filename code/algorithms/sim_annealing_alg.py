@@ -10,7 +10,7 @@ from code.classes.rail_NL import Rail_NL
 import math
 import random
 
-def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature):
+def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature, exponent_temp):
     """
     Perform simulated annealing to optimize the railway schedule.
     Simulated annealing is an iterative algorithm that explores neighboring solutions
@@ -33,11 +33,11 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         - Prints optimized train routes and their corresponding stations.
     """
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
-    current_score = evaluate_solution(current_solution, area)[0]
+    current_score = evaluate_solution(current_solution, area)
     area.reset()
     temperature = initial_temperature
 
-    total_iteraties = 20000
+    total_iteraties = 10000
     iteraties = 0
     scores = []
     temperature_list = []
@@ -68,7 +68,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             current_solution = neighbor
             current_score = neighbor_score
 
-        temperature = initial_temperature / ((iteraties + 1) ** 0.55)
+        temperature = initial_temperature / ((iteraties + 1) ** exponent_temp)
         temperature_list.append(temperature)
         iteraties += 1
 
