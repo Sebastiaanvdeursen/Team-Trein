@@ -25,3 +25,29 @@ def removing_lines(area, amount_trajects, amount_stations, max_time, trajects):
             score = test
         i += 1
     return trajects
+
+def remove_end(area, amount_stations, max_time, trajects):
+    area.reset()
+    score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
+    area.reset()
+    while True:
+        changes = 0
+        for i in range(len(trajects)):
+            current = []
+            for j in range(len(trajects)):
+                if j == i:
+                    current.append(trajects[j][:-1])
+                else:
+                    current.append(trajects[j])
+            current_score = run_trajects(area, len(current), amount_stations, max_time, current, False)
+            area.reset()
+            if current_score > score:
+                trajects = current
+                score = current_score
+                changes += 1
+        if changes == 0:
+            break
+    return trajects
+
+
+

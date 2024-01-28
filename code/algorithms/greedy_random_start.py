@@ -5,7 +5,9 @@ from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.remove_unnecessary import remove_end
 from code.algorithms.greedy_best_comb import run_trajects
+
 
 
 def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False,
@@ -26,9 +28,8 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
     time = sum(time)
 
     if used_for_hill_climbing == False:
-        Area.reset()
         trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
-        Area.reset()
+        trajects = remove_end(Area, amount_stations, max_time, trajects)
         fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time,
                                             trajects, False, True)
     else:

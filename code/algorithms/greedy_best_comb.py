@@ -10,6 +10,12 @@ from math import comb
 
 def run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
                              used_for_hill_climbing = False, longer = False):
+    """
+    function that tries out all combinations of greedy tracks, the longer version
+    will remake all tracks for all possible combinations, while longer == False
+    will use precalculated tracks
+
+    """
     if longer == False:
         possible = []
         for i in range(0, amount_stations):
@@ -49,6 +55,8 @@ def run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
                 current.append(passed)
             area.reset()
             current = removing_lines(area, len(current), amount_stations, max_time, current)
+            area.reset()
+            current = remove_end(area, amount_stations, max_time, current)
             area.reset()
             score = run_trajects(area, len(current), amount_stations, max_time, current, False)
             if score > best_score:
@@ -171,6 +179,29 @@ def removing_lines(area, amount_trajects, amount_stations, max_time, trajects):
             trajects = current
             score = test
         i += 1
+    return trajects
+
+def remove_end(area, amount_stations, max_time, trajects):
+    area.reset()
+    score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
+    area.reset()
+    while True:
+        changes = 0
+        for i in range(len(trajects)):
+            current = []
+            for j in range(len(trajects)):
+                if j == i:
+                    current.append(trajects[j][:-1])
+                else:
+                    current.append(trajects[j])
+                current_score = run_trajects(area, len(current), amount_stations, max_time, current, False)
+                area.reset()
+                if current_score > score:
+                    trajects = current
+                    score = current_score
+                    changes += 1
+        if changes == 0:
+            break
     return trajects
 
 

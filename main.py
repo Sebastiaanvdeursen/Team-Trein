@@ -10,6 +10,7 @@ from code.algorithms.double_greedy import double_greedy_random
 from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
 from code.algorithms.weighted_greedy import run_weighted
+from code.algorithms.remove_unnecessary import remove_end
 
 from code.classes.rail_NL import Rail_NL
 
@@ -328,7 +329,7 @@ if __name__ == "__main__":
                 plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 1000)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 20000)
                 plantprop.run_program()
                 results = plantprop.get_data()
                 with open('results.pickle', 'wb') as f:

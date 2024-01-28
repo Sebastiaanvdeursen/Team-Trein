@@ -34,7 +34,7 @@ class plant:
                                                   max_time, amount_stations, printed = False, info = True,
                                                     power = start_power)[3])
             start_power += 0.1
-        self.select_children()
+        self.select_children(True)
 
 
     def run_program(self):
@@ -106,19 +106,28 @@ class plant:
 
 
 
-    def select_children(self):
+    def select_children(self, first = False):
         self.selected = []
-        for i in range(5):
-            self.area.reset()
-            self.selected.append([self.children[i],
-                                 run_trajects(self.area, len(self.children[i]),
+        if first:
+            for i in range(5):
+                self.area.reset()
+                self.selected.append([self.children[i],
+                                        run_trajects(self.area, len(self.children[i]),
                                                self.amount_stations, self.max_time,
                                                  self.children[i], False)])
-        self.selected.sort(key = lambda x: x[1])
+            self.selected.sort(key = lambda x: x[1])
+        else:
+            for i in range(5):
+                self.area.reset()
+                self.selected.append([self.tracks[i],
+                                        run_trajects(self.area, len(self.tracks[i]),
+                                               self.amount_stations, self.max_time,
+                                                 self.tracks[i], False)])
+            self.selected.sort(key = lambda x: x[1])
         if self.selected[4][1] > self.highest_score:
-             self.highest_score = self.selected[4][1]
-             self.best = self.selected[4][0]
-        for i in range(5, 25):
+            self.highest_score = self.selected[4][1]
+            self.best = self.selected[4][0]
+        for i in range(25):
             self.area.reset()
             score = run_trajects(self.area, len(self.children[i]),
                                                self.amount_stations,
