@@ -1,6 +1,6 @@
 from code.algorithms.greedy_random_start import run_greedy_random
 from code.algorithms.greedy_random_start import run_greedy_track_random
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 from code.algorithms.random_alg import run_random_traject
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.weighted_greedy import run_weighted

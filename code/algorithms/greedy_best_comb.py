@@ -1,12 +1,16 @@
 import csv
 import random
 import sys
+import itertools as iter
+from math import comb
+
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.run import run_trajects
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.remove_unnecessary import remove_end
 
-import itertools as iter
-from math import comb
 
 def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, amount_stations: int,
                             used_for_hill_climbing: bool = False,
@@ -159,6 +163,7 @@ def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool) -> [l
         random_traject.show_current_traject()
     return passed, random_traject.total_time, random_traject
 
+<<<<<<< HEAD
 def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
                   trajects: list[list[str]], printed: bool, final: bool = False) -> [float, int] or float:
     time = 0
@@ -232,4 +237,6 @@ def remove_end(area, amount_stations, max_time, trajects):
             break
     return trajects
 
+=======
+>>>>>>> bc6137a8b34626ad660731374e55855907f04205
 

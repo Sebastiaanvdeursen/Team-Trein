@@ -1,7 +1,7 @@
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 
 def removing_lines(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
                     trajects: list[list[str]]) -> list[list[str]]:

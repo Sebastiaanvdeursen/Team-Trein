@@ -1,23 +1,11 @@
-from code.algorithms.random_alg import run_random_amount_of_trajects
-from code.algorithms.random_alg_opt import run_random_amount_of_trajects_opt
 from code.algorithms.greedy_random_start import run_greedy_random
-from code.algorithms.greedy_best_comb import run_greedy_combinations
-from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
-from code.algorithms.hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
-from code.algorithms.hill_climbing_alg import hill_climbing
-from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
-from code.algorithms.double_greedy import double_greedy_random
-from code.algorithms.sim_annealing_alg import simulated_annealing
-from code.algorithms.PlantPropagation import plant
-from code.algorithms.weighted_greedy import run_weighted
+
 
 from code.classes.rail_NL import Rail_NL
 
-import random
 import matplotlib.pyplot as plt
 import sys
-import time
-import pickle
+
 
 
 if __name__ == "__main__":
