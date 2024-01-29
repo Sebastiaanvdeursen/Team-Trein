@@ -11,6 +11,7 @@ from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
 from code.algorithms.weighted_greedy import run_weighted
 from code.algorithms.remove_unnecessary import remove_end
+from experiments.weighted_greedy.experiment_weighted import timed_weighted
 
 from code.classes.rail_NL import Rail_NL
 
@@ -135,6 +136,7 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
             file_name = f'results_{list_temperaturevalues[j-1]}{list_valuesexponent[i-1]}.pickle'
             with open(file_name, 'wb') as f:
                 pickle.dump(results, f)
+
 
 def iterate(area, amount_trajects, max_time, amount_stations,
              fitter: bool = False, histogram: bool = False, group_info: bool = False ):
@@ -296,6 +298,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p":
             find_p(area, amount_trajects, max_time, amount_stations)
+        elif sys.argv[2] == "test_weighted":
+            timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -365,7 +369,7 @@ if __name__ == "__main__":
                 plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 20000)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 200)
                 plantprop.run_program()
                 results = plantprop.get_data()
                 with open('results.pickle', 'wb') as f:

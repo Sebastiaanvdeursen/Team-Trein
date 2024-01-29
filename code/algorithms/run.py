@@ -2,7 +2,7 @@ from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 
 def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
-                  trajects: list[list[str]], printed: bool, final: bool = False) -> [float, int] or float:
+                  trajects: list[list[str]], printed: bool = False) -> tuple[float, int]:
     time = 0
     solution = []
     for i in range(amount_trajects):
@@ -22,7 +22,5 @@ def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_
                     n_done += 1
 
     fraction_done = (n_done / 2) / area.total_connections
-    if final:
-        return fraction_done, time
-    else:
-        return fraction_done * 10000 - time - (len(trajects) * 100)
+
+    return fraction_done, time

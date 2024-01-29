@@ -25,14 +25,17 @@ def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = Tru
     Area.reset()
     trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
     Area.reset()
-    fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects, False, True)
+    fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects)
 
     if info:
         return time, len(trajects), fraction_done, trajects
     return time, len(trajects), fraction_done
 
-def weighted_track(Area, amount_stations, max_time, list_stations, printed = True, power = 1):
-    random_number = random.randint(0, amount_stations - 1)
+def weighted_track(Area, amount_stations, max_time, list_stations, printed = True, power = 1, start: int = -1):
+    if start == -1:
+        random_number = random.randint(0, amount_stations - 1)
+    else:
+        random_number = start
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
     while True:

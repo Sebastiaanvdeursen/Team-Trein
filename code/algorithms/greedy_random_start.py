@@ -11,7 +11,7 @@ from code.algorithms.run import run_trajects
 def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                        amount_stations: int, used_for_hill_climbing: bool = False,
                        printed: bool = True, info: bool = False
-                       ) -> [int, int, float] or [int, int, float, list[list[str]]]:
+                       ) -> tuple[int, int, float] | tuple[int, int, float, list[list[str]]]:
     """
     runs the greedy algorithm with random starting stations, runs removing_lines and remove_end to
     improve the trajects
@@ -62,7 +62,7 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
     return time, len(trajects), fraction_done
 
 def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing,
-                             printed = True):
+                             printed = True) -> tuple[int, Rail_NL, Traject]:
     """
     runs a greedy track, always chooses the shortest connection that has not been used
     if no unused track is available it uses the shortest done connection.
