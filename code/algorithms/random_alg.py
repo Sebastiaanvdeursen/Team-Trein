@@ -1,10 +1,9 @@
-import csv
-import random
-import sys
-from code.classes.station import Station
+from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject
+from typing import Union, List, Tuple
+import random
 
-def run_random_traject(area, amount_stations, max_time,  printed = True, info = False):
+def run_random_traject(area: Rail_NL, amount_stations: int, max_time: int, printed: bool = True, info: bool = False) -> Union[List[Union[int, Rail_NL]], List[Union[int, Rail_NL, Traject]]]:
     """
     Generate a random train trajectory.
 
@@ -20,9 +19,7 @@ def run_random_traject(area, amount_stations, max_time,  printed = True, info = 
     - If info is False, returns a list containing total time and Area.
     """
     # make a list containing all the stations
-    list_stations = []
-    for station_name in area.stations:
-        list_stations.append(station_name)
+    list_stations = list(area.stations.keys())
 
     # draw a random number
     random_number = random.randint(0, amount_stations - 1)
@@ -32,9 +29,7 @@ def run_random_traject(area, amount_stations, max_time,  printed = True, info = 
 
     while True:
         # make a list containing all the stations that are connected to the current station
-        list_stations_current = []
-        for station_name in random_traject.current_station.connections:
-            list_stations_current.append(station_name)
+        list_stations_current = list(random_traject.current_station.connections.keys())
 
         # draw a random number
         random_number = random.randint(0, len(random_traject.current_station.connections) - 1)
@@ -56,12 +51,12 @@ def run_random_traject(area, amount_stations, max_time,  printed = True, info = 
         random_traject.show_current_traject()
 
     time = random_traject.total_time
-    if info == True:
+    if info:
         return [time, area, random_traject]
     return [time, area]
 
 
-def run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations, printed = True, info = False):
+def run_random_amount_of_trajects(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True, info: bool = False) -> Union[List[Union[int, int, float, List[List[str]]]], List[Union[int, int, float]]]:
     """
     Generate a random amount of train trajectories for a given railway network.
 
@@ -102,3 +97,4 @@ def run_random_amount_of_trajects(area, amount_trajects, max_time, amount_statio
         return sum(time), random_number, fraction_done, trajects
     else:
         return sum(time), random_number, fraction_done
+

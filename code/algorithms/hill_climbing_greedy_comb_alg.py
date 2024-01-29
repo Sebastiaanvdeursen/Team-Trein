@@ -3,11 +3,13 @@ from code.classes.rail_NL import Rail_NL
 from code.algorithms.greedy_random_start import run_greedy_track_random
 from code.algorithms.greedy_best_comb import run_greedy_combinations
 from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 from code.algorithms.hill_climbing_alg import evaluate_solution
 from code.algorithms.hill_climbing_greedy_alg import get_neighbors_greedy
+from code.classes.traject import Traject
+from typing import List, Tuple
 
-def list_to_trajects(area, list_string):
+def list_to_trajects(area: Rail_NL, list_string: List[List[str]]) -> List[Traject]:
     """
     Convert a list containing lists of station names to a list containing traject objects 
 
@@ -29,7 +31,7 @@ def list_to_trajects(area, list_string):
     return solution
 
 
-def hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time):
+def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int) -> Tuple[List[Traject], float, List[List[str]]]:
     """
     Perform hill climbing optimization using a combination of the greedy best combination algorithm.
 
@@ -43,7 +45,7 @@ def hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time):
     - Returns a tuple containing the optimized solution, the objective function value (K), and the list of trajectories.
     """
     # generate a random optimized solution
-    current_solution_string = run_greedy_combinations(area, amount_trajects, max_time, amount_stations, True, longer = True)
+    current_solution_string = run_greedy_combinations(area, amount_trajects, max_time, amount_stations, True, longer=True)
 
     # go from list of string stations, to list of trajects
     current_solution = list_to_trajects(area, current_solution_string)

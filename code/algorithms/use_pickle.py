@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 if __name__ == "__main__":
-    file = open('../../results.pickle', 'rb')
+    file = open('../../results_12.pickle', 'rb')
     results = pickle.load(file)
     file.close()
     count = 0
