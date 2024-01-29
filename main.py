@@ -3,7 +3,7 @@ from code.algorithms.random_alg_opt import run_random_amount_of_trajects_opt
 from code.algorithms.greedy_random_start import run_greedy_random
 from code.algorithms.greedy_best_comb import run_greedy_combinations
 from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
-from code.algorithms.hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
+from code.algorithms.hill_climbing_greedy_comb_alg import hill_climbing_greedy_comb
 from code.algorithms.hill_climbing_alg import hill_climbing
 from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.double_greedy import double_greedy_random
@@ -473,12 +473,12 @@ if __name__ == "__main__":
                     print(f"train_{i + 1},\"[{stations_str}]\"")
 
             elif sys.argv[2] == "hill_climbing/greedy_optim":
-                K = hill_climbing_greedy_optim(area, amount_trajects, amount_stations, max_time)[1]
+                K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_optim_max":
                 K_list = []
                 for i in range(10):
-                    K = hill_climbing_greedy_optim(area, amount_trajects, amount_stations, max_time)[1]
+                    K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))

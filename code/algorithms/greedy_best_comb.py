@@ -33,7 +33,7 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
         - the len(list) as an int
         - fraction of connections used as a float
     """
-    #pre determines the routes for if longer is false, this is done using the greedy_track function
+    # pre determines the routes for if longer is false, this is done using the greedy_track function
     if longer == False:
         possible = []
         for i in range(0, amount_stations):
@@ -42,14 +42,14 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
 
     results = []
 
-    #makes all the combinations/ permutations in to a list, depending on what is needed
+    # makes all the combinations/ permutations in to a list, depending on what is needed
     if longer:
         possible_trajects_combs = list(iter.permutations(range(amount_stations), amount_trajects - 3))
     else:
         possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
     amount = comb(amount_stations, amount_trajects)
 
-    #if longer is false it loops to all possible combinations using the pre determined tracks
+    # if longer is false it loops to all possible combinations using the pre determined tracks
     if longer == False:
         for i in range(amount):
             visit = []
@@ -68,25 +68,25 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
             time += time_track
             solution.append(track)
 
-    #runs trough all starting startion permutations and creates new tracks for each
+    # runs trough all starting startion permutations and creates new tracks for each
     if longer == True:
         best_track = []
         best_score = 0
         for i in possible_trajects_combs:
             current = []
 
-            #reset the railNL object for each iteration
+            # reset the railNL object for each iteration
             area.reset()
             for j in i:
                 passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
                 current.append(passed)
 
-            #optimize the results and calculate the value
+            # optimize the results and calculate the value
             current = removing_lines(area, len(current), amount_stations, max_time, current)
             current = remove_end(area, amount_stations, max_time, current)
             score = run_trajects(area, len(current), amount_stations, max_time, current, False)
 
-            #saving the highest score/ best tracks
+            # saving the highest score/ best tracks
             if score > best_score:
                 best_score = score
                 best_track = current
@@ -185,7 +185,7 @@ def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_
     else:
         return fraction_done * 10000 - time - (len(trajects) * 100)
 
-##dit moet worden opgelost
+## dit moet worden opgelost
 def removing_lines(area, amount_trajects, amount_stations, max_time, trajects):
     area.reset()
     score = run_trajects(area, amount_trajects, amount_stations, max_time, trajects, False)
