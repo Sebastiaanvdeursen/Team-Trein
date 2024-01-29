@@ -407,8 +407,8 @@ if __name__ == "__main__":
                 print(max(K_list))
             elif sys.argv[2] == "greedy_optim":
                 Min, T, p, tracks = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
-                                                            used_for_hill_climbing = False, longer= True)
-                K = p*10000 - (T*100 + Min)
+                                                            used_for_hill_climbing = False, longer = True)
+                K = p * 10000 - (T * 100 + Min)
                 print(p)
                 for i in range(len(tracks)):
                     stations_str = ', '.join(tracks[i])

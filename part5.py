@@ -15,7 +15,7 @@ if __name__ == "__main__":
     amount_trajects = 20
     amount_stations = 61
     max_time = 180
-    area2 = Rail_NL(map, amount_trajects, amount_stations, max_time, removing = sys.argv[1])
+    area2 = Rail_NL(map, amount_trajects, amount_stations, max_time)
     amount_stations_2 = area2.get_amount_stations()
     results1 = []
     for i in range(0, int(sys.argv[2])):
@@ -39,12 +39,11 @@ if __name__ == "__main__":
             results.append( p * 10000 - (T * 100 + Min))
         max_random = max(results)
         difference = max_random - maximum
-        print(difference)
         for i in numbers:
             list[i - 1] += difference
             count[i - 1] += 1
-    for i in range(1, 89):
-        print(list[i] / count[i])
+    for i in range(0, 89):
+        print(int(list[i] / count[i]))
 
 
 

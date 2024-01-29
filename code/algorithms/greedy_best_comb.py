@@ -87,13 +87,15 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
 
             # optimize the results and calculate the value
             current = removing_lines(area, len(current), amount_stations, max_time, current)
-            current = remove_end(area, amount_stations, max_time, current)
-            score = run_trajects(area, len(current), amount_stations, max_time, current, False)
+            current_fraction_done, current_time, current = remove_end(area, amount_stations, max_time, current)
+            score = current_fraction_done * 10000 - (len(current) * 100 + current_time)
 
             # saving the highest score/ best tracks
             if score > best_score:
                 best_score = score
                 best_track = current
+                fraction_done = current_fraction_done
+                time = current_time
 
     if longer == False:
         n_done = 0
@@ -103,12 +105,9 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
                     n_done += 1
 
         fraction_done = (n_done / 2) / area.total_connections
-    else:
-        fraction_done, time = run_trajects(area, len(best_track), amount_stations, max_time, best_track, False, True)
-        solution = best_track
 
     if used_for_hill_climbing == False:
-        return time, len(solution), fraction_done, solution
+        return time, len(best_track), fraction_done, best_track
     if used_for_hill_climbing:
         return solution
 
