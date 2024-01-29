@@ -32,6 +32,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             - p_acceptlist: List of acceptance probabilities during the optimization process.
         - Prints optimized train routes and their corresponding stations.
     """
+    # Evaluate a starting position by generating a random solution and calculating what its score is
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area)
     area.reset()
@@ -42,6 +43,8 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     scores = []
     temperature_list = []
     p_acceptlist = []
+
+    # Loop through the total_iteraties 
     while iteraties < total_iteraties:
         scores.append(current_score)
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time)
@@ -56,6 +59,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         area.reset()
         delta_score = current_score - neighbor_score
 
+        # Calculate p_accept, set it to 1 if the neighbor score is higher, set it to 0 if it is negligible (almost 0)
         if delta_score/temperature > 500:
             p_accept = 0
         elif delta_score < 0:
@@ -68,6 +72,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             current_solution = neighbor
             current_score = neighbor_score
 
+        # Calculate the temperature value
         temperature = initial_temperature / ((iteraties + 1) ** exponent_temp)
         temperature_list.append(temperature)
         iteraties += 1
@@ -96,6 +101,7 @@ def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
     Postconditions:
         - Returns a list of neighboring solutions.
     """
+    # Create a list of neighbors
     neighbors = []
     for i in range(amount_trajects):
         neighbor = solution[:]

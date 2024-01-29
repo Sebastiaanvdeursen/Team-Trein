@@ -1,12 +1,12 @@
-from code.algorithms.random_alg import run_random_amount_of_trajects
-from code.classes.rail_NL import Rail_NL
+from typing import List, Tuple
 from code.algorithms.greedy_random_start import run_greedy_track_random
 from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
+from code.classes.traject import Traject
 from code.algorithms.hill_climbing_alg import evaluate_solution
-import random
+from code.classes.rail_NL import Rail_NL
 
-def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, printed = True):
+def hill_climbing_greedy(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, printed: bool = True, amount_neighbors: int = 1) -> Tuple[List[Traject], float, List[List[str]]]:
     """
     Perform hill climbing optimization using the greedy algorithm with random starting points.
 
@@ -32,7 +32,7 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, print
     # run algorithm until no improvements are found
     while True:
         # make neighbours
-        neighbors = get_neighbors_greedy(current_solution, area, amount_trajects, amount_stations, max_time)
+        neighbors = get_neighbors_greedy(current_solution, area, amount_trajects, amount_stations, max_time, amount_neighbors)
         
         # select the best neighbor (highest K)
         best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
@@ -72,7 +72,7 @@ def hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, print
 
     return current_solution, K, current_solution_list
 
-def generate_random_solution(area, amount_trajects, amount_stations, max_time):
+def generate_random_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int) -> List[Traject]:
     """
     Generate a random solution for the hill climbing optimization using the greedy algorithm with random starting points.
 
@@ -91,7 +91,7 @@ def generate_random_solution(area, amount_trajects, amount_stations, max_time):
 
     return solution
 
-def get_neighbors_greedy(solution, area, amount_trajects, amount_stations, max_time):
+def get_neighbors_greedy(solution: List[Traject], area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int) -> List[List[Traject]]:
     """
     Generate neighbors for the hill climbing optimization using the greedy algorithm with random starting points.
 
@@ -109,8 +109,7 @@ def get_neighbors_greedy(solution, area, amount_trajects, amount_stations, max_t
 
     # replace every traject of solution
     for i in range(amount_trajects):
-        # make 3 neighbors for every traject in solution
-        for j in range(3):
+        for j in range(amount_neighbors):
             neighbor = solution[:]
             neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, True)[2]
             area.reset()

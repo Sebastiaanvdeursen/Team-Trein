@@ -11,6 +11,7 @@ from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
 from code.algorithms.weighted_greedy import run_weighted
 from code.algorithms.remove_unnecessary import remove_end
+import numpy as np
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
 
 from code.classes.rail_NL import Rail_NL
@@ -83,6 +84,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
                 current_max = score
                 best = current_traject
             results.append(score)
+
     else:
         while True:
             if (time.time() - start) / 60 > time_to_run:
@@ -120,7 +122,6 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
                 result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, list_temperaturevalues[j-1], list_valuesexponent[i-1])
                 current_traject = result[0]
                 score = result[1]
-                print(score)
                 area.reset()
                 if score > current_max:
                     current_max = score
@@ -131,11 +132,11 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
                 print(f"train_{count},{a}")
                 count += 1
             print(f"score,{max(results)}")
-            print(results)
 
             file_name = f'results_{list_temperaturevalues[j-1]}{list_valuesexponent[i-1]}.pickle'
             with open(file_name, 'wb') as f:
                 pickle.dump(results, f)
+
 
 
 def iterate(area, amount_trajects, max_time, amount_stations,
@@ -307,6 +308,9 @@ if __name__ == "__main__":
             elif sys.argv[3] == "timemultiple":
                 if len(sys.argv) > 4:
                     timed_multiple(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
+            elif sys.argv[3] == "timehill_climbing":
+                if len(sys.argv) > 4:
+                    timed_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
             else:
                 if len(sys.argv) > 4:
                     if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
@@ -392,6 +396,7 @@ if __name__ == "__main__":
                 Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
+
             elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
                 Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
                 count = 0
@@ -409,6 +414,7 @@ if __name__ == "__main__":
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
+
             elif sys.argv[2] == "greedy_optim":
                 Min, T, p, tracks = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
                                                             used_for_hill_climbing = False, longer = True)
