@@ -31,7 +31,7 @@ def double_greedy_random(Area: object, amount_trajects: int, max_time: int, amou
 
     return time, len(trajects), fraction_done, trajects
 
-def run_greedy_track(Area, amount_stations, max_time, random_number, printed):
+def run_greedy_track(Area: Rail_NL, amount_stations: int, max_time: int, random_number: int, printed: bool = False):
     list_stations = []
 
     for station_name in Area.stations:

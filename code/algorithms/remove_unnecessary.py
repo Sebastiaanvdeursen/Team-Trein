@@ -23,7 +23,9 @@ def removing_lines(area: Rail_NL, amount_trajects: int, amount_stations: int, ma
     area.reset()
 
     # gets starting score
-    score = run_trajects(area, amount_trajects, amount_stations, max_time, trajects, False)
+    fraction_done, Min = run_trajects(area, amount_trajects, amount_stations, max_time, trajects)
+    score = fraction_done * 10000 - (len(trajects) * 100 + Min)
+
     area.reset()
 
     # loops trough all lines
@@ -42,7 +44,8 @@ def removing_lines(area: Rail_NL, amount_trajects: int, amount_stations: int, ma
             j -= 1
 
         # test the score
-        test = run_trajects(area, len(current), amount_stations, max_time, current, False)
+        test_fraction_done, test_Min = run_trajects(area, len(current), amount_stations, max_time, current)
+        test = test_fraction_done * 10000 - (len(current) * 100 + test_Min)
         area.reset()
 
         # replaces the trajects if the new combination is better
@@ -53,7 +56,7 @@ def removing_lines(area: Rail_NL, amount_trajects: int, amount_stations: int, ma
     return trajects
 
 def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
-                trajects: list[list[str]]) -> list[list[str]]:
+                trajects: list[list[str]]) -> tuple[float,  int,  list[list[str]]]:
     """
     checks if the end station of each traject actually decreases the score, it loops trough
     until it stops finding improvements
@@ -69,7 +72,7 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
         - returns the optimized trajects as a list of list of strings
     """
     area.reset()
-    fraction_done, time= run_trajects(area, len(trajects), amount_stations, max_time, trajects, False, True)
+    fraction_done, time= run_trajects(area, len(trajects), amount_stations, max_time, trajects)
     score = fraction_done * 10000 - time - (len(trajects) * 100)
     while True:
         changes = 0
@@ -82,7 +85,7 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
                     current.append(trajects[j])
             area.reset()
             current_fraction_done, current_time= run_trajects(area, len(current), amount_stations, max_time,
-                                                                current, False, True)
+                                                                current)
             current_score = current_fraction_done * 10000 - current_time - (len(current) * 100)
             if current_score > score:
                 trajects = current

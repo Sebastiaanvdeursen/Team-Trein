@@ -12,9 +12,9 @@ from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.remove_unnecessary import remove_end
 
 
-def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, amount_stations: int,
+def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int,
                             used_for_hill_climbing: bool = False,
-                            longer: bool = False) -> [int,  int, float, list[list[str]]] or list[list[str]]:
+                            longer: bool = False) -> tuple[int,  int, float, list[list[str]]] | list[list[str]]:
     """
     function that tries out all combinations of greedy tracks, the longer version
     will remake all tracks for all possible combinations, while longer == False
@@ -38,13 +38,18 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
         - fraction of connections used as a float
     """
     # pre determines the routes for if longer is false, this is done using the greedy_track function
+    list_stations = []
+
+    for station_name in area.stations:
+        list_stations.append(station_name)
     if longer == False:
         possible = []
         for i in range(0, amount_stations):
-            possible.append(run_greedy_track_comb(area, max_time, i, False)[0])
+            possible.append(run_greedy_track_comb(area, max_time, i, False, list_stations)[0])
             area.reset()
 
     results = []
+
 
     # makes all the combinations/ permutations in to a list, depending on what is needed
     if longer:
@@ -59,7 +64,9 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
             visit = []
             for j in possible_trajects_combs[i]:
                 visit.append(possible[j])
-            results.append(run_trajects(area, amount_trajects, amount_stations, max_time, visit, False))
+            fraction_done, Min = run_trajects(area, amount_trajects, amount_stations, max_time, visit)
+            k = fraction_done * 10000 - (len(visit) * 100 + Min)
+            results.append()
             area.reset()
 
         #find the maximum value of all the combinations that where tried
@@ -68,7 +75,7 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
         time  = 0
         solution = []
         for j in possible_trajects_combs[max_index]:
-            passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
+            passed, time_track, track = run_greedy_track_comb(area, max_time, j, False, list_stations)
             time += time_track
             solution.append(track)
 
@@ -82,7 +89,7 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
             # reset the railNL object for each iteration
             area.reset()
             for j in i:
-                passed, time_track, track = run_greedy_track_comb(area, max_time, j, False)
+                passed, time_track, track = run_greedy_track_comb(area, max_time, j, False, list_stations)
                 current.append(passed)
 
             # optimize the results and calculate the value
@@ -112,12 +119,8 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
         return solution
 
 
-def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool) -> [list[list[str]], int, Traject]:
+def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool, list_stations: list[str]) -> tuple[list[list[str]], int, Traject]:
     passed = []
-    list_stations = []
-
-    for station_name in Area.stations:
-        list_stations.append(station_name)
 
 
     random_traject = Area.create_traject(list_stations[number], Area)
