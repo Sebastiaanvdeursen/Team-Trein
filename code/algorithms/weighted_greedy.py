@@ -5,7 +5,7 @@ from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 
 def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = True, info = False, power = 1.6):
     list_stations = []

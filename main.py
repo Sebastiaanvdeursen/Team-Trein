@@ -482,9 +482,12 @@ if __name__ == "__main__":
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
-            elif sys.argv[2] == "double_greedy":
-                Min, T, p = double_greedy_random(area, amount_trajects, max_time, amount_stations)
+            elif sys.argv[2] == "double_greedy" or "double":
+                Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, False)
                 K = p*10000 - (T*100 + Min)
+                for i in range(len(current)):
+                    stations_str = ', '.join(current[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             else:
                 print("usage python3 main.py size algorithm")

@@ -1,12 +1,16 @@
 import csv
 import random
 import sys
+import itertools as iter
+from math import comb
+
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
+from code.algorithms.run import run_trajects
+from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.remove_unnecessary import remove_end
 
-import itertools as iter
-from math import comb
 
 def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, amount_stations: int,
                             used_for_hill_climbing: bool = False,
@@ -158,78 +162,5 @@ def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool) -> [l
     if printed:
         random_traject.show_current_traject()
     return passed, random_traject.total_time, random_traject
-
-def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
-                  trajects: list[list[str]], printed: bool, final: bool = False) -> [float, int] or float:
-    time = 0
-    solution = []
-    for i in range(amount_trajects):
-        traject = area.create_traject(trajects[i][0], area)
-        solution.append(traject)
-        for j in range(1, len(trajects[i])):
-            traject.move(trajects[i][j])
-        time += traject.total_time
-        if printed:
-            traject.show_current_traject()
-
-
-    n_done = 0
-    for station in area.stations.values():
-            for connection in station.connections.values():
-                if connection.done == True:
-                    n_done += 1
-
-    fraction_done = (n_done / 2) / area.total_connections
-    if final:
-        return fraction_done, time
-    else:
-        return fraction_done * 10000 - time - (len(trajects) * 100)
-
-##dit moet worden opgelost
-def removing_lines(area, amount_trajects, amount_stations, max_time, trajects):
-    area.reset()
-    score = run_trajects(area, amount_trajects, amount_stations, max_time, trajects, False)
-    area.reset()
-    loop_counter = amount_trajects -1
-    i = 0
-    while True:
-        if i == loop_counter or len(trajects) == 1:
-            break
-        current = []
-        j = amount_trajects - 1
-        for a in trajects:
-            if j != i:
-                current.append(a)
-            j -= 1
-        test = run_trajects(area, len(current), amount_stations, max_time, current, False)
-        area.reset()
-        if score < test:
-            trajects = current
-            score = test
-        i += 1
-    return trajects
-
-def remove_end(area, amount_stations, max_time, trajects):
-    area.reset()
-    score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
-    area.reset()
-    while True:
-        changes = 0
-        for i in range(len(trajects)):
-            current = []
-            for j in range(len(trajects)):
-                if j == i:
-                    current.append(trajects[j][:-1])
-                else:
-                    current.append(trajects[j])
-                current_score = run_trajects(area, len(current), amount_stations, max_time, current, False)
-                area.reset()
-                if current_score > score:
-                    trajects = current
-                    score = current_score
-                    changes += 1
-        if changes == 0:
-            break
-    return trajects
 
 

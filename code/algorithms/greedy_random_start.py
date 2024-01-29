@@ -6,12 +6,33 @@ from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.remove_unnecessary import remove_end
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 
 
 
-def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False,
-                       printed = True, info = False):
+def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
+                       amount_stations: int, used_for_hill_climbing: bool = False,
+                       printed: bool = True, info: bool = False
+                       ) -> [int, int, float] or [int, int, float, list[list[str]]]:
+    """
+    runs the greedy algorithm with random starting stations, runs removing_lines and remove_end to
+    improve the trajects
+
+    pre:
+        - area object of type Rail_NL both small or large
+        - amount_trajects is an int corresponding to the amount of trajects allowed
+        - max_time is an int corresponding to the amount of time allowed per traject
+        - used_for_hill_climbing is a bool
+        - printed is a bool, if positive the trajects are printed out instead of returned
+        - info is a bool that returns that makes the function return the trajects too
+
+    post:
+        - amount of time spent by trajects as int
+        - amount of trajects used as int
+        - the fraction of connections used as a float
+        - if info == True:
+            - the trajects as list[list[str]]
+    """
     list_stations = []
 
     for station_name in Area.stations:
@@ -44,6 +65,15 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
 
 def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing,
                              printed = True):
+    """
+    runs a greedy track, always chooses the shortest connection that has not been used
+    if no unused track is available it uses the shortest done connection.
+
+    pre:
+
+    post:
+
+    """
     list_stations = []
 
     for station_name in Area.stations:
