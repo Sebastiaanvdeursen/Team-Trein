@@ -19,22 +19,33 @@ def removing_lines(area: Rail_NL, amount_trajects: int, amount_stations: int, ma
     post:
         - returns the optimized trajects as a list of list of strings
     """
+    # makes sure area is empty
     area.reset()
+
+    # gets starting score
     score = run_trajects(area, amount_trajects, amount_stations, max_time, trajects, False)
     area.reset()
+
+    # loops trough all lines
     loop_counter = amount_trajects -1
     i = 0
     while True:
         if i == loop_counter or len(trajects) == 1:
             break
         current = []
+
+        # makes a list of all trajects except the one
         j = amount_trajects - 1
         for a in trajects:
             if j != i:
                 current.append(a)
             j -= 1
+
+        # test the score
         test = run_trajects(area, len(current), amount_stations, max_time, current, False)
         area.reset()
+
+        # replaces the trajects if the new combination is better
         if score < test:
             trajects = current
             score = test
@@ -60,7 +71,6 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
     area.reset()
     fraction_done, time= run_trajects(area, len(trajects), amount_stations, max_time, trajects, False, True)
     score = fraction_done * 10000 - time - (len(trajects) * 100)
-    area.reset()
     while True:
         changes = 0
         for i in range(len(trajects)):
@@ -73,8 +83,7 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
             area.reset()
             current_fraction_done, current_time= run_trajects(area, len(current), amount_stations, max_time,
                                                                 current, False, True)
-            current_score = fraction_done * 10000 - time - (len(trajects) * 100)
-            area.reset()
+            current_score = current_fraction_done * 10000 - current_time - (len(current) * 100)
             if current_score > score:
                 trajects = current
                 score = current_score
