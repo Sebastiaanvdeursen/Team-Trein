@@ -30,6 +30,7 @@ def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for
     if used_for_hill_climbing == False:
         trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
         fraction_done, time, trajects = remove_end(Area, amount_stations, max_time, trajects)
+
     else:
         n_done = 0
         for station in Area.stations.values():

@@ -16,14 +16,19 @@ class plant:
         plant propagation is simplified to fit this specific problem
         all necessary variables are created here.
 
-        pre: uses a area object (can be large or small map), the amount of trajects allowed
-        as an int, the maximum amount of time per traject as an int, the amount of stations in the area
-        object and the amount of iterations as an int.
+        pre:
+        - area is a railNL object (can be large or small map)
+        - the amount of trajects allowed as an int
+        - the maximum amount of time per traject as an int
+        - the amount of stations in the area object
+        - the amount of iterations as an int.
 
-        post: saves all input in self. format for use in other functions, initializes empty list that saves
-        the highest score of each iteration, sets the starting power for weighted greedy, creates a list of
-        the names of all the stations as strings. Creates the first trajects and runs select_children
-        to select the best 5 of them.
+        post:
+        - saves all input in self. format for use in other functions
+        - initializes empty list that saves the highest score of each iteration
+        - sets the starting power for weighted greedy
+        - creates a list of the names of all the stations as strings.
+        - Creates the first trajects and runs select_children to select the best 5 of them.
         """
         #the list with all the best results of each iteration
         self.data: list[float] = []
@@ -200,7 +205,7 @@ class plant:
         for track in self.selected:
             self.tracks.append(track[0])
 
-    def get_data(self):
+    def get_data(self) -> list[float]:
         return self.data
 
 

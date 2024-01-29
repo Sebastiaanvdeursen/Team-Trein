@@ -17,14 +17,21 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
     will use precalculated tracks, Longer == True creates new tracks for each permutation.
     It returns the best combination it finds
 
-    pre: takes an area object of type railNL, it has to be based upon the small map
-    or it will crash, the amount of trajects allowed
-    as an int, the maximum amount of time per traject as an int, the amount of stations in the area
-    object and the amount of iterations as an int. The used for hill climbing bool has to be negative unless
+    pre:
+    - takes an area object of type railNL, it has to be based upon the small map
+    or it will crash,
+    - the amount of trajects allowed as an int
+    - the maximum amount of time per traject as an int
+    - the amount of stations in the area object
+    - The used for hill climbing bool has to be False unless
     for that specific use. Longer is a bool.
 
-    post: returns the best combination/ permutation it can find as list of list, if not used for hill climbing
-    ít also returns a time integer, the len(list) as an int, and the fraction of connections used as a float
+    post:
+    - returns the best combination/ permutation it can find as list of list
+    - if not used for hill climbing:
+        - returns a time integer
+        - the len(list) as an int
+        - fraction of connections used as a float
     """
     #pre determines the routes for if longer is false, this is done using the greedy_track function
     if longer == False:
@@ -102,7 +109,7 @@ def run_greedy_combinations(area: object, amount_trajects: int, max_time: int, a
         return solution
 
 
-def run_greedy_track_comb(Area, max_time, number, printed: bool):
+def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool) -> [list[list[str]], int, Traject]:
     passed = []
     list_stations = []
 
@@ -152,8 +159,8 @@ def run_greedy_track_comb(Area, max_time, number, printed: bool):
         random_traject.show_current_traject()
     return passed, random_traject.total_time, random_traject
 
-def run_trajects(area, amount_trajects, amount_stations, max_time,
-                  trajects, printed: bool, final = False):
+def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
+                  trajects: list[list[str]], printed: bool, final: bool = False) -> [float, int] or float:
     time = 0
     solution = []
     for i in range(amount_trajects):
