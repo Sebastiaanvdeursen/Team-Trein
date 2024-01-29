@@ -119,7 +119,6 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
                 result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, list_temperaturevalues[j-1], list_valuesexponent[i-1])
                 current_traject = result[0]
                 score = result[1]
-                print(score)
                 area.reset()
                 if score > current_max:
                     current_max = score
@@ -130,7 +129,6 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
                 print(f"train_{count},{a}")
                 count += 1
             print(f"score,{max(results)}")
-            print(results)
 
             file_name = f'results_{list_temperaturevalues[j-1]}{list_valuesexponent[i-1]}.pickle'
             with open(file_name, 'wb') as f:

@@ -1,0 +1,71 @@
+Simulated Annealing experimentatie voor large
+
+Er wordt geëxperimenteerd voor de parameterwaardes van de begin temperatuur en r bij de formule:
+temperature = initial_temperature / ((iteraties + 1) ** r)
+Voor de eerste testen kijken we voor waardes van initiële temperaturen naar [500, 1000, 1500, 2000]
+en voor potentiële waardes van r naar [0.4, 0.45, 0.5, 0.55].
+In totaal hebben we dan 16 combinaties om te testen.
+Alle combinaties zijn met 10000 iteraties getest in 30 minuten per keer.
+
+(500, 0.4):
+amount of results, 508
+max, 6858.2808988764045
+average, 6438.575400336229
+std, 123.74441132041247
+
+(500, 0.45):
+
+
+(500, 0.5):
+amount of results, 495
+max, 6648.921348314607
+average, 6330.166609919442
+std, 117.04223558100047
+
+(500, 0.55):
+amount of results, 507
+max, 6650.561797752809
+average, 6294.719743811372
+std, 121.38856508168058
+
+(1000, 0.4):
+amount of results, 482
+max, 6815.561797752809
+average, 6432.976106112177
+std, 147.66440750771952
+
+(1000, 0.45):
+amount of results, 480
+max, 6833.921348314607
+average, 6466.015566479423
+std, 127.16914938192454
+
+(1000, 0.5):
+amount of results, 464
+max, 6821.202247191011
+average, 6439.678661371581
+std, 117.36285381098125
+
+(1000, 0.55):
+amount of results, 507
+max, 6713.921348314607
+average, 6375.865633933937
+std, 116.7524184614681
+
+(1500, 0.4):
+amount of results, 495
+max, 6809.561797752809
+average, 6271.438429236165
+std, 196.5245396008463
+
+(1500, 0.45):
+amount of results, 507
+max, 6814.561797752809
+average, 6435.690756377024
+std, 140.68124706440372
+
+(1500, 0.5):
+amount of results, 514
+max, 6784.2808988764045
+average, 6456.924364971824
+std, 120.28942004349823

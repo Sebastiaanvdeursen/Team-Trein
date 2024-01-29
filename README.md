@@ -37,6 +37,12 @@ Adding hist to the command creates a histogram using the result, adding all also
 
 You can also use main.py large/small algorithm time minutes, to make the algorithm run for a certain amount of time, it saves all the results in a pickle file and displays the top result.
 
+To reproduce the experiment values of simulated annealing, run the following line:
+```
+python main.py large simulated timemultiple 30
+```
+This will give 16 pickle files, run use_pickle to obtain the results like written in the file simulated_annealing_experimentatie.
+
 ### Structure
 The following list shows where you can find the most important files and folders of this project:
 - **/code:** holds all the code of our project
