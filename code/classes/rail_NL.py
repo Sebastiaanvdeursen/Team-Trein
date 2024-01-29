@@ -31,19 +31,15 @@ class Rail_NL:
                 else:
                     amount_connections = 89
                 for _ in range(3):
-                    self.numbers.append(random.randint(2, amount_connections))
+                    self.numbers.append(random.randint(1, amount_connections))
             for row in csv_read:
                 if line_count != 0:
                     if self.randomizer:
+                        change = []
                         station_names.append(row[0])
                         self.add_station(row[0])
                         if line_count in self.numbers:
-                            destination = random.choice(station_names)
-                            time = random.randint(5, 70)
-                            print(f"removed[{row[0]}, {row[1]}], {int(float(row[2]))}")
-                            print(f"added: [{row[0]}, {destination}], {time}")
-                            self.add_connection_stations(row[0], destination, time)
-                            self.add_connection_stations(destination, row[0], time)
+                            change.append(row[0])
                         else:
                             self.add_station(row[1])
                             self.add_connection_stations(row[0], row[1], int(float(row[2])))
@@ -60,6 +56,12 @@ class Rail_NL:
                         self.add_connection_stations(row[0], row[1], int(float(row[2])))
                         self.add_connection_stations(row[1], row[0], int(float(row[2])))
                 line_count += 1
+            if self.randomizer:
+                 for start_station in change:
+                    time = random.randint(5, 70)
+                    destination = random.choice(station_names)
+                    self.add_connection_stations(start_station, destination, time)
+                    self.add_connection_stations(destination, start_station, time)
         self.total_connections = line_count - 1
 
     def add_station(self, station_name):

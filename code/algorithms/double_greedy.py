@@ -5,9 +5,11 @@ from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.remove_unnecessary import remove_end
+from code.algorithms.run import run_trajects
 
-def double_greedy_random(Area, amount_trajects, max_time, amount_stations, printed = True):
+def double_greedy_random(Area: object, amount_trajects: int, max_time: int, amount_stations: int,
+                            printed: bool = True) -> [int,  int, float, list[list[str]]]:
     list_stations = []
     trajects = []
     for station_name in Area.stations:
@@ -24,14 +26,10 @@ def double_greedy_random(Area, amount_trajects, max_time, amount_stations, print
         info = run_greedy_track(Area, amount_stations, max_time, random_number, printed)
         trajects.append(info[2])
 
-    Area.reset()
     trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
-    Area.reset()
-    fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects, False, True)
+    fraction_done, time, trajects= remove_end(Area, amount_stations, max_time, trajects)
 
-
-
-    return time, amount_trajects, fraction_done, trajects
+    return time, len(trajects), fraction_done, trajects
 
 def run_greedy_track(Area, amount_stations, max_time, random_number, printed):
     list_stations = []

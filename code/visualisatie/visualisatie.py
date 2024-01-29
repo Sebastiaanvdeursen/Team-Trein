@@ -1,5 +1,6 @@
 import sys
 import csv
+from typing import List, Dict, Union, Tuple
 import numpy as np
 import json
 from PIL import Image
@@ -7,8 +8,7 @@ from random import randint
 from bokeh.plotting import figure, show, output_file
 from bokeh.models import Range1d, Arrow, VeeHead
 
-
-def convert_list_to_string(string_list):
+def convert_list_to_string(string_list: str) -> List[str]:
     """
     Convert a string representation of a list to a Python list.
 
@@ -39,8 +39,7 @@ def convert_list_to_string(string_list):
                     break
     return list
 
-
-def read_train_data(filename):
+def read_train_data(filename: str) -> Dict[str, List[str]]:
     """
     Read train data from a CSV file.
 
@@ -60,8 +59,7 @@ def read_train_data(filename):
             train_data[train_name] = stations
     return train_data
 
-
-def assign_colors(train_data):
+def assign_colors(train_data: Dict[str, List[str]]) -> Dict[str, str]:
     """
     Assign random colors to each train in the given train data.
 
@@ -69,18 +67,19 @@ def assign_colors(train_data):
     post: Returns a dictionary mapping each train name to a randomly generated color.
     """
     train_colors = {}
+    colors = ["red", "green", "turqoise", "blue", "pink", "darkgreen", "orange", "yellow", "magenta", "saddlebrown", "lightcoral",
+    "mediumslateblue", "forestgreen", "gold", "firebrick", "navy", "darkorange", "olive", "cyan", "purple"]
     # make a list palette, to store all the colors
     palette = []
     for i in range(len(train_data)):
         # add a random color to the palette
-        palette.append('#%06X' % randint(0, 0xFFFFFF))
+        palette.append(colors[i])
     for i, train_name in enumerate(train_data):
         # now link every traject to a color
         train_colors[train_name] = palette[i]
     return train_colors
 
-
-def scatterplot(coords):
+def scatterplot(coords: str) -> Tuple[figure, Dict[str, List[float]]]:
     """
     Create a scatter plot of coordinates with a map background.
 
@@ -91,7 +90,7 @@ def scatterplot(coords):
     p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
     places = {}
     # read the coördinates data
-    with open(f"../../data/coordinates{coords}.csv") as data:
+    with open(f"../../data/Coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         line_count = 0
         for row in csv_read:
@@ -112,11 +111,10 @@ def scatterplot(coords):
     p.image_url(url=['map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
 
     # add the coördinates as black circles to the figure
-    p.circle(l_x, l_y, color = "black")
+    p.circle(l_x, l_y, color = "red", size = 4.5)
     return p, places
 
-
-def draw_lines_connections(lines, places, p):
+def draw_lines_connections(lines: str, places: Dict[str, List[float]], p: figure) -> figure:
     """
     Draw connections between places on the given Bokeh plot.
 
@@ -136,8 +134,7 @@ def draw_lines_connections(lines, places, p):
             line_count += 1
     return p
 
-
-def draw_lines_trajects(train_data, train_colors, places, p):
+def draw_lines_trajects(train_data: Dict[str, List[str]], train_colors: Dict[str, str], places: Dict[str, List[float]], p: figure) -> None:
     """
     Draw trajectories of trains on the given Bokeh plot.
 
@@ -194,7 +191,6 @@ def draw_lines_trajects(train_data, train_colors, places, p):
                    x_start=start_x, y_start=start_y, x_end=end_x, y_end=end_y))
 
     show(p)
-
 
 if __name__ == "__main__":
     # use command line arguments to choose between

@@ -1,9 +1,10 @@
-from code.classes.rail_NL import Rail_NL
-from code.classes.traject import Traject
-from typing import Union, List, Tuple
+import csv
 import random
+import sys
+from code.classes.station import Station
+from code.classes.traject import Traject
 
-def run_random_traject_opt(Area: Rail_NL, amount_stations: int, max_time: int, used_for_hill_climbing: bool = False, printed: bool = True) -> List[Union[int, Rail_NL, Traject]]:
+def run_greedy_traject_opt(Area, amount_stations, max_time, used_for_hill_climbing=False, printed=True):
     """
     Generate a random train trajectory using some heuristics.
 
@@ -18,7 +19,9 @@ def run_random_traject_opt(Area: Rail_NL, amount_stations: int, max_time: int, u
     - Returns a list containing total time, Area, and the generated Traject object.
     """
     # make a list containing all the stations
-    list_stations = list(Area.stations.keys())
+    list_stations = []
+    for station_name in Area.stations:
+        list_stations.append(station_name)
 
     # draw a random number
     random_number = random.randint(0, amount_stations - 1)
@@ -28,38 +31,37 @@ def run_random_traject_opt(Area: Rail_NL, amount_stations: int, max_time: int, u
 
     while True:
         list_stations_current = []
-        list_stations_current_not_done = []
 
         # collect stations, for which the connections from the current station
         # have not been done yet
+        lowest_min = 50
         for station_name in random_traject.current_station.connections:
             if random_traject.current_station.connections[station_name].done == False:
-                list_stations_current_not_done.append(station_name)
+                if random_traject.current_station.connections[station_name].time < lowest_min:
+                    lowest_min = random_traject.current_station.connections[station_name].time
+                    min_station_name = station_name
             list_stations_current.append(station_name)
 
         # if all connections are done, break the loop
-        if len(list_stations_current_not_done) == 0:
+        if lowest_min == 50:
             break
 
-        # randomly select a station to move to from the connections that are not done yet
-        random_number = random.randint(0, len(list_stations_current_not_done) - 1)
-
         # check if adding the selected connection exceeds the maximum allowed time
-        if random_traject.total_time + random_traject.current_station.connections[list_stations_current_not_done[random_number]].time > max_time:
+        if random_traject.total_time + random_traject.current_station.connections[min_station_name].time > max_time:
             break
 
         # move to the selected station
-        random_traject.move(list_stations_current_not_done[random_number])
+        random_traject.move(min_station_name)
 
     # print the generated trajectory if not used for hill climbing and printed is True
-    if not used_for_hill_climbing and printed:
+    if used_for_hill_climbing == False and printed:
         random_traject.show_current_traject()
 
     time = random_traject.total_time
     return [time, Area, random_traject]
 
 
-def run_random_amount_of_trajects_opt(Area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True, info: bool = False) -> Union[List[Union[int, int, float, List[List[str]]]], List[Union[int, int, float]]]:
+def run_greedy_amount_of_trajects_opt(Area, amount_trajects, max_time, amount_stations, printed=True, info=False):
     """
     Generate a random amount of train trajectories for a given railway network with optimized conditions.
 
@@ -83,7 +85,7 @@ def run_random_amount_of_trajects_opt(Area: Rail_NL, amount_trajects: int, max_t
     track_info = []
     trajects = []
     for i in range(0, random_number):
-        track_info = run_random_traject_opt(Area, amount_stations, max_time, printed=printed)
+        track_info = run_greedy_traject_opt(Area, amount_stations, max_time, printed=printed)
         time.append(track_info[0])
         if info:
             trajects.append(track_info[2].traject_connections)
@@ -100,4 +102,3 @@ def run_random_amount_of_trajects_opt(Area: Rail_NL, amount_trajects: int, max_t
         return sum(time), random_number, fraction_done, trajects
     else:
         return sum(time), random_number, fraction_done
-

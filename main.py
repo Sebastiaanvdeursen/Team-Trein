@@ -3,7 +3,7 @@ from code.algorithms.random_alg_opt import run_random_amount_of_trajects_opt
 from code.algorithms.greedy_random_start import run_greedy_random
 from code.algorithms.greedy_best_comb import run_greedy_combinations
 from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
-from code.algorithms.hill_climbing_greedy_optim_alg import hill_climbing_greedy_optim
+from code.algorithms.hill_climbing_greedy_comb_alg import hill_climbing_greedy_comb
 from code.algorithms.hill_climbing_alg import hill_climbing
 from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.double_greedy import double_greedy_random
@@ -11,6 +11,7 @@ from code.algorithms.sim_annealing_alg import simulated_annealing
 from code.algorithms.PlantPropagation import plant
 from code.algorithms.weighted_greedy import run_weighted
 from code.algorithms.remove_unnecessary import remove_end
+import numpy as np
 
 from code.classes.rail_NL import Rail_NL
 
@@ -82,6 +83,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
                 current_max = score
                 best = current_traject
             results.append(score)
+        
     else:
         while True:
             if (time.time() - start) / 60 > time_to_run:
@@ -133,6 +135,7 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
             file_name = f'results_{list_temperaturevalues[j-1]}{list_valuesexponent[i-1]}.pickle'
             with open(file_name, 'wb') as f:
                 pickle.dump(results, f)
+
 
 def iterate(area, amount_trajects, max_time, amount_stations,
              fitter: bool = False, histogram: bool = False, group_info: bool = False ):
@@ -231,6 +234,9 @@ def iterate(area, amount_trajects, max_time, amount_stations,
     if group_info:
         print(f"average = {sum(results) / int(sys.argv[3])}")
 
+    with open('results.pickle', 'wb') as f:
+        pickle.dump(results, f)
+
 def find_p(area, amount_trajects, max_time, amount_stations):
     while True:
         Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
@@ -298,6 +304,9 @@ if __name__ == "__main__":
             elif sys.argv[3] == "timemultiple":
                 if len(sys.argv) > 4:
                     timed_multiple(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
+            elif sys.argv[3] == "timehill_climbing":
+                if len(sys.argv) > 4:
+                    timed_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
             else:
                 if len(sys.argv) > 4:
                     if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
@@ -383,6 +392,7 @@ if __name__ == "__main__":
                 Min, T, p = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations)
                 K = p*10000 - (T*100 + Min)
                 print(f"score,{K}")
+
             elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
                 Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
                 count = 0
@@ -400,10 +410,12 @@ if __name__ == "__main__":
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
+
             elif sys.argv[2] == "greedy_optim":
                 Min, T, p, tracks = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
-                                                            used_for_hill_climbing = False, longer= True)
-                K = p*10000 - (T*100 + Min)
+                                                            used_for_hill_climbing = False, longer = True)
+                K = p * 10000 - (T * 100 + Min)
+                print(p)
                 for i in range(len(tracks)):
                     stations_str = ', '.join(tracks[i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
@@ -467,18 +479,21 @@ if __name__ == "__main__":
                     print(f"train_{i + 1},\"[{stations_str}]\"")
 
             elif sys.argv[2] == "hill_climbing/greedy_optim":
-                K = hill_climbing_greedy_optim(area, amount_trajects, amount_stations, max_time)[1]
+                K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_optim_max":
                 K_list = []
                 for i in range(10):
-                    K = hill_climbing_greedy_optim(area, amount_trajects, amount_stations, max_time)[1]
+                    K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
                     K_list.append(K)
                     area.reset()
                 print(max(K_list))
-            elif sys.argv[2] == "double_greedy":
-                Min, T, p = double_greedy_random(area, amount_trajects, max_time, amount_stations)
+            elif sys.argv[2] == "double_greedy" or "double":
+                Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, False)
                 K = p*10000 - (T*100 + Min)
+                for i in range(len(current)):
+                    stations_str = ', '.join(current[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             else:
                 print("usage python3 main.py size algorithm")

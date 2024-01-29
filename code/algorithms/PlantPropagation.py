@@ -1,6 +1,6 @@
 from code.algorithms.greedy_random_start import run_greedy_random
 from code.algorithms.greedy_random_start import run_greedy_track_random
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 from code.algorithms.random_alg import run_random_traject
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.weighted_greedy import run_weighted
@@ -10,41 +10,90 @@ from code.algorithms.weighted_greedy import weighted_track
 import random
 
 class plant:
-    def __init__(self, area, amount_trajects, max_time, amount_stations, iterations):
-        self.data = []
+    def __init__(self, area: object, amount_trajects: int, max_time: int, amount_stations: int, iterations: int):
+        """
+        plant class is used to perform the plant propagation algorithm on the RailNL problem
+        plant propagation is simplified to fit this specific problem
+        all necessary variables are created here.
+
+        pre:
+        - area is a railNL object (can be large or small map)
+        - the amount of trajects allowed as an int
+        - the maximum amount of time per traject as an int
+        - the amount of stations in the area object
+        - the amount of iterations as an int.
+
+        post:
+        - saves all input in self. format for use in other functions
+        - initializes empty list that saves the highest score of each iteration
+        - sets the starting power for weighted greedy
+        - creates a list of the names of all the stations as strings.
+        - Creates the first trajects and runs select_children to select the best 5 of them.
+        """
+        #the list with all the best results of each iteration
+        self.data: list[float] = []
         self.power = 0.25
+
+        ## 15 is an arbritrary amount that can be changed hower, if it isnt divided by iterations
+        ## it will moest likely cause an integer overflow (values over 30 cause error)
         self.power_increase = 15 / (iterations)
+
+        #saving the input variables
         self.amount_stations = amount_stations
         self.amount_trajects = amount_trajects
         self.max_time = max_time
         self.area = area
+
+        #making sure that the area object is clean
         self.area.reset()
         self.succes = 0
         self.list_stations = []
         self.iterations = iterations
+
+        #creating a list of all stations
         for station_name in area.stations:
             self.list_stations.append(station_name)
-        self.children = []
-        self.tracks = []
+        self.children: list[list[list[str]]]= []
+        self.tracks: list[list[list[str]]]= []
         self.highest_score = 0
-        self.best = []
+        self.best: list[list[str]] = []
+
+        #creating the starting trajects, we start with 25 and select 5 as opposed to the regular formula
+        # of just starting with 5
         start_power = 0.25
         for _ in range(25):
             self.children.append(run_weighted(self.area, amount_trajects,
                                                   max_time, amount_stations, printed = False, info = True,
                                                     power = start_power)[3])
             start_power += 0.1
+
+        #selecting the 5 best of the starting trajects
         self.select_children(True)
 
 
     def run_program(self):
+        """
+        runs the plant propagation algorithm the amount of times that was put in, in init.
+
+        pre: uses the variables that where created in init
+
+        post: runs the print function which prints the best score and best traject, the area object
+        will be modified based upon the last iteration ran
+        """
         for _ in range(self.iterations):
             self.create_children()
 
         self.print(self.best, self.highest_score)
 
-    def print(self, traject, score):
-        i = 0
+    def print(self, traject: list[list[str]], score: float):
+        """
+        prints the inputed trajects and score in the correct manner so that it can be used for check50
+
+        pre: takes the score as a float or integer, takes traject as a list of list of strings
+
+        post: print function which prints the best score and best traject
+        """
+        i = 1
         for a in traject:
             print(f"train_{i}:{a}")
             i += 1
@@ -156,7 +205,7 @@ class plant:
         for track in self.selected:
             self.tracks.append(track[0])
 
-    def get_data(self):
+    def get_data(self) -> list[float]:
         return self.data
 
 
