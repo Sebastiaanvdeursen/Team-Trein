@@ -8,12 +8,6 @@ from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.remove_unnecessary import remove_end
 from code.algorithms.run import run_trajects
 
-
-<<<<<<< HEAD
-def run_greedy_random(Area, amount_trajects, max_time, amount_stations, used_for_hill_climbing = False,
-                       printed = True, info = False):
-=======
-
 def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                        amount_stations: int, used_for_hill_climbing: bool = False,
                        printed: bool = True, info: bool = False
@@ -37,7 +31,6 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
         - if info == True:
             - the trajects as list[list[str]]
     """
->>>>>>> bc6137a8b34626ad660731374e55855907f04205
     list_stations = []
 
     for station_name in Area.stations:
