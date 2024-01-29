@@ -203,6 +203,9 @@ def iterate(area, amount_trajects, max_time, amount_stations,
     if group_info:
         print(f"average = {sum(results) / int(sys.argv[3])}")
 
+    with open('results.pickle', 'wb') as f:
+        pickle.dump(results, f)
+
 def find_p(area, amount_trajects, max_time, amount_stations):
     while True:
         Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
@@ -373,6 +376,7 @@ if __name__ == "__main__":
                 Min, T, p, tracks = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
                                                             used_for_hill_climbing = False, longer= True)
                 K = p*10000 - (T*100 + Min)
+                print(p)
                 for i in range(len(tracks)):
                     stations_str = ', '.join(tracks[i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
