@@ -24,6 +24,30 @@ if __name__ == "__main__":
 
     # plt.plot(range(len(results)), results)
     # plt.show()
+    if sys.argv[3] == "weighted":
+        list_powers = [1, 1.25, 1.5, 2, 3, 4, 5, 6, 7]
+        max_values = []
+        for i in list_powers:
+            file = open(f'results_weighted{i}.pickle', 'rb')
+            results = pickle.load(file)
+            max_values.append(max(results))
+            print(f"power: {i}")
+            print(f"amount of results, {count}")
+            print(f"max, {max(results)}")
+            print(f"average, {sum(results) / len(results)}")
+            print(f"std, {np.std(results)}")
+        plt.plot(max_values, range(len(max_values)))
+        plt.show()
+
+    if sys.argv[3] == "plant":
+        list_power = [0.5, 1, 1.5, 2, 3, 5]
+        for i in list_power:
+            file = open(f'plant_power{i}.pickle', 'rb')
+            results = pickle.load(file)
+            print(max(results))
+            if len(results) > 0:
+                print(f"average, {sum(results) / len(results)}")
+
     if sys.argv[3] == "greedy":
         file = open('experiments.greedy.results.pickle', 'rb')
         results = pickle.load(file)
@@ -63,7 +87,7 @@ if __name__ == "__main__":
         index = 0
 
         list_amount_trajects = [14, 16, 18, 20]
-        list_amount_neighbors = [1, 5, 10] 
+        list_amount_neighbors = [1, 5, 10]
         for q in range(len(list_amount_trajects)):
             list_averages = []
             for r in range(len(list_amount_neighbors)):

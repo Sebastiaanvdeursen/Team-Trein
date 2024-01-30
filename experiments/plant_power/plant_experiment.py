@@ -1,6 +1,7 @@
 from code.algorithms.plant_propagation.plant_propagation import plant
 
 import time
+import pickle
 
 def timed_plant(area, amount_trajects, max_time, amount_stations, time_to_run):
     list_power = [0.5, 1, 1.5]
