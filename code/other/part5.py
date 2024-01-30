@@ -1,5 +1,4 @@
-from code.algorithms.greedy_random_start import run_greedy_random
-
+from code.algorithms.greedy.greedy_random_start import run_greedy_random
 
 from code.classes.rail_NL import Rail_NL
 
