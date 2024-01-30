@@ -7,7 +7,7 @@ from math import comb
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.run import run_trajects
+from code.other.run import run_trajects
 from code.other.remove_unnecessary import removing_lines
 from code.other.remove_unnecessary import remove_end
 
