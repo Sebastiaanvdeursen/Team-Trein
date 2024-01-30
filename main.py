@@ -329,7 +329,7 @@ if __name__ == "__main__":
                 plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 15000)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 100)
                 plantprop.run_program()
                 results = plantprop.get_data()
                 with open('plant.pickle', 'wb') as f:
