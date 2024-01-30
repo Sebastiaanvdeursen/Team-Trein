@@ -4,19 +4,39 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-if __name__ == "__main__":
-    if sys.argv[3] == "annealing":
-        file = open('../../results_900_0.4375.pickle', 'rb')
-        results = pickle.load(file)
-        file.close()
-        count = 0
-        for i in results:
-            count += 1
-        print(f"amount of results, {count}")
-        print(f"max, {max(results)}")
-        print(f"average, {sum(results) / len(results)}")
-        print(f"std, {np.std(results)}")
-        
+def run_pickle():
+    if sys.argv[3] == "annealing" or sys.argv[3] == "simulated":
+        # retrieve all pickle information of round 2 of experimentation
+        list_temperaturevalues = [600, 700, 800, 900]
+        list_valuesexponent = [0.4125, 0.425, 0.4375]
+        for j in range(len(list_temperaturevalues)):
+            for i in range(len(list_valuesexponent)):
+                file = open(f'experiments/simulated_annealing/pickle/results_{list_temperaturevalues[j]}_{list_valuesexponent[i]}.pickle', 'rb')
+                results = pickle.load(file)
+                file.close()
+                count = 0
+                for i in results:
+                    count += 1
+                print(f"amount of results, {count}")
+                print(f"max, {max(results)}")
+                print(f"average, {sum(results) / len(results)}")
+                print(f"std, {np.std(results)}")
+        # do the same for round 1 of experimentation
+        list_temperaturevalues2 = [500, 1000, 1500, 2000]
+        list_valuesexponent2 = [0.4, 0.45, 0.5, 0.55]
+        for j in range(len(list_temperaturevalues2)):
+            for i in range(len(list_valuesexponent2)):
+                file = open(f'experiments/simulated_annealing/pickle/results_{list_temperaturevalues2[j]}_{list_valuesexponent2[i]}.pickle', 'rb')
+                results = pickle.load(file)
+                file.close()
+                count = 0
+                for i in results:
+                    count += 1
+                print(f"amount of results, {count}")
+                print(f"max, {max(results)}")
+                print(f"average, {sum(results) / len(results)}")
+                print(f"std, {np.std(results)}")
+
     if sys.argv[3] == "weighted":
         list_powers = [1, 1.25, 1.5, 2, 3, 4, 5, 6, 7]
         max_values = []

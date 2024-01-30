@@ -11,6 +11,7 @@ from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.other.part1 import find_p
 from code.other.part5 import Part5
+from code.other.use_pickle import run_pickle
 from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
 from experiments.hill_climbing.test_hill_climbing import test_hill_climbing
@@ -280,6 +281,8 @@ if __name__ == "__main__":
             test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy":
             test_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "pickle":
+            run_pickle()
 
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
