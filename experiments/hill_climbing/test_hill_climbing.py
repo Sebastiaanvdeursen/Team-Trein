@@ -59,14 +59,16 @@ def test_hill_climbing(area: Rail_NL, amount_trajects: int, max_time: int, amoun
     colors = ["red", "green", "purple", "blue", "orange"]
     index = 0
 
+    list_amount_trajects = [14, 16, 18, 20]
+    list_amount_neighbors = [1, 5, 10] 
     for q in range(len(list_amount_trajects)):
         list_averages = []
         for r in range(len(list_amount_neighbors)):
             # open the file, corresponding to this loops amount of trajects and neighbors
             file = open(f'experiments/hill_climbing/pickle/results_{list_amount_trajects[q]}_{list_amount_neighbors[r]}.pickle', 'rb')
-
             # extract the results from this file
             results = pickle.load(file)
+            print(results)
             file.close()
             count = 0
             for i in results:
