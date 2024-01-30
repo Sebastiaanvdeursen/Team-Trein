@@ -1,7 +1,7 @@
-from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject
 
+from code.algorithms.random.random_alg import run_random_amount_of_trajects
 from code.algorithms.random.random_alg_opt import run_random_traject_opt
 from code.algorithms.hill_climbing.hill_climbing_opt_alg import get_neighbors_random_opt
 from code.algorithms.greedy.greedy_best_comb import run_greedy_combinations
