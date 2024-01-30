@@ -13,6 +13,8 @@ from code.algorithms.weighted_greedy import run_weighted
 from code.algorithms.remove_unnecessary import remove_end
 import numpy as np
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
+from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neighbors
+from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 
 from code.classes.rail_NL import Rail_NL
 
@@ -301,6 +303,10 @@ if __name__ == "__main__":
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "test_weighted":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "test_hill_climbing_neighbors":
+            timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
+            timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -425,7 +431,11 @@ if __name__ == "__main__":
                     print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing":
-                K = hill_climbing(area, amount_trajects, amount_stations, max_time)[1]
+                p, Min, solution_list = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 200)
+                K = p * 10000 - (len(solution_list) * 100 + Min)
+                for i in range(len(solution_list)):
+                    stations_str = ', '.join(solution_list[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing_max":
                 K_list = []
@@ -462,7 +472,11 @@ if __name__ == "__main__":
                 K_max = 0
 
             elif sys.argv[2] == "hill_climbing/greedy":
-                K = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)[1]
+                p, Min, solution_list = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, amount_neighbors = 200)
+                K = p * 10000 - (len(solution_list) * 100 + Min)
+                for i in range(len(solution_list)):
+                    stations_str = ', '.join(solution_list[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_max":
                 K_list = []
