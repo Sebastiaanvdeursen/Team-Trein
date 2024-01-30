@@ -1,23 +1,23 @@
-from code.algorithms.random_alg import run_random_amount_of_trajects
-from code.algorithms.random_alg_opt import run_random_amount_of_trajects_opt
-from code.algorithms.greedy_random_start import run_greedy_random
-from code.algorithms.greedy_best_comb import run_greedy_combinations
-from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
-from code.algorithms.hill_climbing_greedy_comb_alg import hill_climbing_greedy_comb
-from code.algorithms.hill_climbing_alg import hill_climbing
-from code.algorithms.hill_climbing_opt_alg import hill_climbing_opt
-from code.algorithms.double_greedy import double_greedy_random
-from code.algorithms.sim_annealing_alg import simulated_annealing
-from code.algorithms.PlantPropagation import plant
-from code.algorithms.weighted_greedy import run_weighted
-from code.algorithms.remove_unnecessary import remove_end
-import numpy as np
+from code.algorithms.random.random_alg import run_random_amount_of_trajects
+from code.algorithms.random.random_alg_opt import run_random_amount_of_trajects_opt
+from code.algorithms.greedy.greedy_random_start import run_greedy_random
+from code.algorithms.greedy.greedy_best_comb import run_greedy_combinations
+from code.algorithms.hill_climbing.hill_climbing_greedy_alg import hill_climbing_greedy
+from code.algorithms.hill_climbing.hill_climbing_greedy_comb_alg import hill_climbing_greedy_comb
+from code.algorithms.hill_climbing.hill_climbing_alg import hill_climbing
+from code.algorithms.hill_climbing.hill_climbing_opt_alg import hill_climbing_opt
+from code.algorithms.greedy.double_greedy import double_greedy_random
+from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_annealing
+from code.algorithms.plant_propagation.plant_propagation import plant
+from code.algorithms.greedy.weighted_greedy import run_weighted
+from code.other.remove_unnecessary import remove_end
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
 from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neighbors
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 
 from code.classes.rail_NL import Rail_NL
 
+import numpy as np
 import random
 import matplotlib.pyplot as plt
 import sys
