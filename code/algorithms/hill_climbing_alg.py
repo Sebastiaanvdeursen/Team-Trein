@@ -23,7 +23,7 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
 
     # calculate the score of this solution
-    current_score = evaluate_solution(current_solution, area)
+    current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
 
     # set all the connections to "not done"
     area.reset()
@@ -34,9 +34,9 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
         neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time, amount_neighbors)
         
         # select the best neighbor (highest K)
-        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
+        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area, amount_stations, max_time))
 
-        eval_sol = evaluate_solution(best_neighbor, area)
+        eval_sol = evaluate_solution(best_neighbor, area, amount_stations, max_time)
 
         # if best neighbor is better than current solution, replace current_solution
         # by best neighbor and start again
@@ -57,18 +57,13 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
     
     # remove the trajects that make K lower
     current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
-
-    # print the solution
-    for i in range(len(current_solution_list)):
-        stations_str = ', '.join(current_solution_list[i])
-        print(f"train_{i + 1},\"[{stations_str}]\"")
     
     area.reset()
 
-    # find K for the solution
-    K = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
+    # find p, Min  for the solution
+    p, Min = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
 
-    return current_solution, K, current_solution_list
+    return p, Min, current_solution_list
 
 def generate_random_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int) -> List[Traject]:
     """
@@ -90,7 +85,7 @@ def generate_random_solution(area: Rail_NL, amount_trajects: int, amount_station
 
     return solution
 
-def evaluate_solution(solution: List[Traject], area: Rail_NL) -> float:
+def evaluate_solution(solution: List[Traject], area: Rail_NL, amount_stations, max_time) -> float:
     """
     Evaluate the solution for the hill climbing optimization.
 
@@ -101,21 +96,14 @@ def evaluate_solution(solution: List[Traject], area: Rail_NL) -> float:
     post:
     - Returns a tuple with the objective function value (K), fraction_done, number of trajectories, and total time.
     """
-    # calculate the total time of the solution
-    total_time = 0
-    for i in range(0, len(solution)):
-        total_time += solution[i].total_time
-
-    # calculate the fraction of done trajects
-    n_done = 0
-    for station in area.stations.values():
-        for connection in station.connections.values():
-            if connection.done:
-                n_done += 1
-    fraction_done = (n_done / 2) / area.total_connections
+    area.reset()
+    solution_list = []
+    for i in range(len(solution)):
+        solution_list.append(solution[i].traject_connections)
+    p, Min = run_trajects(area, len(solution), amount_stations, max_time, solution_list, False)
 
     # calculate the score function
-    K = fraction_done * 10000 - (len(solution) * 100 + total_time)
+    K = p * 10000 - (len(solution) * 100 + Min)
     return K
 
 def get_neighbors(solution: List[Traject], area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int) -> List[List[Traject]]:

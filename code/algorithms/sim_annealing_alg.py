@@ -2,8 +2,9 @@ from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.algorithms.hill_climbing_alg import evaluate_solution
 from code.algorithms.hill_climbing_alg import generate_random_solution
 from code.algorithms.random_alg_opt import run_random_traject_opt
-from code.algorithms.greedy_best_comb import run_trajects
+from code.algorithms.run import run_trajects
 from code.algorithms.remove_unnecessary import removing_lines
+from code.algorithms.remove_unnecessary import remove_end
 
 from code.classes.rail_NL import Rail_NL
 
@@ -34,7 +35,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     """
     # Evaluate a starting position by generating a random solution and calculating what its score is
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
-    current_score = evaluate_solution(current_solution, area)
+    current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
     area.reset()
     temperature = initial_temperature
 
@@ -55,7 +56,8 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
             tracks.append(track.traject_connections)
 
         area.reset()
-        neighbor_score = run_trajects(area, amount_trajects, amount_stations, max_time, tracks, False)
+        trajects_result = run_trajects(area, amount_trajects, amount_stations, max_time, tracks)
+        neighbor_score = trajects_result[0] * 10000 - (len(tracks) * 100 + trajects_result[1])
         area.reset()
         delta_score = current_score - neighbor_score
 
@@ -82,8 +84,11 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
         finaltracks.append(track.traject_connections)
     area.reset()
     trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
+    fraction_done, time, trajects = remove_end(area, amount_stations, max_time, trajects)
+
     area.reset()
-    current_score = run_trajects(area, len(trajects), amount_stations, max_time, trajects, False)
+    lasttrajects_result = run_trajects(area, len(trajects), amount_stations, max_time, trajects)
+    current_score = fraction_done * 10000 - (len(trajects) * 100 + time)
     return trajects, current_score, scores, temperature_list, p_acceptlist
 
 def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):

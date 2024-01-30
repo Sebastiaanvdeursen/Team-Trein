@@ -24,7 +24,7 @@ def hill_climbing_greedy(area: Rail_NL, amount_trajects: int, amount_stations: i
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
 
     # calculate the score of this solution
-    current_score = evaluate_solution(current_solution, area)
+    current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
 
     # set all the connections to "not done"
     area.reset()
@@ -35,9 +35,9 @@ def hill_climbing_greedy(area: Rail_NL, amount_trajects: int, amount_stations: i
         neighbors = get_neighbors_greedy(current_solution, area, amount_trajects, amount_stations, max_time, amount_neighbors)
         
         # select the best neighbor (highest K)
-        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
+        best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area, amount_stations, max_time))
 
-        eval_sol = evaluate_solution(best_neighbor, area)
+        eval_sol = evaluate_solution(best_neighbor, area, amount_stations, max_time)
 
         # if best neighbor is better than current solution, replace current_solution
         # by best neighbor and start again
@@ -59,18 +59,12 @@ def hill_climbing_greedy(area: Rail_NL, amount_trajects: int, amount_stations: i
     # remove the trajects that make K lower
     current_solution_list = removing_lines(area, amount_trajects, amount_stations, max_time, current_solution_list)
     
-    # print the solution if printed is True
-    if printed:
-        for i in range(len(current_solution_list)):
-            stations_str = ', '.join(current_solution_list[i])
-            print(f"train_{i + 1},\"[{stations_str}]\"")
-    
     area.reset()
 
-    # find K for the solution
-    K = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
+    # find p, Min for the solution
+    p, Min = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
 
-    return current_solution, K, current_solution_list
+    return p, Min, current_solution_list
 
 def generate_random_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int) -> List[Traject]:
     """

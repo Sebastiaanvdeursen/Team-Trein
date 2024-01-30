@@ -5,6 +5,7 @@ class Traject:
 
     def __init__(self, starting_station, rail_instance):
         self.total_time = 0
+        self.starting_station = starting_station
         self.current_station = starting_station
         self.traject_connections = [starting_station.name]
         self.rail_instance = rail_instance
