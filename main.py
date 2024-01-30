@@ -314,15 +314,12 @@ if __name__ == "__main__":
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "test_weighted":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
-<<<<<<< HEAD
         elif sys.argv[2] == "test_plant":
             timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
-=======
         elif sys.argv[2] == "test_hill_climbing_neighbors":
             timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
             timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
->>>>>>> bec67b1e4c203e6ed9a35d461e5b46913085a8b9
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
