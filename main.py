@@ -13,10 +13,9 @@ from code.other.part1 import find_p
 from code.other.part5 import Part5
 from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
-from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neighbors
+from experiments.hill_climbing.amount_neighbors import test_hill_climbing
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 from experiments.simulated_annealing.test_simulated import timed_multiple
-
 
 from code.classes.rail_NL import Rail_NL
 
@@ -71,7 +70,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
-            result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, 500, 0.55)
+            result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, 500, 0.4)
             current_traject = result[0]
             score = result[1]
             area.reset()
@@ -160,19 +159,9 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             if results[i] == max(results):
                 best = current
 
-    elif sys.argv[2] == "simulated":
-        for i in range(0, int(sys.argv[3])):
-            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800, 0.50)[0]
-            score = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800, 0.50)[1]
-            area.reset()
-            print(score)
-            results.append(score)
-            if results[i] == max(results):
-                best = current
-
     elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 100)
             K = p * 10000 - (len(current) * 100 + Min)
             results.append(K)
             if results[i] == max(results):
@@ -279,7 +268,7 @@ if __name__ == "__main__":
     print("train,stations")
 
     if len(sys.argv) > 2:
-        if sys.argv[2] == "find_p" or "part1":
+        if sys.argv[2] == "find_p" or sys.argv[2] == "part1":
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "part5":
             Part5()
@@ -288,7 +277,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "test_plant":
             timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_neighbors":
-            timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+            test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
             timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
 
@@ -336,8 +325,8 @@ if __name__ == "__main__":
                 print(f"score, {result[1]}")
                 pacceptplot = result[4]
                 iterationsprobplot = range(len(pacceptplot))
-                # plt.plot(iterationsprobplot, pacceptplot)
-                # plt.show()
+                plt.plot(iterationsprobplot, pacceptplot)
+                plt.show()
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 15000)

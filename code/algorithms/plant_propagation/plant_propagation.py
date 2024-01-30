@@ -1,11 +1,9 @@
-from code.algorithms.greedy.greedy_random_start import run_greedy_random
 from code.algorithms.greedy.greedy_random_start import run_greedy_track_random
-from code.other.run import run_trajects
-from code.algorithms.random.random_alg import run_random_traject
-from code.other.remove_unnecessary import removing_lines
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.algorithms.greedy.weighted_greedy import weighted_track
 from code.other.remove_unnecessary import remove_end
+from code.other.remove_unnecessary import removing_lines
+from code.other.run import run_trajects
 
 import matplotlib.pyplot as plt
 import random
@@ -72,7 +70,6 @@ class plant:
         #selecting the 5 best of the starting trajects
         self.select_children(True)
 
-
     def run_program(self) -> None:
         """
         runs the plant propagation algorithm the amount of times that was put in, in init.
@@ -104,7 +101,6 @@ class plant:
         print(f"score,{score}")
         plt.plot(range(self.iterations + 1), self.data)
         plt.show()
-
 
     def create_children(self) -> None:
         """
