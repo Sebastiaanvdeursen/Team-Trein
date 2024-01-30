@@ -1,11 +1,7 @@
-import csv
-import random
-import sys
 import itertools as iter
 from math import comb
 
-from code.classes.station import Station
-from code.classes.traject import Traject
+from code.algorithms.greedy.greedy_random_start import run_greedy_track_random
 from code.classes.rail_NL import Rail_NL
 from code.other.run import run_trajects
 from code.other.remove_unnecessary import removing_lines
@@ -45,7 +41,8 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
     if longer == False:
         possible = []
         for i in range(0, amount_stations):
-            possible.append(run_greedy_track_comb(area, max_time, i, False, list_stations)[0])
+            possible.append(run_greedy_track_random(area, amount_stations, max_time, start = i, printed = False,
+                                                     list_stations = list_stations)[2].traject_connections)
             area.reset()
 
     results = []
@@ -75,7 +72,8 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
         time  = 0
         solution = []
         for j in possible_trajects_combs[max_index]:
-            passed, time_track, track = run_greedy_track_comb(area, max_time, j, False, list_stations)
+            passed, time_track, track = run_greedy_track_random(area, amount_stations, max_time, False, False,
+                                                                 start = j, list_stations = list_stations)
             time += time_track
             solution.append(track)
 
@@ -89,7 +87,10 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
             # reset the railNL object for each iteration
             area.reset()
             for j in i:
-                passed, time_track, track = run_greedy_track_comb(area, max_time, j, False, list_stations)
+                info = run_greedy_track_random(area, amount_stations, max_time, False, False,
+                                                start = j, list_stations = list_stations)
+                time_track = info[0]
+                passed = info[2].traject_connections
                 current.append(passed)
 
             # optimize the results and calculate the value
@@ -104,6 +105,7 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
                 fraction_done = current_fraction_done
                 time = current_time
 
+    # calculates P for longer since it hasn't before
     if longer == False:
         n_done = 0
         for station in area.stations.values():
@@ -113,54 +115,9 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
 
         fraction_done = (n_done / 2) / area.total_connections
 
+    #returns the correct info
     if used_for_hill_climbing == False:
         return time, len(best_track), fraction_done, best_track
     if used_for_hill_climbing:
         return solution
 
-
-def run_greedy_track_comb(Area, max_time: int, number: int, printed: bool, list_stations: list[str]) -> tuple[list[list[str]], int, Traject]:
-    passed = []
-
-
-    random_traject = Area.create_traject(list_stations[number], Area)
-    passed.append(list_stations[number])
-    went_back = 0
-    while True:
-        list_stations_current = []
-        for station_name in random_traject.current_station.connections:
-            list_stations_current.append(station_name)
-        destination = ""
-        time = 200
-        going_back = ""
-        for i in range(len(random_traject.current_station.connections)):
-            if random_traject.current_station.connections[list_stations_current[i]].done == True:
-                if going_back == "":
-                    going_back = list_stations_current[i]
-                elif (random_traject.current_station.connections[going_back].time >
-                       random_traject.current_station.connections[list_stations_current[i]].time):
-                    going_back = list_stations_current[i]
-            elif random_traject.current_station.connections[list_stations_current[i]].time < time:
-                destination = list_stations_current[i]
-                time = random_traject.current_station.connections[list_stations_current[i]].time
-        if destination == "":
-            went_back += 1
-            if went_back > 1:
-                break
-            if going_back != "":
-                if random_traject.total_time + random_traject.current_station.connections[going_back].time > max_time:
-                    break
-                passed.append(going_back)
-                random_traject.move(going_back)
-            else:
-                break
-        else:
-            if random_traject.total_time + random_traject.current_station.connections[destination].time > max_time:
-                break
-            else:
-                went_back = 0
-                passed.append(destination)
-                random_traject.move(destination)
-    if printed:
-        random_traject.show_current_traject()
-    return passed, random_traject.total_time, random_traject

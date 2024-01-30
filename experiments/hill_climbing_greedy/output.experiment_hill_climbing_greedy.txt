@@ -1,0 +1,83 @@
+amount trajects: 14
+amount neighbors: 1
+amount of results, 791
+max, 6773.561797752809
+average, 6001.258171280834
+std, 332.2503212634403
+
+amount trajects: 14
+amount neighbors: 5
+amount of results, 1414
+max, 6881.483146067416
+average, 6153.440991370413
+std, 271.32036836907747
+
+amount trajects: 14
+amount neighbors: 10
+amount of results, 774
+max, 6901.561797752809
+average, 6188.546366460529
+std, 252.9511685803805
+
+amount trajects: 16
+amount neighbors: 1
+amount of results, 2332
+max, 6928.202247191011
+average, 6147.645831325974
+std, 304.67665443789554
+
+amount trajects: 16
+amount neighbors: 5
+amount of results, 686
+max, 6814.561797752809
+average, 6243.021112457815
+std, 250.85658010364733
+
+amount trajects: 16
+amount neighbors: 10
+amount of results, 705
+max, 6921.561797752809
+average, 6252.304486413258
+std, 245.3946047270991
+
+amount trajects: 18
+amount neighbors: 1
+amount of results, 2343
+max, 6853.561797752809
+average, 6219.440835000003
+std, 274.3665683629587
+
+amount trajects: 18
+amount neighbors: 5
+amount of results, 1433
+max, 6965.561797752809
+average, 6303.350729592278
+std, 246.6719564474495
+
+amount trajects: 18
+amount neighbors: 10
+amount of results, 312
+max, 6854.202247191011
+average, 6298.422752808986
+std, 244.61701074943335
+
+amount trajects: 20
+amount neighbors: 1
+amount of results, 3215
+max, 7010.2808988764045
+average, 6297.076435948338
+std, 254.16058093674408
+
+amount trajects: 20
+amount neighbors: 5
+amount of results, 638
+max, 6863.561797752809
+average, 6340.965305906781
+std, 221.2715842833458
+
+amount trajects: 20
+amount neighbors: 10
+amount of results, 579
+max, 6835.842696629214
+average, 6347.5693854184665
+std, 213.42328581939304

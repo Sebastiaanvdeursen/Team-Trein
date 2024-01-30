@@ -1,12 +1,14 @@
-import csv
+"""
+performs the greedy algorithm to create one or more tracks in the RailNL object
+
+by: Mathijs Leons
+"""
+
 import random
-import sys
-from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 from code.other.remove_unnecessary import removing_lines
 from code.other.remove_unnecessary import remove_end
-from code.other.run import run_trajects
 
 def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                        amount_stations: int, used_for_hill_climbing: bool = False,
@@ -31,11 +33,12 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
         - if info == True:
             - the trajects as list[list[str]]
     """
+    # creates the list of stations as a list of strings
     list_stations = []
-
     for station_name in Area.stations:
         list_stations.append(station_name)
 
+    # loop that creates the tracks
     time = []
     track_info = []
     trajects = []
@@ -46,10 +49,12 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
         trajects.append(track_info[2].traject_connections)
     time = sum(time)
 
+    # optimises if you do not use it for hill climbing and get the info
     if used_for_hill_climbing == False:
         trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
         fraction_done, time, trajects = remove_end(Area, amount_stations, max_time, trajects)
 
+    # get the info if used for hill climbing
     else:
         n_done = 0
         for station in Area.stations.values():
@@ -57,27 +62,43 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                 if connection.done == True:
                     n_done += 1
         fraction_done = (n_done / 2) / Area.total_connections
+
+    # returns the correct information
     if info:
         return time, len(trajects), fraction_done, trajects
     return time, len(trajects), fraction_done
 
-def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing,
-                             printed = True) -> tuple[int, Rail_NL, Traject]:
+def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climbing = False,
+                             printed = True, start: int = -1,
+                               list_stations: list[str] = ["empty"]) -> tuple[int, Rail_NL, Traject]:
     """
     runs a greedy track, always chooses the shortest connection that has not been used
     if no unused track is available it uses the shortest done connection.
 
     pre:
+        - area object of type RailNL
+        - amount_stations in the area as an integer
+        - max_time is the maximum amount of time per track as an integer
+        - used_for_hill_climbing is an option that changes the output
+        - start is the starting station as an int, leave empty for random
+        - list_stations is the list of stations as a list of strings
 
     post:
-
+        - returns:
+            - the time used as an int
+            - area as a RailNL object
+            - the traject object
+        - modifies the area object also if you do not use the return
+        - if printed it prints the created traject
     """
-    list_stations = []
-
-    for station_name in Area.stations:
-        list_stations.append(station_name)
-
-    random_number = random.randint(0, amount_stations - 1)
+    if list_stations == ["empty"]:
+        list_stations = []
+        for station_name in Area.stations:
+            list_stations.append(station_name)
+    if start == -1:
+        random_number = random.randint(0, amount_stations - 1)
+    else:
+        random_number = start
 
     random_traject = Area.create_traject(list_stations[random_number], Area)
     went_back = 0
