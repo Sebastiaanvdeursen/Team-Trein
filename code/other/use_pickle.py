@@ -16,14 +16,7 @@ if __name__ == "__main__":
         print(f"max, {max(results)}")
         print(f"average, {sum(results) / len(results)}")
         print(f"std, {np.std(results)}")
-
-
-    # file = open('results.pickle', 'rb')
-    # results = pickle.load(file)
-    # file.close()
-
-    # plt.plot(range(len(results)), results)
-    # plt.show()
+        
     if sys.argv[3] == "weighted":
         list_powers = [1, 1.25, 1.5, 2, 3, 4, 5, 6, 7]
         max_values = []
