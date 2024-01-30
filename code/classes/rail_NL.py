@@ -5,10 +5,24 @@ from code.classes.station import Station
 from code.classes.traject import Traject
 
 class Rail_NL:
-    def __init__(self, map, amount_trajects, amount_stations, max_time, randomizer = False, removing = ""):
+    def __init__(self, map: str, amount_trajects: int, amount_stations: int, max_time: int, randomizer: bool = False, removing: str = ""):
+        """
+        Initialize a Rail_NL instance.
+
+        pre:
+        - map is a string representing the map name.
+        - amount_trajects is an integer representing the number of trajects.
+        - amount_stations is an integer representing the number of stations.
+        - max_time is an integer representing the maximum time.
+        - randomizer is a boolean indicating whether randomization is enabled.
+        - removing is a string representing the station to be removed.
+
+        post:
+        - initializes a Rail_NL instance.
+        """
         self.removing = removing
         self.map = map
-        self.stations = {}
+        self.stations: Dict[str, Station] = {}
         self.randomizer = randomizer
         self.load_connections(f"data/Connecties{map}.csv")
         self.amount_trajects = amount_trajects
@@ -17,6 +31,16 @@ class Rail_NL:
 
 
     def load_connections(self, filename):
+        """
+        Load connections from a CSV file.
+
+        pre:
+        - filename is a string representing the path to the CSV file.
+
+        post:
+        - loads connections into the Rail_NL instance.
+        """
+
         remove = ""
         if self.removing != "":
             remove = self.remove_station()
@@ -65,13 +89,42 @@ class Rail_NL:
         self.total_connections = line_count - 1
 
     def add_station(self, station_name):
+        """
+        Add a station to the Rail_NL instance.
+
+        pre:
+        - station_name is a string representing the name of the station.
+
+        post:
+        - adds a station to the Rail_NL instance.
+        """
+
         if station_name not in self.stations:
             self.stations[station_name] = Station(station_name)
 
     def add_connection_stations(self, source, destination, time):
+        """
+        Add a connection between stations.
+
+        pre:
+        - source is a string representing the source station.
+        - destination is a string representing the destination station.
+        - time is an integer representing the time of the connection.
+
+        post:
+        - adds a connection between stations in the Rail_NL instance.
+        """
+
         self.stations[source].add_connection(destination, time)
 
     def display_connections(self):
+        """
+        Display information about connections.
+
+        post:
+        - displays information about connections in the Rail_NL instance.
+        """
+
         for station_name, station in self.stations.items():
             print(f"Station: {station_name}")
             for destination, connection in station.connections.items():
@@ -80,20 +133,49 @@ class Rail_NL:
 
 
     def create_traject(self, starting_station_name, rail_instance):
+        """
+        Create a traject.
+
+        pre:
+        - starting_station_name is a string representing the starting station name.
+        - rail_instance is a Rail_NL instance.
+
+        post:
+        - returns a Traject instance.
+        """
         starting_station = self.stations[starting_station_name]
         traject = Traject(starting_station, rail_instance)
         return traject
 
     def reset(self):
+        """
+        Reset the status of connections.
+
+        post:
+        - resets the status of connections in the Rail_NL instance.
+        """
         for i in self.stations:
             for j in self.stations[i].connections:
                 self.stations[i].connections[j].done = False
 
     def get_amount_stations(self):
+        """
+        Get the number of stations.
+
+        post:
+        - returns the number of stations in the Rail_NL instance.
+        """
         self.amount_stations = len(self.stations)
         return self.amount_stations
 
     def remove_station(self):
+        """
+        Remove a station.
+
+        post:
+        - returns the name of the station to be removed.
+        """
+
         remove = ""
         if self.removing =="Utrecht":
                 remove ="Utrecht Centraal"
@@ -130,4 +212,10 @@ class Rail_NL:
         return remove
 
     def get_ids(self):
-         return self.numbers
+        """
+        Get random numbers.
+
+        post:
+        - returns a list of random numbers.
+        """
+        return self.numbers
