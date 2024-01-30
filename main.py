@@ -13,7 +13,7 @@ from code.other.part1 import find_p
 from code.other.part5 import Part5
 from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
-from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neighbors
+from experiments.hill_climbing.amount_neighbors import test_hill_climbing
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 from experiments.simulated_annealing.test_simulated import timed_multiple
 
@@ -161,7 +161,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 100)
             K = p * 10000 - (len(current) * 100 + Min)
             results.append(K)
             if results[i] == max(results):
@@ -277,7 +277,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "test_plant":
             timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_neighbors":
-            timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+            test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
             timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
 
