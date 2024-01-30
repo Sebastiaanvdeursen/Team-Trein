@@ -70,7 +70,7 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
-            result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, 500, 0.55)
+            result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, 500, 0.4)
             current_traject = result[0]
             score = result[1]
             area.reset()
@@ -156,16 +156,6 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             area.reset()
             K = p * 10000 - (T * 100 + Min)
             results.append(K)
-            if results[i] == max(results):
-                best = current
-
-    elif sys.argv[2] == "simulated":
-        for i in range(0, int(sys.argv[3])):
-            current = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800, 0.50)[0]
-            score = simulated_annealing(area, amount_trajects, amount_stations, max_time, 1800, 0.50)[1]
-            area.reset()
-            print(score)
-            results.append(score)
             if results[i] == max(results):
                 best = current
 
@@ -335,8 +325,8 @@ if __name__ == "__main__":
                 print(f"score, {result[1]}")
                 pacceptplot = result[4]
                 iterationsprobplot = range(len(pacceptplot))
-                # plt.plot(iterationsprobplot, pacceptplot)
-                # plt.show()
+                plt.plot(iterationsprobplot, pacceptplot)
+                plt.show()
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 15000)
