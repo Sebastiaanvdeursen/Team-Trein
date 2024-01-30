@@ -3,17 +3,19 @@ from code.algorithms.random.random_alg_opt import run_random_amount_of_trajects_
 from code.algorithms.greedy.greedy_random_start import run_greedy_random
 from code.algorithms.greedy.greedy_best_comb import run_greedy_combinations
 from code.algorithms.hill_climbing.hill_climbing_greedy_alg import hill_climbing_greedy
-from code.algorithms.hill_climbing.hill_climbing_greedy_comb_alg import hill_climbing_greedy_comb
 from code.algorithms.hill_climbing.hill_climbing_alg import hill_climbing
 from code.algorithms.hill_climbing.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.greedy.double_greedy import double_greedy_random
 from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_annealing
 from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
-from code.other.remove_unnecessary import remove_end
+from code.other.part1 import find_p
+from code.other.part5 import Part5
+from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
 from experiments.hill_climbing.amount_neighbors import test_hill_climbing
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
+from experiments.simulated_annealing.test_simulated import timed_multiple
 
 from code.classes.rail_NL import Rail_NL
 
@@ -99,61 +101,9 @@ def timed(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
 
-def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_to_run):
-    list_temperaturevalues = [600, 700, 800, 900]
-    list_valuesexponent = [0.4125, 0.425, 0.4375]
-    for j in range(len(list_temperaturevalues)):
-        for i in range(len(list_valuesexponent)):
-            start = time.time()
-            results = []
-            best = []
-            current_max = 0
-            while True:
-                if (time.time() - start) / 60 > time_to_run:
-                    break
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, list_temperaturevalues[j], list_valuesexponent[i])
-                current_traject = result[0]
-                score = result[1]
-                area.reset()
-                if score > current_max:
-                    current_max = score
-                    best = current_traject
-                results.append(score)
-            count = 1
-            for a in best:
-                print(f"train_{count},{a}")
-                count += 1
-            print(f"score,{max(results)}")
-
-            file_name = f'results_{list_temperaturevalues[j]}_{list_valuesexponent[i]}.pickle'
-            with open(file_name, 'wb') as f:
-                pickle.dump(results, f)
-
-def timed_plant(area, amount_trajects, max_time_train, amount_stations, time_to_run):
-    list_power = [0.5, 1, 1.5]
-    for i in list_power:
-        start = time.time()
-        results = []
-        best = 0
-        while True:
-            if (time.time() - start) / 60 > time_to_run:
-                break
-            area.reset()
-            test = plant(area, amount_trajects, max_time, amount_stations, 1000, i)
-            test.run_program()
-            info = test.get_data()
-            results.append(info)
-            if info[-1] > best:
-                best = info[-1]
-        print(best)
-        file_name = f'plant_power{i}.pickle'
-        with open(file_name, 'wb') as f:
-            pickle.dump(results, f)
-
-
 
 def iterate(area, amount_trajects, max_time, amount_stations,
-             fitter: bool = False, histogram: bool = False, group_info: bool = False ):        
+             fitter: bool = False, histogram: bool = False, group_info: bool = False ):
     results = []
     best = []
     if sys.argv[2] == "random":
@@ -182,7 +132,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             results.append(K)
             if results[i] == max(results):
                 best = current
-    
+
     elif sys.argv[2] == "greedy_optim":
         for i in range(0, int(sys.argv[3])):
             Min, T, p, current = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
@@ -190,8 +140,8 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             K = p * 10000 - (T * 100 + Min)
             results.append(K)
             if results[i] == max(results):
-                best = current 
-    
+                best = current
+
     elif sys.argv[2] == "double_greedy" or sys.argv[2] == "double":
         for i in range(0, int(sys.argv[3])):
             Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, False)
@@ -250,7 +200,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             K = result[1]
             results.append(K)
             if results[i] == max(results):
-                best = current            
+                best = current
 
     else:
         for i in range(0, int(sys.argv[3])):
@@ -282,18 +232,6 @@ def iterate(area, amount_trajects, max_time, amount_stations,
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
 
-def find_p(area, amount_trajects, max_time, amount_stations):
-    while True:
-        Min, T, p, trajects = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
-        if p == 1:
-            count = 1
-            for a in trajects:
-                stations_str = ', '.join(a)
-                print(f"train_{count},\"[{stations_str}]\"")
-                count += 1
-            print(f"score,{p * 10000 - (T * 100 + Min)}")
-            break
-        area.reset()
 
 # Main script
 if __name__ == "__main__":
@@ -340,8 +278,10 @@ if __name__ == "__main__":
     print("train,stations")
 
     if len(sys.argv) > 2:
-        if sys.argv[2] == "find_p":
+        if sys.argv[2] == "find_p" or "part1":
             find_p(area, amount_trajects, max_time, amount_stations)
+        elif sys.argv[2] == "part5":
+            Part5()
         elif sys.argv[2] == "test_weighted":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_plant":
@@ -350,6 +290,7 @@ if __name__ == "__main__":
             test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
             timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -357,9 +298,7 @@ if __name__ == "__main__":
             elif sys.argv[3] == "timemultiple":
                 if len(sys.argv) > 4:
                     timed_multiple(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
-            elif sys.argv[3] == "timehill_climbing":
-                if len(sys.argv) > 4:
-                    timed_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
+
             elif len(sys.argv) > 4:
                 if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
                     iterate(area, amount_trajects, max_time, amount_stations, histogram = True)
@@ -403,8 +342,9 @@ if __name__ == "__main__":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 15000)
                 plantprop.run_program()
                 results = plantprop.get_data()
-                with open('results.pickle', 'wb') as f:
+                with open('plant.pickle', 'wb') as f:
                     pickle.dump(results, f)
+
             else:
                 print("usage python3 main.py size algorithm")
     else:
