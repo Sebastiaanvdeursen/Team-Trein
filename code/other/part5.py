@@ -7,7 +7,7 @@ import sys
 
 
 
-if __name__ == "__main__":
+def Part5():
     made_area = False
 
     map = "NL"
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     area2 = Rail_NL(map, amount_trajects, amount_stations, max_time)
     amount_stations_2 = area2.get_amount_stations()
     results1 = []
-    for i in range(0, int(sys.argv[2])):
+    for i in range(0, int(sys.argv[4])):
         Min, T, p, current = run_greedy_random(area2, amount_trajects, max_time, amount_stations, printed = False, info = True)
         area2.reset()
         results1.append( p * 10000 - (T * 100 + Min))
@@ -27,12 +27,12 @@ if __name__ == "__main__":
 
     list = [0] * 89
     count = [0] * 89
-    for i in range(int(sys.argv[1])):
+    for i in range(int(sys.argv[3])):
         results = []
         area1 = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
         numbers = area1.get_ids()
         amount_stations_1 = area1.get_amount_stations()
-        for j in range(0, int(sys.argv[2])):
+        for j in range(0, int(sys.argv[4])):
             Min, T, p, current = run_greedy_random(area1, amount_trajects, max_time, amount_stations, printed = False, info = True)
             area1.reset()
             results.append( p * 10000 - (T * 100 + Min))
@@ -42,7 +42,10 @@ if __name__ == "__main__":
             list[i - 1] += difference
             count[i - 1] += 1
     for i in range(0, 89):
-        print(int(list[i] / count[i]))
+        if count[i] > 0:
+            print(int(list[i] / count[i]))
+        else:
+            print(0)
 
 
 
