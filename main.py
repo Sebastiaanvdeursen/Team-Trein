@@ -13,8 +13,8 @@ from code.other.part1 import find_p
 from code.other.part5 import Part5
 from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
-from experiments.hill_climbing.amount_neighbors import test_hill_climbing
-from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
+from experiments.hill_climbing.test_hill_climbing import test_hill_climbing
+from experiments.hill_climbing_greedy.test_hill_climbing_greedy import test_hill_climbing_greedy
 from experiments.simulated_annealing.test_simulated import timed_multiple
 
 from code.classes.rail_NL import Rail_NL
@@ -278,7 +278,7 @@ if __name__ == "__main__":
     print("train,stations")
 
     if len(sys.argv) > 2:
-        if sys.argv[2] == "find_p" or "part1":
+        if sys.argv[2] == "find_p" or sys.argv[2] == "part1":
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "part5":
             Part5()
@@ -286,10 +286,10 @@ if __name__ == "__main__":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_plant":
             timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
-        elif sys.argv[2] == "test_hill_climbing_neighbors":
+        elif sys.argv[2] == "test_hill_climbing":
             test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
-        elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
-            timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "test_hill_climbing_greedy":
+            test_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
 
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
