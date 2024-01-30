@@ -1,10 +1,10 @@
-from code.algorithms.random_alg import run_random_amount_of_trajects
-from code.algorithms.hill_climbing_alg import evaluate_solution
-from code.algorithms.hill_climbing_alg import generate_random_solution
-from code.algorithms.random_alg_opt import run_random_traject_opt
-from code.algorithms.run import run_trajects
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.remove_unnecessary import remove_end
+from code.algorithms.random.random_alg import run_random_amount_of_trajects
+from code.algorithms.hill_climbing.hill_climbing_alg import evaluate_solution
+from code.algorithms.hill_climbing.hill_climbing_alg import generate_random_solution
+from code.algorithms.random.random_alg_opt import run_random_traject_opt
+from code.other.run import run_trajects
+from code.other.remove_unnecessary import removing_lines
+from code.other.remove_unnecessary import remove_end
 
 from code.classes.rail_NL import Rail_NL
 

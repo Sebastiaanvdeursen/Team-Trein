@@ -1,11 +1,11 @@
-from code.algorithms.greedy_random_start import run_greedy_random
-from code.algorithms.greedy_random_start import run_greedy_track_random
-from code.algorithms.run import run_trajects
-from code.algorithms.random_alg import run_random_traject
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.weighted_greedy import run_weighted
-from code.algorithms.weighted_greedy import weighted_track
-from code.algorithms.remove_unnecessary import remove_end
+from code.algorithms.greedy.greedy_random_start import run_greedy_random
+from code.algorithms.greedy.greedy_random_start import run_greedy_track_random
+from code.other.run import run_trajects
+from code.algorithms.random.random_alg import run_random_traject
+from code.other.remove_unnecessary import removing_lines
+from code.algorithms.greedy.weighted_greedy import run_weighted
+from code.algorithms.greedy.weighted_greedy import weighted_track
+from code.other.remove_unnecessary import remove_end
 
 import matplotlib.pyplot as plt
 import random

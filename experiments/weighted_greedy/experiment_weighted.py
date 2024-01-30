@@ -1,4 +1,4 @@
-from code.algorithms.weighted_greedy import run_weighted
+from code.algorithms.greedy.weighted_greedy import run_weighted
 
 import pickle
 import time

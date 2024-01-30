@@ -4,9 +4,9 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.remove_unnecessary import remove_end
-from code.algorithms.run import run_trajects
+from code.other.remove_unnecessary import removing_lines
+from code.other.remove_unnecessary import remove_end
+from code.other.run import run_trajects
 
 def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                        amount_stations: int, used_for_hill_climbing: bool = False,

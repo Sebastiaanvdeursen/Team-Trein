@@ -1,12 +1,14 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.random_alg_opt import run_random_traject_opt
-from code.algorithms.hill_climbing_opt_alg import get_neighbors_random_opt
-from code.algorithms.greedy_best_comb import run_greedy_combinations
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.run import run_trajects
-from code.algorithms.hill_climbing_alg import evaluate_solution
 from code.classes.traject import Traject
+
+from code.algorithms.random.random_alg_opt import run_random_traject_opt
+from code.algorithms.hill_climbing.hill_climbing_opt_alg import get_neighbors_random_opt
+from code.algorithms.greedy.greedy_best_comb import run_greedy_combinations
+from code.other.remove_unnecessary import removing_lines
+from code.other.run import run_trajects
+from code.algorithms.hill_climbing.hill_climbing_alg import evaluate_solution
+
 from typing import List, Tuple
 
 def list_to_trajects(area: Rail_NL, list_string: List[List[str]]) -> List[Traject]:
