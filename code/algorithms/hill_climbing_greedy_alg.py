@@ -61,7 +61,7 @@ def hill_climbing_greedy(area: Rail_NL, amount_trajects: int, amount_stations: i
     
     area.reset()
 
-    # find K for the solution
+    # find p, Min for the solution
     p, Min = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
 
     return p, Min, current_solution_list

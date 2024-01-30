@@ -13,6 +13,7 @@ def timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
+            counter = 0
             for i in range(1, 21):
                 results = []
                 best = []
@@ -27,7 +28,7 @@ def timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount
                 results.append(score)
                 counts[i - 1] += 1
 
-                file_name = f'results_{list_amount_trajects[i - 1]}.pickle'
+                file_name = f'/experiments/hill_climbing_greedy/pickle/results_{list_amount_trajects[i - 1]}.pickle'
                 with open(file_name, 'wb') as f:
                     pickle.dump(results, f)
 
@@ -35,7 +36,7 @@ def timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount
         i_list = []
         for i in range(amount_trajects):
             i_list.append(i)
-            file = open(f'results_{i + 1}.pickle', 'rb')
+            file = open(f'/experiments/hill_climbing_greedy/pickle/results_{i + 1}.pickle', 'rb')
             results = pickle.load(file)
             file.close()
             print(i + 1)

@@ -1,11 +1,11 @@
 from code.algorithms.random_alg import run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.greedy_random_start import run_greedy_track_random
+from code.algorithms.random_alg_opt import run_random_traject_opt
+from code.algorithms.hill_climbing_opt_alg import get_neighbors_random_opt
 from code.algorithms.greedy_best_comb import run_greedy_combinations
 from code.algorithms.remove_unnecessary import removing_lines
 from code.algorithms.run import run_trajects
 from code.algorithms.hill_climbing_alg import evaluate_solution
-from code.algorithms.hill_climbing_greedy_alg import get_neighbors_greedy
 from code.classes.traject import Traject
 from typing import List, Tuple
 
@@ -31,7 +31,7 @@ def list_to_trajects(area: Rail_NL, list_string: List[List[str]]) -> List[Trajec
     return solution
 
 
-def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int) -> Tuple[List[Traject], float, List[List[str]]]:
+def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors = 1) -> Tuple[List[Traject], float, List[List[str]]]:
     """
     Perform hill climbing optimization using a combination of the greedy best combination algorithm.
 
@@ -51,7 +51,7 @@ def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_statio
     current_solution = list_to_trajects(area, current_solution_string)
 
     # calculate the score of this solution
-    current_score = evaluate_solution(current_solution, area)
+    current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
 
     # set all the connections to "not done"
     area.reset()
@@ -59,12 +59,12 @@ def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_statio
     # run algorithm until no improvements are found
     while True:
         # make neighbors
-        neighbors = get_neighbors_greedy(current_solution, area, len(current_solution), amount_stations, max_time)
+        neighbors = get_neighbors_random_opt(current_solution, area, len(current_solution), amount_stations, max_time, amount_neighbors)
         
         # selecteer the best neighbor (highest K)
         best_neighbor = max(neighbors, key=lambda neighbor: evaluate_solution(neighbor, area))
 
-        eval_sol = evaluate_solution(best_neighbor, area)
+        eval_sol = evaluate_solution(best_neighbor, area, amount_stations, max_time)
 
         # if best neighbor is better than current solution, replace current_solution
         # by best neighbor and start again
@@ -85,15 +85,9 @@ def hill_climbing_greedy_comb(area: Rail_NL, amount_trajects: int, amount_statio
     
     # remove the trajects that make K lower
     current_solution_list = removing_lines(area, len(current_solution_list), amount_stations, max_time, current_solution_list)
-
-    # print the solution
-    for i in range(len(current_solution_list)):
-        stations_str = ', '.join(current_solution_list[i])
-        print(f"train_{i + 1},\"[{stations_str}]\"")
     
     area.reset()
 
-    # find K for the solution
-    K = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
+    p, Min = run_trajects(area, len(current_solution_list), amount_stations, max_time, current_solution_list, False)
 
-    return current_solution, K, current_solution_list
+    return p, Min, current_solution_list

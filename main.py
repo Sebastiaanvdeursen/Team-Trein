@@ -462,39 +462,49 @@ if __name__ == "__main__":
                     stations_str = ', '.join(solution_list[i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
+
             elif sys.argv[2] == "hill_climbing_max":
                 K_list = []
                 solution_list = []
-                for i in range(10000):
-                    sol, K, solution = hill_climbing(area, amount_trajects, amount_stations, max_time)
+                for i in range(100):
+                    p, Min, solution = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+                    K = p * 10000 - (len(solution) * 100 + Min)
                     K_list.append(K)
                     solution_list.append(solution)
                     area.reset()
                 max_K = max(K_list)
-                print(max_K)
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
+                print(f"score,{max_K}")
+
             elif sys.argv[2] == "hill_climbing_opt":
-                K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)[1]
+                p, Min, solution_list = hill_climbing_opt(area, amount_trajects, amount_stations, max_time, amount_neighbors = 200)
+                K = p * 10000 - (len(solution_list) * 100 + Min)
+                for i in range(len(solution_list)):
+                    stations_str = ', '.join(solution_list[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing_opt_max":
-                K_max = 0
-                for i in range(1000):
-                    current_solution, K = hill_climbing_opt(area, amount_trajects, amount_stations, max_time)
-                    if K >= K_max:
-                        K_max = K
-                        max_solution = current_solution
+                K_list = []
+                solution_list = []
+                for i in range(100):
+                    p, Min, solution = hill_climbing_opt(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+                    K = p * 10000 - (len(solution) * 100 + Min)
+                    K_list.append(K)
+                    solution_list.append(solution)
                     area.reset()
-                for i in range(len(max_solution)):
-                    stations_str = ', '.join(max_solution[i].traject_connections)
-                    print(f"train_{max_solution[i].train_count},\"[{stations_str}]\"")
-                print(K_max)
-                K_max = 0
+                max_K = max(K_list)
+                for i in range(len(K_list)):
+                    if K_list[i] == max_K:
+                        index = i
+                for i in range(len(solution_list[index])):
+                    stations_str = ', '.join(solution_list[index][i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
+                print(f"score,{max_K}")
 
             elif sys.argv[2] == "hill_climbing/greedy":
                 p, Min, solution_list = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, amount_neighbors = 200)
@@ -506,31 +516,45 @@ if __name__ == "__main__":
             elif sys.argv[2] == "hill_climbing/greedy_max":
                 K_list = []
                 solution_list = []
-                for i in range(10000):
-                    sol, K, solution = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time)
+                for i in range(100):
+                    p, Min, solution = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+                    K = p * 10000 - (len(solution) * 100 + Min)
                     K_list.append(K)
                     solution_list.append(solution)
                     area.reset()
                 max_K = max(K_list)
-                print(max_K)
                 for i in range(len(K_list)):
                     if K_list[i] == max_K:
                         index = i
-
                 for i in range(len(solution_list[index])):
                     stations_str = ', '.join(solution_list[index][i])
                     print(f"train_{i + 1},\"[{stations_str}]\"")
+                print(f"score,{max_K}")
 
             elif sys.argv[2] == "hill_climbing/greedy_optim":
-                K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
+                p, Min, solution_list = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time, amount_neighbors = 200)
+                K = p * 10000 - (len(solution_list) * 100 + Min)
+                for i in range(len(solution_list)):
+                    stations_str = ', '.join(solution_list[i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
                 print(f"score,{K}")
             elif sys.argv[2] == "hill_climbing/greedy_optim_max":
                 K_list = []
-                for i in range(10):
-                    K = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time)[1]
+                solution_list = []
+                for i in range(100):
+                    p, Min, solution = hill_climbing_greedy_comb(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+                    K = p * 10000 - (len(solution) * 100 + Min)
                     K_list.append(K)
+                    solution_list.append(solution)
                     area.reset()
-                print(max(K_list))
+                max_K = max(K_list)
+                for i in range(len(K_list)):
+                    if K_list[i] == max_K:
+                        index = i
+                for i in range(len(solution_list[index])):
+                    stations_str = ', '.join(solution_list[index][i])
+                    print(f"train_{i + 1},\"[{stations_str}]\"")
+                print(f"score,{max_K}")
             elif sys.argv[2] == "double_greedy" or "double":
                 Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, False)
                 K = p*10000 - (T*100 + Min)
