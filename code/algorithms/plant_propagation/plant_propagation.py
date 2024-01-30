@@ -178,10 +178,10 @@ class plant:
 
 
     def select_children(self, first: bool = False) -> None:
-        list_indexes = [0] * 5 + [1] * 5 + [2] * 5 + [3] * 5 + [4] * 5 + [5] * 5
+        list_indexes = [0] * 6 + [1] * 6 + [2] * 6 + [3] * 6 + [4] * 6
         random.shuffle(list_indexes)
 
-        list_of_values = [None] * 6
+        list_of_values = [None] * 5
 
         if first == False:
             for i in range(5):
@@ -211,7 +211,7 @@ class plant:
                 list_of_values[index].append([self.children[i], score])
 
         self.selected = []
-        for index in range(6):
+        for index in range(5):
             list_of_values[index].sort(key = lambda x: x[1], reverse = True)
             self.selected.append(list_of_values[index][0])
         self.selected.sort(key = lambda x: x[1], reverse = True)
