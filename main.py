@@ -12,7 +12,7 @@ from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.other.remove_unnecessary import remove_end
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
-from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neighbors
+from experiments.hill_climbing.amount_neighbors import test_hill_climbing
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 
 from code.classes.rail_NL import Rail_NL
@@ -221,7 +221,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
 
     elif sys.argv[2] == "hill_climbing":
         for i in range(0, int(sys.argv[3])):
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 100)
             K = p * 10000 - (len(current) * 100 + Min)
             results.append(K)
             if results[i] == max(results):
@@ -347,7 +347,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "test_plant":
             timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_neighbors":
-            timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+            test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy_neighbors":
             timed_hill_climbing_greedy_neighbors(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif len(sys.argv) > 3:

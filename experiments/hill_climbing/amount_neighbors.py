@@ -6,44 +6,48 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 
-def timed_hill_climbing_neighbors(area, amount_trajects, max_time, amount_stations, time_to_run):
-        list_amount_trajects = list(range(1, amount_trajects + 1))
-        start = time.time()
-        counts = [0] * 20
-        while True:
-            if (time.time() - start) / 60 > time_to_run:
-                break
-            for i in range(1, 21):
-                results = []
+def test_hill_climbing(area, amount_trajects, max_time, amount_stations, time_to_run):
+    start = time.time()
+    results = [[0] * 5] * 3
+    print(results[0][0])
+    while True:
+        i_count = 0
+        j_count = 0
+        if (time.time() - start) / 60 > time_to_run:
+            break
+        for i in range(10, 15):
+            for j in range(1, 11, 5):
                 best = []
                 current_max = 0
-                result = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = i)
+                result = hill_climbing(area, i, amount_stations, max_time, amount_neighbors = j)
                 current_traject = result[2]
                 score = result[0]*10000 - (len(current_traject)*100 + result[1])
                 area.reset()
                 if score > current_max:
                     current_max = score
                     best = current_traject
-                results.append(score)
-                counts[i - 1] += 1
+                results[i_count][j_count].append(score)
 
-                file_name = f'results_{list_amount_trajects[i - 1]}.pickle'
+                file_name = f'experiments/hill_climbing/pickle/results_{i}_{j}.pickle'
                 with open(file_name, 'wb') as f:
-                    pickle.dump(results, f)
+                    pickle.dump(results[i_count][j_count], f)
+                j_count += 1
+            i_count += 1
 
-        average_list = []
-        i_list = []
-        for i in range(amount_trajects):
-            i_list.append(i)
-            file = open(f'results_{i + 1}.pickle', 'rb')
+    average_list = []
+    for q in range(10, 15):
+        for r in range(1, 11, 5):
+            file = open(f'experiments/hill_climbing/pickle/results_{q}_{r}.pickle', 'rb')
             results = pickle.load(file)
             file.close()
-            print(i + 1)
-            print(f"amount of results, {counts[i]}")
+            count = 0 
+            for i in results:
+                count += 1
+            print(f"amount trajects: {q}")
+            print(f"amount neighbors: {r}")
+            print(f"amount of results, {count}")
             print(f"max, {max(results)}")
             average = sum(results) / len(results)
             average_list.append(average)
             print(f"average, {sum(results) / len(results)}")
             print(f"std, {np.std(results)}")
-        plt.plot(i_list, average_list)
-        plt.show()
