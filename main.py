@@ -137,6 +137,28 @@ def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_
             with open(file_name, 'wb') as f:
                 pickle.dump(results, f)
 
+def timed_plant(area, amount_trajects, max_time_train, amount_stations, time_to_run):
+    list_power = [0.5, 1, 1.5]
+    for i in list_power:
+        start = time.time()
+        results = []
+        best = 0
+        while True:
+            if (time.time() - start) / 60 > time_to_run:
+                break
+            area.reset()
+            test = plant(area, amount_trajects, max_time, amount_stations, 1000, i)
+            test.run_program()
+            info = test.get_data()
+            results.append(info)
+            if info[-1] > best:
+                best = info[-1]
+        print(best)
+        file_name = f'plant_power{i}.pickle'
+        with open(file_name, 'wb') as f:
+            pickle.dump(results, f)
+
+
 
 
 def iterate(area, amount_trajects, max_time, amount_stations,
@@ -301,6 +323,8 @@ if __name__ == "__main__":
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "test_weighted":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "test_plant":
+            timed_plant(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -369,11 +393,11 @@ if __name__ == "__main__":
                 print(f"score, {result[1]}")
                 pacceptplot = result[4]
                 iterationsprobplot = range(len(pacceptplot))
-                plt.plot(iterationsprobplot, pacceptplot)
-                plt.show()
+                # plt.plot(iterationsprobplot, pacceptplot)
+                # plt.show()
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 200)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 15000)
                 plantprop.run_program()
                 results = plantprop.get_data()
                 with open('results.pickle', 'wb') as f:

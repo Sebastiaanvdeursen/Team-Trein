@@ -3,6 +3,24 @@ from code.classes.rail_NL import Rail_NL
 
 def run_trajects(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
                   trajects: list[list[str]], printed: bool = False) -> tuple[float, int]:
+    """
+    runs the traject based upon the list of list object and returns the p and Min
+
+    pre:
+        - area is a empty Rail_Nl object
+        - amount_trajects is the amount of trajects used as an int
+        - amount_stations is the amount of stations as an int
+        - max_time, is the maximum amount of time per track as an int
+        - traject is a list of list of strings with valid trajects
+            so all connections must be possible
+        - printed is a bool'
+
+    post:
+        - returns the fraction done as an int
+        - the time used as an int
+        - if printed:
+            - prints the trajects used
+    """
     time = 0
     solution = []
     for i in range(amount_trajects):

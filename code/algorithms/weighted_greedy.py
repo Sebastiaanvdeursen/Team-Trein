@@ -51,9 +51,9 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
                      * 2 + random_traject.total_time < max_time):
                     list_possibilities.append(
                         [list_stations_current[i],
-                        (20 * random_traject.current_station.connections[list_stations_current[i]].time)
+                        (10 * random_traject.current_station.connections[list_stations_current[i]].time)
                           ** power] )
-                    summation += ((20 * random_traject.current_station.connections[list_stations_current[i]].time)
+                    summation += ((10 * random_traject.current_station.connections[list_stations_current[i]].time)
                                    ** power)
 
             else:

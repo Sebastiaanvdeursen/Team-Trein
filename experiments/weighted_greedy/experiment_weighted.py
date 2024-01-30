@@ -1,6 +1,7 @@
 from code.algorithms.weighted_greedy import run_weighted
 
 import pickle
+import time
 
 def timed_weighted(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     list_powers = [1, 1.25, 1.5, 2, 3, 4, 5, 6, 7]
