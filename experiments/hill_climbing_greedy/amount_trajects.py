@@ -47,26 +47,5 @@ def timed_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations,
         print(f"std, {np.std(results)}")
     plt.plot(i_list, average_list)
     plt.show()
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "large":
-            map = "NL"
-            amount_trajects = 20
-            amount_stations = 61
-            max_time = 180
-        else:
-            map = "Holland"
-            amount_trajects = 7
-            amount_stations = 22
-            max_time = 120
-        if len(sys.argv) > 2:
-            area = Rail_NL(map, amount_trajects, amount_stations, max_time)
-            time = float(sys.argv[2])
-            timed_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations, time)
-        else:
-            print("not correct input")
-    else:
-        print("not correct input")
     
     
