@@ -17,7 +17,6 @@ from experiments.hill_climbing.amount_neighbors import timed_hill_climbing_neigh
 from experiments.hill_climbing_greedy.amount_neighbors_greedy import timed_hill_climbing_greedy_neighbors
 from experiments.simulated_annealing.test_simulated import timed_multiple
 
-
 from code.classes.rail_NL import Rail_NL
 
 import numpy as np
