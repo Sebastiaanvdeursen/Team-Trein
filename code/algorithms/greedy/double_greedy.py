@@ -4,9 +4,9 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.remove_unnecessary import remove_end
-from code.algorithms.run import run_trajects
+from code.other.remove_unnecessary import removing_lines
+from code.other.remove_unnecessary import remove_end
+from code.other.run import run_trajects
 
 def double_greedy_random(Area: object, amount_trajects: int, max_time: int, amount_stations: int,
                             printed: bool = True) -> [int,  int, float, list[list[str]]]:

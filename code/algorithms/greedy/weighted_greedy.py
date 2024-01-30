@@ -4,8 +4,8 @@ import sys
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.run import run_trajects
+from code.other.remove_unnecessary import removing_lines
+from code.other.run import run_trajects
 
 def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = True, info = False, power = 1.6):
     list_stations = []
@@ -51,9 +51,9 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
                      * 2 + random_traject.total_time < max_time):
                     list_possibilities.append(
                         [list_stations_current[i],
-                        (20 * random_traject.current_station.connections[list_stations_current[i]].time)
+                        (10 * random_traject.current_station.connections[list_stations_current[i]].time)
                           ** power] )
-                    summation += ((20 * random_traject.current_station.connections[list_stations_current[i]].time)
+                    summation += ((10 * random_traject.current_station.connections[list_stations_current[i]].time)
                                    ** power)
 
             else:

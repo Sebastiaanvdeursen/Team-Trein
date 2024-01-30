@@ -74,15 +74,18 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
     area.reset()
     fraction_done, time= run_trajects(area, len(trajects), amount_stations, max_time, trajects)
     score = fraction_done * 10000 - time - (len(trajects) * 100)
-    while True:
-        changes = 0
-        for i in range(len(trajects)):
+
+    for i in range(len(trajects)):
+        while True:
+            changes = 0
             current = []
             for j in range(len(trajects)):
                 if j == i:
-                    current.append(trajects[j][:-1])
+                    if len(trajects[j][:-1]) > 1:
+                        current.append(trajects[j][:-1])
                 else:
-                    current.append(trajects[j])
+                    if len(trajects[j]) > 1:
+                        current.append(trajects[j])
             area.reset()
             current_fraction_done, current_time= run_trajects(area, len(current), amount_stations, max_time,
                                                                 current)
@@ -93,8 +96,8 @@ def remove_end(area: Rail_NL, amount_stations: int, max_time: int,
                 fraction_done = current_fraction_done
                 time = current_time
                 changes += 1
-        if changes == 0:
-            break
+            if changes == 0:
+                break
     return fraction_done, time, trajects
 
 

@@ -1,9 +1,11 @@
 from typing import List, Tuple
 from code.classes.traject import Traject
-from code.algorithms.random_alg import run_random_traject, run_random_amount_of_trajects
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.run import run_trajects
+
+from code.algorithms.random.random_alg import run_random_traject, run_random_amount_of_trajects
+from code.other.remove_unnecessary import removing_lines
+from code.other.run import run_trajects
+
 import random
 
 def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int = 1) -> Tuple[List[Traject], float, List[List[str]]]:

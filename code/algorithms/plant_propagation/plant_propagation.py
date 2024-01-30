@@ -1,16 +1,17 @@
-from code.algorithms.greedy_random_start import run_greedy_random
-from code.algorithms.greedy_random_start import run_greedy_track_random
-from code.algorithms.run import run_trajects
-from code.algorithms.random_alg import run_random_traject
-from code.algorithms.remove_unnecessary import removing_lines
-from code.algorithms.weighted_greedy import run_weighted
-from code.algorithms.weighted_greedy import weighted_track
+from code.algorithms.greedy.greedy_random_start import run_greedy_random
+from code.algorithms.greedy.greedy_random_start import run_greedy_track_random
+from code.other.run import run_trajects
+from code.algorithms.random.random_alg import run_random_traject
+from code.other.remove_unnecessary import removing_lines
+from code.algorithms.greedy.weighted_greedy import run_weighted
+from code.algorithms.greedy.weighted_greedy import weighted_track
+from code.other.remove_unnecessary import remove_end
 
 import matplotlib.pyplot as plt
 import random
 
 class plant:
-    def __init__(self, area: object, amount_trajects: int, max_time: int, amount_stations: int, iterations: int) -> None:
+    def __init__(self, area: object, amount_trajects: int, max_time: int, amount_stations: int, iterations: int, power = 1) -> None:
         """
         plant class is used to perform the plant propagation algorithm on the RailNL problem
         plant propagation is simplified to fit this specific problem
@@ -33,10 +34,11 @@ class plant:
         #the list with all the best results of each iteration
         self.data: list[float] = []
         self.power = 0.25
+        self.replace_power = power
 
         ## 15 is an arbritrary amount that can be changed hower, if it isnt divided by iterations
         ## it will moest likely cause an integer overflow (values over 30 cause error)
-        self.power_increase = 15 / (iterations)
+        self.power_increase = 5 / (iterations)
 
         #saving the input variables
         self.amount_stations = amount_stations
@@ -94,8 +96,10 @@ class plant:
         post: print function which prints the best score and best traject
         """
         i = 1
+        traject = removing_lines(self.area, len(traject), self.amount_stations, self.max_time, traject)
         for a in traject:
-            print(f"train_{i}:{a}")
+            stations_str = ', '.join(a)
+            print(f"train_{i},\"[{stations_str}]\"")
             i += 1
         print(f"score,{score}")
         plt.plot(range(self.iterations + 1), self.data)
@@ -103,59 +107,76 @@ class plant:
 
 
     def create_children(self) -> None:
+        """
+        creates the new trajects based upon the previous results, change is based upon how great the
+        solution is.
+
+        pre:
+            - self.tracks is a list of list of list of strings, the strings are stations
+                they need to be connected and in the correct order
+
+        post:
+            - creates the children object as a list of list of list of strings
+            - runs the select_children function on the children object
+        """
+        # creates the necessary variables
         self.children  = []
         first = True
-        chance = [99, 85, 75, 50, 25]
         amount_children = [7, 6, 5, 4, 3, 3]
         counter = 0
         probs_remove = [1, 3, 5, 6, 7]
+
+        # runs the algorithm for each instance of the current population
         for parent in self.tracks:
             max_additions = self.amount_trajects - len(parent)
             current = []
-            iterations = 4.5
             for _ in range(amount_children[counter]):
-
+                # loads in the connections currently used
                 run_trajects(self.area, len(parent),
                                            self.amount_stations, self.max_time, parent)
+
+                # adds a new trraject if probabilities are met
                 if first == False:
                     if max_additions > 0:
-                        additions = random.randint(0, max_additions)
+                        if random.randint(0, 10) < probs_remove[counter]:
+                            additions = random.randint(0, max_additions)
+                        else:
+                            additions = 0
                         if additions > 0:
                             for i in range(additions):
                                 current.append(weighted_track(self.area, self.amount_stations, self.max_time,
                                                                self.list_stations, printed = False, power= self.power
-                                                                 + iterations)[2].traject_connections)
-
+                                                                )[2].traject_connections)
                 else:
                     first = False
-                replace = -1
-                replace_random = random.randint(0, 100)
-                if replace_random > chance[counter]:
-                    replace = random.randint(0, len(parent) - 1)
-                chance[counter] -= 1
+
+                # replaces a random traject with either a weighted from the same start
+                # or a greedy track from a random start
+                replace = random.randint(0, len(parent) - 1)
                 count = 0
 
                 for i in parent:
                     if count == replace and len(current) < self.amount_trajects:
-                        if random.randint(0, 10) > 2:
+                        if random.randint(0, 10) > probs_remove[counter]:
                             current.append(weighted_track(self.area, self.amount_stations,
                                                        self.max_time, self.list_stations,
                                                          printed = False,
                                                            start = self.list_stations.index(i[0]),
-                                                           power = 1)[2].traject_connections)
+                                                           power = self.replace_power)[2].traject_connections)
                         else:
                             current.append(run_greedy_track_random(self.area, self.amount_stations, self.max_time,
                               False, printed = False)[2].traject_connections)
                     elif len(current) < self.amount_trajects:
                         current.append(i)
                     count += 1
-                #if random.randint(0, 10) > probs_remove[counter]:
-                self.area.reset()
+
+                # optimises the trajects and adds them to the list
                 current = removing_lines(self.area, len(current), self.amount_stations, self.max_time, current)
                 self.children.append(current)
-                iterations -= 0.5
             counter += 1
             self.power += self.power_increase
+
+        # runs the selection code
         self.select_children()
 
 
@@ -184,10 +205,8 @@ class plant:
             self.highest_score = self.selected[4][1]
             self.best = self.selected[4][0]
         for i in range(25):
-            self.area.reset()
-            p, Min = run_trajects(self.area, len(self.children[i]),
-                                               self.amount_stations, self.max_time,
-                                                 self.children[i])
+            p, Min, self.children[i] = remove_end(self.area, self.amount_stations,
+                                                   self.max_time, self.children[i])
             score = p * 10000 - (len(self.children[i]) * 100 + Min)
             if score > self.selected[0][1]:
                 self.selected[0]= [self.children[i], score]

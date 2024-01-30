@@ -1,6 +1,6 @@
 import sys
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.hill_climbing_greedy_alg import hill_climbing_greedy
+from code.algorithms.hill_climbing.hill_climbing_greedy_alg import hill_climbing_greedy
 import time
 import pickle
 import numpy as np
