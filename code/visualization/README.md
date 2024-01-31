@@ -14,7 +14,6 @@ visualization.py first takes the CSV file containing all the coördinates of the
 
 plot_simulated.py plots both the exponential temperature function and the score of the solution chosen over time. You can plot the algorithm for both small and large the amount of iterations, namely 10000, is fixed, since the score will almost always converge after that point with the chosen parameters of 500 for the initial temperature and 0.4 for the exponent.
 
-
 ## File Structure
 
 - `visualisation.py`: Main script for visualization.
@@ -42,6 +41,6 @@ You can run the visualization for simulated annealing by running
 python main.py size simulatedplot
 ```
 With size having the input of either:
-- **large:** 
-or
+- **large**   
+or   
 - **small**
