@@ -1,7 +1,7 @@
 """
 Double Greedy is an algorithm based upon the basic greedy algorithm
-however we came up with our own heuristic of choosing the shortest path by looking forward
-2 connections instead of one
+We came up with the heuristic of choosing the shortest path by looking forward
+2 connections instead of one which is used in this algorithm
 
 By: Mathijs Leons
 """
@@ -52,13 +52,14 @@ def double_greedy_random(Area: object, amount_trajects: int, max_time: int, amou
 
     # optimizes and gets the information
     trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
-    fraction_done, Min, trajects= remove_end(Area, amount_stations, max_time, trajects)
+    fraction_done, Min, trajects = remove_end(Area, amount_stations, max_time, trajects)
 
     return Min, len(trajects), fraction_done, trajects
 
-def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, list_stations: list[str], printed: bool = False):
+def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, list_stations: list[str], 
+                                printed: bool = False) -> [int, object, list[str]]:
     """
-    creates a track based upon the double greedy method
+    Creates a track based upon the double greedy method
 
     pre:
         - Area is an object of type RailNL, where the other tracks are already loaded
