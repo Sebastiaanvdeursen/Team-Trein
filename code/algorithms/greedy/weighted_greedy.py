@@ -3,7 +3,7 @@ Weighted greedy is a semi random algorithm based upon our own probability
 calculations the probabilities are based on the time the connection takes,
 the shorter the distance the higher the probability
 
-by: Mathijs Leons
+by: Mathijs Leons, Team-Trein
 """
 from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject
@@ -47,16 +47,16 @@ def run_weighted(Area: Rail_NL, amount_trajects: int, max_time: int,
         list_stations.append(station_name)
 
     # Creates the selected amount of tracks
-    time = []
-    track_info = []
+    times = []
+    track_info: list[tuple[int, Rail_NL, Traject]] = []
     trajects = []
     for _ in range(0, amount_trajects):
-        track_info = weighted_track(Area, amount_stations, max_time,
-                                    list_stations, printed, power)
-        time.append(track_info[0])
-        trajects.append(track_info[2].traject_connections)
+        track_info = [weighted_track(Area, amount_stations, max_time,
+                                    list_stations, printed, power)]
+        times.append(track_info[0][0])
+        trajects.append(track_info[0][2].traject_connections)
 
-    time = sum(time)
+    time = sum(times)
 
     # Optimises the tracks
     trajects = removing_lines(Area, amount_trajects, amount_stations,

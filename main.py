@@ -4,7 +4,7 @@ Algorithms & Heuristics
 Group: Team-Trein
 
 This script acts as the central hub for our Rail_NL project. Here, you'll find a large range
-of algorithms to try and tackle the Rail_NL problem. Additionally, the script provides tools for 
+of algorithms to try and tackle the Rail_NL problem. Additionally, the script provides tools for
 visualization, testing, and ways to evaluate the quality of the algorithms.
 """
 
@@ -215,7 +215,7 @@ if __name__ == "__main__":
                 Plot_simulated(area, amount_trajects, amount_stations, max_time, 500, 0.4)
 
             elif sys.argv[2] == "plant":
-                plantprop = plant(area, amount_trajects, max_time, amount_stations, 100)
+                plantprop = plant(area, amount_trajects, max_time, amount_stations, 400)
                 plantprop.run_program()
                 results = plantprop.get_data()
                 with open('plant.pickle', 'wb') as f:

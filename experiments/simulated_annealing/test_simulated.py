@@ -1,5 +1,6 @@
 from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_annealing
 
+import time
 import pickle
 
 def Test_simulated(area, amount_trajects, max_time_train, amount_stations, time_to_run):
@@ -15,8 +16,8 @@ def Test_simulated(area, amount_trajects, max_time_train, amount_stations, time_
                 if (time.time() - start) / 60 > time_to_run:
                     break
                 result = simulated_annealing(area, amount_trajects, amount_stations, max_time_train, list_temperaturevalues[j], list_valuesexponent[i])
-                current_traject = result[0]
-                score = result[1]
+                current_traject = result[2]
+                score = result[3]
                 area.reset()
                 if score > current_max:
                     current_max = score

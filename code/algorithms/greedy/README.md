@@ -23,3 +23,21 @@ double_greedy is a modified version of the greedy algorithm based upon our own h
 It differs with used connections to the first station differently than used connections to the second, for the first it is handled the same way as in the regular greedy algorithm. If the second connection is used (connection between the station that you can move to and the second station) and the first isn't it handles it by multiplying the amount of time used by the second station by two.
 ### weighted_greedy
 weighted greedy is a semi random algorithm we created our self. It assigns probabilities of using a connection based upon the time the connection takes and whether it is already used. It assigns the probabilities the following way: $ p_i = \frac{\frac{1}{time_i^power}}{\sum_{j = 1}^{n}(\frac{1}{time_j^power})}$
+## Usage
+All algorithms can only be used from the root directory of the git.
+There they are performed by using main.py and then filling in the correct commandline arguments:
+### All examples
+*when map is used on commandline it means that the user can either put in large, large_random, small, small_random or a station he wants to exclude for more information please check the main README.\
+*number means a positive integer for the amount of time the user wants to run the algorithm, or the amount of minutes the user want to spend.\
+*the / is used when the user can use either of the options, but not both at the same time.
+#### greedy_random_start:
+python3 main.py map greedy/greedy_random number {hist/all/fitter}\
+python3 main.py map greedy/greedy_random time number
+#### greedy_best_comb
+python3 main.py small greedy_optim
+#### double_greedy
+python3 main.py map double/double_greedy number {hist/all/fitter}\
+python3 main.py map double/double_greedy number
+#### Weighted greedy
+python3 main.py map weight number {hist/all/fitter}\
+python3 main.py map weight number

@@ -1,7 +1,7 @@
 """
 performs the greedy algorithm to create one or more tracks in the RailNL object
 
-by: Mathijs Leons
+by: Mathijs Leons, Team-Trein
 """
 
 import random
@@ -44,16 +44,16 @@ def run_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
         list_stations.append(station_name)
 
     # loop that creates the tracks
-    time = []
-    track_info = []
+    times = []
+    track_info: list[tuple[int, Rail_NL, Traject]] = []
     trajects = []
     for _ in range(0, amount_trajects):
-        track_info = run_greedy_track_random(Area, amount_stations, max_time, list_stations,
-                                             used_for_hill_climbing, printed)
-        time.append(track_info[0])
-        trajects.append(track_info[2].traject_connections)
+        track_info = [run_greedy_track_random(Area, amount_stations, max_time, list_stations,
+                                             used_for_hill_climbing, printed)]
+        times.append(track_info[0][0])
+        trajects.append(track_info[0][2].traject_connections)
 
-    time = sum(time)
+    time = sum(times)
 
     # optimises if you do not use it for hill climbing and get the info
     if not used_for_hill_climbing:
@@ -163,4 +163,4 @@ def run_greedy_track_random(Area: Rail_NL, amount_stations: int, max_time: int, 
         random_traject.show_current_traject()
 
     time = random_traject.total_time
-    return [time, Area, random_traject]
+    return time, Area, random_traject
