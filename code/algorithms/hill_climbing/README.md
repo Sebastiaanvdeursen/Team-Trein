@@ -21,6 +21,3 @@ python main.py small/large hill_climbing/hill_climbing_optim/hill_climbing_greed
 ## Warning
 
 Run this algorithm only from main.py
-
-## Authors
-- Sebastiaan van Deursen
