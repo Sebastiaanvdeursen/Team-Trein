@@ -1,8 +1,8 @@
-# Visualization Repository README
+# Visualization Directory README
 
 ## Team-Trein Visualization
 
-This repository contains a Python script for visualizing train routes in the Netherlands. The script takes a CSV file containing train routes and displays them on a map of the Netherlands. The visualization includes scatter plots of coordinates, connections between places, and arrows for the tracks (different colors for different tracks).
+This directory contains a Python script for visualizing train routes in the Netherlands. The script takes a CSV file containing train routes and displays them on a map of the Netherlands. The visualization includes scatter plots of coordinates, connections between places, and arrows for the tracks (different colors for different tracks).
 
 ## Overview
 

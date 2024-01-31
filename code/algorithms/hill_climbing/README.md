@@ -1,8 +1,8 @@
-# Hill Climbing README
+# Hill Climbing Directory README
 
 ## Team-Trein Hill Climbing Algorithm
 
-This repository contains the implementation of a Hill Climbing algorithm. The algorithm starts with an initial solution and iteratively attempts to improve it by making small modifications.
+This directory contains the implementation of a Hill Climbing algorithm. The algorithm starts with an initial solution and iteratively attempts to improve it by making small modifications.
 
 ## Overview
 

@@ -1,8 +1,8 @@
-# Random README
+# Random Directory README
 
 ## Team-Trein Random and Random Optimized Algorithm
 
-This repository contains the implementation of a Random algorithm and the Random Optimized algorithm. The Random algorithm runs a random amount of random tracks. The Random Optimized algorithm does the same, except it uses a heuristic to try and improve results.
+This directory contains the implementation of a Random algorithm and the Random Optimized algorithm. The Random algorithm runs a random amount of random tracks. The Random Optimized algorithm does the same, except it uses a heuristic to try and improve results.
 
 ## Overview
 
