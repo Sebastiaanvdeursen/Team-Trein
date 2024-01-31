@@ -1,4 +1,15 @@
-# Algorithms
+# README Dicionary algorithms
+
+## Team Trein
+
+This directory contains the following folders:
+- greedy
+- hill_climbing
+- plant_propagation
+- random
+- simulated_annealing
+
+Here follows a summary of the content of all of these folders.
 
 ### greedy
 In this directory you can find all variations of the greedy algorithm. There is a greedy with a random start present, a greedy that goes through all possible combinations, 
@@ -16,3 +27,5 @@ In this directory we have a file of the random algorithm and random optimized al
 
 ### simulated_annealing
 In this file we find the code for the algorithm for simulated annealing, which is the same as hill_climbing only know we can choose a worse solution with a probability.
+
+For more specific information, please look at the README in any of these directories.
