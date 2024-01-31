@@ -61,10 +61,10 @@ def simulated_annealing(area: object, amount_trajects: int,
 
         tracks = []
         for track in neighbor:
-            tracks.append(track.traject_connections)
+            tracks.append(track)
 
         area.reset()
-        trajects_result = run_trajects(area, amount_trajects, amount_stations, max_time, tracks)
+        trajects_result = run_trajects(area, len(tracks), amount_stations, max_time, tracks)
         neighbor_score = trajects_result[0] * 10000 - (len(tracks) * 100 + trajects_result[1])
         area.reset()
         delta_score = current_score - neighbor_score
@@ -89,12 +89,12 @@ def simulated_annealing(area: object, amount_trajects: int,
 
     finaltracks = []
     for track in current_solution:
-        finaltracks.append(track.traject_connections)
+        finaltracks.append(track)
     area.reset()
 
     # Remove tracks that decrease the score if we keep them,
     # also remove end stations if they do not contribute to a higher score
-    trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
+    trajects = removing_lines(area, len(finaltracks), amount_stations, max_time, finaltracks)
     fraction_done, time, trajects = remove_end(area, amount_stations, max_time, trajects)
 
     area.reset()
