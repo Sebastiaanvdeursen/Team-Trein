@@ -1,3 +1,8 @@
+"""
+code that improves solutions found by other algorithms
+
+by: Mathijs Leons, Team-Trein
+"""
 from code.classes.station import Station
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
