@@ -7,7 +7,7 @@ from code.classes.rail_NL import Rail_NL
 from code.other.remove_unnecessary import removing_lines
 from code.other.run import run_trajects
 
-def run_weighted(Area, amount_trajects, max_time, amount_stations, printed = True, info = False, power = 1.6):
+def run_weighted(Area, amount_trajects, max_time, amount_stations, printed: bool = True, info: bool = False, power = 1.6):
     list_stations = []
 
     for station_name in Area.stations:
