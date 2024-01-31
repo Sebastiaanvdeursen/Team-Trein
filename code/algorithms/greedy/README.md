@@ -28,16 +28,16 @@ All algorithms can only be used from the root directory of the git.
 There they are performed by using main.py and then filling in the correct commandline arguments:
 ### All examples
 *when map is used on commandline it means that the user can either put in large, large_random, small, small_random or a station he wants to exclude for more information please check the main README.
-*number means a positive integer for the amount of time the user wants to run the algorithm, or the amount of minutes the user want to spend
-*the / is used when the user can use either of the options, but not both at the same time
+*number means a positive integer for the amount of time the user wants to run the algorithm, or the amount of minutes the user want to spend.
+*the / is used when the user can use either of the options, but not both at the same time.
 #### greedy_random_start:
-python3 main.py map greedy/greedy_random number {hist/all/fitter}
-python3 main.py map greedy/greedy_random time number
+python3 main.py map greedy/greedy_random number {hist/all/fitter}\
+python3 main.py map greedy/greedy_random time number\
 #### greedy_best_comb
-python3 main.py small greedy_optim
+python3 main.py small greedy_optim\
 #### double_greedy
-python3 main.py map double/double_greedy number {hist/all/fitter}
-python3 main.py map double/double_greedy number
+python3 main.py map double/double_greedy number {hist/all/fitter}\
+python3 main.py map double/double_greedy number\
 #### Weighted greedy
-python3 main.py map weight number {hist/all/fitter}
-python3 main.py map weight number
+python3 main.py map weight number {hist/all/fitter}\
+python3 main.py map weight number\
