@@ -1,7 +1,26 @@
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+This is the Station class.
+"""
+
 from code.classes.connection import Connection
-from typing import Dict
+
 
 class Station:
+    """
+    Represents a connection between train stations.
+
+    Methods:
+    - __init__(self, destination, time):
+        Initializes a Station instance.
+
+    - add_connection(self, destination, time):
+        Adds a connection to the station.
+    """
+
     def __init__(self, name: str):
         """
         Initialize a Station instance.
@@ -13,7 +32,7 @@ class Station:
         - initializes a Station instance with the given name.
         """
         self.name: str = name
-        self.connections: Dict[str, Connection] = {}
+        self.connections: dict[str, Connection] = {}
 
     def add_connection(self, destination: str, time: int):
         """
@@ -27,5 +46,3 @@ class Station:
         - adds a connection to the station with the given destination and time.
         """
         self.connections[destination] = Connection(destination, time)
-
-

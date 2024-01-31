@@ -1,14 +1,22 @@
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+Visualisation takes a csv file, containing train routes in the Netherlands and
+visualises the routes on a map of the Netherlands.
+
+By: Sebastiaan van Deursen
+"""
+
+
 import sys
 import csv
-from typing import List, Dict, Union, Tuple
-import numpy as np
-import json
-from PIL import Image
-from random import randint
-from bokeh.plotting import figure, show, output_file
-from bokeh.models import Range1d, Arrow, VeeHead
+from bokeh.plotting import figure, show
+from bokeh.models import Arrow, VeeHead
 
-def convert_list_to_string(string_list: str) -> List[str]:
+
+def convert_list_to_string(string_list: str) -> list[str]:
     """
     Convert a string representation of a list to a Python list.
 
@@ -16,14 +24,12 @@ def convert_list_to_string(string_list: str) -> List[str]:
     post: Returns the corresponding Python list (["Gouda", "Breda", "Eindhoven"]).
     """
     list = []
-    number_of_comma = 0
-    comma_index = 0
     for i in range(len(string_list)):
         if string_list[i] == "[":
             index = i
             while True:
                 i += 1
-                # When we encounter the first comma, add the entire word after the 
+                # When we encounter the first comma, add the entire word after the
                 # "[" to the list
                 if string_list[i] == "," and index == 0:
                     list.append(string_list[index + 1: i])
@@ -39,7 +45,8 @@ def convert_list_to_string(string_list: str) -> List[str]:
                     break
     return list
 
-def read_train_data(filename: str) -> Dict[str, List[str]]:
+
+def read_train_data(filename: str) -> dict[str, list[str]]:
     """
     Read train data from a CSV file.
 
@@ -59,7 +66,8 @@ def read_train_data(filename: str) -> Dict[str, List[str]]:
             train_data[train_name] = stations
     return train_data
 
-def assign_colors(train_data: Dict[str, List[str]]) -> Dict[str, str]:
+
+def assign_colors(train_data: dict[str, list[str]]) -> dict[str, str]:
     """
     Assign random colors to each train in the given train data.
 
@@ -67,8 +75,9 @@ def assign_colors(train_data: Dict[str, List[str]]) -> Dict[str, str]:
     post: Returns a dictionary mapping each train name to a randomly generated color.
     """
     train_colors = {}
-    colors = ["red", "green", "turqoise", "blue", "pink", "darkgreen", "orange", "yellow", "magenta", "saddlebrown", "lightcoral",
-    "mediumslateblue", "forestgreen", "gold", "firebrick", "navy", "darkorange", "olive", "cyan", "purple"]
+    colors = ["red", "green", "turqoise", "blue", "pink", "darkgreen", "orange", "yellow",
+              "magenta", "saddlebrown", "lightcoral", "mediumslateblue", "forestgreen", "gold",
+              "firebrick", "navy", "darkorange", "olive", "cyan", "purple"]
     # make a list palette, to store all the colors
     palette = []
     for i in range(len(train_data)):
@@ -79,7 +88,8 @@ def assign_colors(train_data: Dict[str, List[str]]) -> Dict[str, str]:
         train_colors[train_name] = palette[i]
     return train_colors
 
-def scatterplot(coords: str) -> Tuple[figure, Dict[str, List[float]]]:
+
+def scatterplot(coords: str) -> tuple[figure, dict[str, list[float]]]:
     """
     Create a scatter plot of coordinates with a map background.
 
@@ -90,15 +100,13 @@ def scatterplot(coords: str) -> Tuple[figure, Dict[str, List[float]]]:
     p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
     places = {}
     # read the coördinates data
-    with open(f"../../data/Coordinates{coords}.csv") as data:
+    with open(f"data/Coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
-        line_count = 0
-        for row in csv_read:
+        for line_count, row in enumerate(csv_read):
             if line_count != 0:
                 # now link the station names to the x and y coördinates
                 # in the dictionary places
                 places[row[0]] = [float(row[1]), float(row[2])]
-            line_count += 1
 
     l_x = []
     l_y = []
@@ -108,13 +116,14 @@ def scatterplot(coords: str) -> Tuple[figure, Dict[str, List[float]]]:
         l_y.append(places[a][0])
 
     # add the map of the Netherlands as background image
-    p.image_url(url=['map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
+    p.image_url(url=['code/visualisation/map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
 
     # add the coördinates as black circles to the figure
-    p.circle(l_x, l_y, color = "red", size = 4.5)
+    p.circle(l_x, l_y, color="red", size=4.5)
     return p, places
 
-def draw_lines_connections(lines: str, places: Dict[str, List[float]], p: figure) -> figure:
+
+def draw_lines_connections(lines: str, places: dict[str, list[float]], p: figure) -> figure:
     """
     Draw connections between places on the given Bokeh plot.
 
@@ -124,17 +133,18 @@ def draw_lines_connections(lines: str, places: Dict[str, List[float]], p: figure
     post: Modifies the Bokeh plot to include lines connecting places based on the specified connections.
     """
     # open the connections data
-    with open(f"../../data/Connecties{lines}.csv") as line_info:
+    with open(f"data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
-        line_count = 0
         # now draw a line for every connection
-        for row in csv_file:
+        for line_count, row in enumerate(csv_file):
             if line_count != 0:
-                p.line([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]], color = "black")
-            line_count += 1
+                p.line([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]],
+                       color="black")
     return p
 
-def draw_lines_trajects(train_data: Dict[str, List[str]], train_colors: Dict[str, str], places: Dict[str, List[float]], p: figure) -> None:
+
+def draw_lines_trajects(train_data: dict[str, list[str]], train_colors: dict[str, str],
+                        places: dict[str, list[float]], p: figure) -> None:
     """
     Draw trajectories of trains on the given Bokeh plot.
 
@@ -171,11 +181,12 @@ def draw_lines_trajects(train_data: Dict[str, List[str]], train_colors: Dict[str
             trajectory_counts[trajectory_key_2] = count_2 + 1
 
             # create an offset so the lines won't overlap
-            offset = max([count_1, count_2])* 0.025
+            offset = max([count_1, count_2]) * 0.025
 
             # check if traject moves more in the x or y direction
             # and add the offset accordingly
-            if abs(places[start_station][1] - places[end_station][1]) > abs(places[start_station][0] - places[end_station][0]):
+            if abs(places[start_station][1] - places[end_station][1]) > \
+               abs(places[start_station][0] - places[end_station][0]):
                 start_y = places[start_station][0] + offset
                 end_y = places[end_station][0] + offset
                 start_x = places[start_station][1]
@@ -188,20 +199,17 @@ def draw_lines_trajects(train_data: Dict[str, List[str]], train_colors: Dict[str
 
             # add the trajects as arrows to the figure
             p.add_layout(Arrow(end=VeeHead(size=5), line_color=color,
-                   x_start=start_x, y_start=start_y, x_end=end_x, y_end=end_y))
+                         x_start=start_x, y_start=start_y, x_end=end_x, y_end=end_y))
 
     show(p)
 
-if __name__ == "__main__":
+
+def visualisation(command_arg: str):
     # use command line arguments to choose between
     # Holland or the Netherlands
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "large":
-            coords = "Long"
-            lines = "NL"
-        else:
-            coords = "Short"
-            lines = "Holland"
+    if command_arg == "large":
+        coords = "Long"
+        lines = "NL"
     else:
         coords = "Short"
         lines = "Holland"
@@ -214,7 +222,7 @@ if __name__ == "__main__":
     p = draw_lines_connections(lines, places, p)
 
     # read the output data
-    input_filename = "../../output.csv"
+    input_filename = "output.csv"
 
     # get the train_data
     train_data = read_train_data(input_filename)
@@ -224,4 +232,3 @@ if __name__ == "__main__":
 
     # draw the traject arrows
     draw_lines_trajects(train_data, train_colors, places, p)
-

@@ -1,4 +1,21 @@
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+This is the Connection class.
+"""
+
+
 class Connection:
+    """
+    Represents a connection between train stations.
+
+    Methods:
+    - __init__(self, destination, time):
+        Initializes a Connection instance.
+    """
+
     def __init__(self, destination: str, time: int) -> None:
         """
         Initialize a Connection instance.

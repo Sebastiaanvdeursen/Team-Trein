@@ -1,22 +1,36 @@
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+The Random Algorithm starts by choosing a random starting station. From there it chooses a random
+connection. The track either stops randomly, or stops when it goes over the time limit. The amount
+of tracks is also randomly chosen.
+
+By: Sebastiaan van Deursen
+"""
+
+
 from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject
-from typing import Union, List, Tuple
 import random
 
-def run_random_traject(area: Rail_NL, amount_stations: int, max_time: int, printed: bool = True, info: bool = False) -> Union[List[Union[int, Rail_NL]], List[Union[int, Rail_NL, Traject]]]:
+
+def run_random_traject(area: Rail_NL, amount_stations: int, max_time: int, printed: bool = True,
+                       info: bool = False) -> tuple[int, Rail_NL] | tuple[int, Rail_NL, Traject]:
     """
-    Generate a random train trajectory.
+    Generate a combination of random tracks.
 
     pre:
     - area is an instance of Rail_NL.
     - amount_stations is a positive integer.
     - max_time is a positive integer.
-    - printed is a boolean.
-    - info is a boolean.
+    - printed is a bool.
+    - info is a bool.
 
     post:
-    - If info is True, returns a list containing total time, Area, and the generated Traject object.
-    - If info is False, returns a list containing total time and Area.
+    - if info is True, returns a list containing total time, area, and the generated Traject object.
+    - if info is False, returns a list containing total time and area.
     """
     # make a list containing all the stations
     list_stations = list(area.stations.keys())
@@ -52,11 +66,12 @@ def run_random_traject(area: Rail_NL, amount_stations: int, max_time: int, print
 
     time = random_traject.total_time
     if info:
-        return [time, area, random_traject]
-    return [time, area]
+        return time, area, random_traject
+    return time, area
 
 
-def run_random_amount_of_trajects(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True, info: bool = False) -> Union[List[Union[int, int, float, List[List[str]]]], List[Union[int, int, float]]]:
+def run_random_amount_of_trajects(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True,
+                                  info: bool = False) -> tuple[int, int, float, list[list[str]]] | tuple[int, int, float]:
     """
     Generate a random amount of train trajectories for a given railway network.
 
@@ -65,19 +80,18 @@ def run_random_amount_of_trajects(area: Rail_NL, amount_trajects: int, max_time:
     - amount_trajects is a positive integer.
     - max_time is a positive integer.
     - amount_stations is a positive integer.
-    - printed is a boolean.
-    - info is a boolean.
+    - printed is a bool.
+    - info is a bool.
 
     post:
-    - If info is True, returns a list containing total time, the number of trajectories,
+    - if info is True, returns a list containing total time, the number of trajectories,
       fraction_done, and a list of trajects.
-    - If info is False, returns a list containing total time, the number of trajectories, and fraction_done.
+    - if info is False, returns a list containing total time, the number of trajectories, and fraction_done.
     """
     # draw a random number
     random_number = random.randint(1, amount_trajects)
 
     time = []
-    track_info = []
     trajects = []
     for i in range(0, random_number):
         track_info = run_random_traject(area, amount_stations, max_time, printed, info)
@@ -88,13 +102,12 @@ def run_random_amount_of_trajects(area: Rail_NL, amount_trajects: int, max_time:
     # calculate the fraction of done trajects
     n_done = 0
     for station in area.stations.values():
-            for connection in station.connections.values():
-                if connection.done == True:
-                    n_done += 1
+        for connection in station.connections.values():
+            if connection.done:
+                n_done += 1
 
     fraction_done = (n_done / 2) / area.total_connections
     if info:
         return sum(time), random_number, fraction_done, trajects
     else:
         return sum(time), random_number, fraction_done
-

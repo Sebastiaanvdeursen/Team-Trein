@@ -68,7 +68,7 @@ def Timed(area: object, amount_trajects: int, max_time_train: int,
                 best = current
             results.append(k)
 
-    else:
+    elif sys.argv[2] == "random":
         while True:
             if (time.time() - start) / 60 > time_to_run:
                 break
@@ -80,10 +80,13 @@ def Timed(area: object, amount_trajects: int, max_time_train: int,
                 current_max = k
                 best = current
             results.append(k)
+    else:
+        print("Please enter a valid algorithm to time")
 
     count = 1
     for a in best:
-        print(f"train_{count},{a}")
+        stations_str = ', '.join(a)
+        print(f"train_{count},\"[{stations_str}]\"")
         count += 1
     print(f"score,{max(results)}")
 

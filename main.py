@@ -8,6 +8,7 @@ from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_anne
 from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.visualisation.plot_simulated import Plot_simulated
+from code.visualisation.visualisation import visualisation
 from code.other.part1 import find_p
 from code.other.part5 import Part5
 from code.other.use_pickle import run_pickle
@@ -139,6 +140,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         if sys.argv[2] == "find_p" or sys.argv[2] == "part1":
             find_p(area, amount_trajects, max_time, amount_stations)
+        elif sys.argv[2] == "visualisation" or sys.argv[2] == "vis":
+            visualisation(sys.argv[1])
         elif sys.argv[2] == "part5":
             Part5()
         elif sys.argv[2] == "test_weighted":

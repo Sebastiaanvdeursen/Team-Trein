@@ -1,7 +1,29 @@
-from typing import List
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+This is the Traject class.
+"""
+
 from code.classes.station import Station
 
+
 class Traject:
+    """
+    Represents a train route.
+
+    Methods:
+    - __init__(self, destination, time):
+        Initializes a Traject instance.
+
+    - move(self, destination):
+        Moves the traject to the given destination.
+
+    - show_current_traject(self):
+        Displays the current state of the traject.
+    """
+
     train_count: int = 0
 
     def __init__(self, starting_station: Station, rail_instance):
@@ -18,7 +40,7 @@ class Traject:
         self.total_time: int = 0
         self.starting_station: Station = starting_station
         self.current_station: Station = starting_station
-        self.traject_connections: List[str] = [starting_station.name]
+        self.traject_connections: list[str] = [starting_station.name]
         self.rail_instance = rail_instance
         Traject.train_count += 1
 
@@ -41,12 +63,8 @@ class Traject:
         self.traject_connections.append(connection.destination)
         self.total_time += connection.time
         self.current_station = self.rail_instance.stations.get(connection.destination)
-    
+
     def show_current_traject(self):
-        """
-        display the current state of the traject.
-        """
+        """Display the current state of the traject."""
         stations_str = ', '.join(self.traject_connections)
         print(f"train_{self.train_count},\"[{stations_str}]\"")
-
-
