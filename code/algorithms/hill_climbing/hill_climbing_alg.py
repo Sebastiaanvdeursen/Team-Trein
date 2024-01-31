@@ -29,7 +29,7 @@ from code.other.run import run_trajects
 
 
 def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int = 1,
-                  greedy: bool = False, random_optim: bool = False, 
+                  greedy: bool = False, random_optim: bool = False,
                   plot: bool = False) -> tuple[float, int, list[list[str]]] | tuple[float, int, list[list[str]], list[float]]:
     """
     Perform hill climbing optimization to improve a random solution.
@@ -47,7 +47,6 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
     list_stations = []
     for station_name in area.stations:
         list_stations.append(station_name)
-
 
     # generate a random solution
     current_solution = generate_solution(area, amount_trajects, amount_stations, max_time,
@@ -102,7 +101,7 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
 
 
 def generate_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
-                      greedy: bool = False, random_optim: bool = False) -> list[Traject]:
+                      greedy: bool = False, random_optim: bool = False) -> list[list[str]]:
     """
     Generate a solution for the hill climbing optimization.
 
@@ -122,14 +121,14 @@ def generate_solution(area: Rail_NL, amount_trajects: int, amount_stations: int,
                                      used_for_hill_climbing=True, printed=False, info=True)[3]
     elif random_optim:
         solution = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations,
-                                          printed=False, info=True)[3]
+                                                     printed=False, info=True)[3]
     else:
         solution = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations,
-                                      printed=False, info=True)[3]
+                                                 printed=False, info=True)[3]
     return solution
 
 
-def evaluate_solution(solution: list[Traject], area: Rail_NL, amount_stations, max_time) -> float:
+def evaluate_solution(solution: list[list[str]], area: Rail_NL, amount_stations, max_time) -> float:
     """
     Evaluate the solution for the hill climbing optimization.
 
@@ -148,9 +147,9 @@ def evaluate_solution(solution: list[Traject], area: Rail_NL, amount_stations, m
     return K
 
 
-def get_neighbors(solution: list[Traject], area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
+def get_neighbors(solution: list[list[str]], area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
                   amount_neighbors: int, list_stations: list[str] = None, greedy: bool = False,
-                  random_optim: bool = False) -> list[list[Traject]]:
+                  random_optim: bool = False) -> list[list[list[str]]]:
     """
     Generate neighbors for the hill climbing optimization.
 
@@ -176,10 +175,10 @@ def get_neighbors(solution: list[Traject], area: Rail_NL, amount_trajects: int, 
                 neighbor[i] = run_greedy_track_random(area, amount_stations, max_time, list_stations,
                                                       printed=False)[2].traject_connections
             elif random_optim:
-                neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, 
+                neighbor[i] = run_random_traject_opt(area, amount_stations, max_time,
                                                      printed=False)[2].traject_connections
             else:
-                neighbor[i] = run_random_traject(area, amount_stations, max_time, 
+                neighbor[i] = run_random_traject(area, amount_stations, max_time,
                                                  printed=False, info=True)[2].traject_connections
             area.reset()
             neighbors.append(neighbor)
