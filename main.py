@@ -38,7 +38,7 @@ import pickle
 
 
 def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int,
-            fitter: bool = False, histogram: bool = False, group_info: bool = False):
+            fitter: bool = False, histogram: bool = False, group_info: bool = False, plot: bool = False):
     """
     Perform multiple iterations of a specified algorithm and analyze the results.
 
@@ -83,12 +83,16 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
             Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False,
                                               info=True)
         elif sys.argv[2] == "hill_climbing":
+            # use the best values according to experiment
+            amount_trajects = 14
             p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
                                             amount_neighbors=10)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_greedy":
+            # use the best values according to experiment
+            amount_trajects = 14
             p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
-                                            amount_neighbors=10, greedy=True)
+                                            amount_neighbors=5, greedy=True)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_optim":
             p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
