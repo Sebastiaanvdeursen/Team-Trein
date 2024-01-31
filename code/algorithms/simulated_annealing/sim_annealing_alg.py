@@ -19,7 +19,7 @@ import random
 
 def simulated_annealing(area: object, amount_trajects: int,
                         amount_stations: int, max_time: int, initial_temperature: float,
-                        exponent_temp: float) -> tuple[list[list[str]], float, list[float], list[float], list[float]]:
+                        exponent_temp: float) -> tuple[float, float, list[list[str]], float, list[float], list[float], list[float]]:
     """
     Perform simulated annealing to optimize the railway schedule.
     Simulated annealing is an iterative algorithm that explores neighboring solutions
