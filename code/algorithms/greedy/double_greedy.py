@@ -13,7 +13,7 @@ from code.other.remove_unnecessary import removing_lines
 import random
 
 
-def double_greedy_random(Area: object, amount_trajects: int, max_time: int,
+def double_greedy_random(Area: Rail_NL, amount_trajects: int, max_time: int,
                         amount_stations: int, printed: bool = True) -> tuple[int, int, float, list[list[str]]]:
     """
     Runs the double greedy algorithm on the provided RailNL object, returns the info and

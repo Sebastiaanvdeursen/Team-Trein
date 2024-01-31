@@ -27,8 +27,8 @@ weighted greedy is a semi random algorithm we created our self. It assigns proba
 All algorithms can only be used from the root directory of the git.
 There they are performed by using main.py and then filling in the correct commandline arguments:
 ### All examples
-*when map is used on commandline it means that the user can either put in large, large_random, small, small_random or a station he wants to exclude for more information please check the main README.
-*number means a positive integer for the amount of time the user wants to run the algorithm, or the amount of minutes the user want to spend.
+*when map is used on commandline it means that the user can either put in large, large_random, small, small_random or a station he wants to exclude for more information please check the main README.\
+*number means a positive integer for the amount of time the user wants to run the algorithm, or the amount of minutes the user want to spend.\
 *the / is used when the user can use either of the options, but not both at the same time.
 #### greedy_random_start:
 python3 main.py map greedy/greedy_random number {hist/all/fitter}\
