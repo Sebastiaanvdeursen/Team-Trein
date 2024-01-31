@@ -161,7 +161,7 @@ class plant:
                                                            power = self.replace_power)[2].traject_connections)
                         else:
                             current.append(run_greedy_track_random(self.area, self.amount_stations, self.max_time,
-                              False, printed = False)[2].traject_connections)
+                              self.list_stations, False, printed = False)[2].traject_connections)
                     elif len(current) < self.amount_trajects:
                         current.append(i)
                     count += 1

@@ -1,7 +1,7 @@
 """
-weighted greedy is a semi random algorithm based upon our own probability calculations
-the probabilities are based on the time the connection takes, the shorter the distance
-the higher the probability
+Weighted greedy is a semi random algorithm based upon our own probability
+calculations the probabilities are based on the time the connection takes,
+the shorter the distance the higher the probability
 
 by: Mathijs Leons
 """
@@ -12,20 +12,25 @@ from code.other.run import run_trajects
 
 import random
 
+
 def run_weighted(Area: Rail_NL, amount_trajects: int, max_time: int,
-                  amount_stations: int, printed: bool = True, info: bool = False,
-                    power: float = 1.6) -> tuple[int, int, float, list[list[str]]] | tuple[int, int, float]:
+                 amount_stations: int, printed: bool = True, info: bool = False,
+                 power: float = 1.6) -> tuple[int, int, float, list[list[str]]] | tuple[int, int, float]:
     """
-    runs the Weighted Greedy algorithm, to create the selected amount of tracks, for explanation of the workings
-    please read the README in the folder with the code
+    Runs the Weighted Greedy algorithm,
+    to create the selected amount of tracks,
+    for explanation of the workings please read the README
+    in the folder with the code
 
     pre:
         - Area is a clean object of type Rail_NL
-        - amount of trajects is an int corresponding to the amount of tracks the user wants/ are allowed
-        - amount_stations is an int corresponding to the amount of stations in the rail_nl object
+        - amount of trajects is an int corresponding
+          to the amount of tracks the user wants/ are allowed
+        - amount_stations is an int corresponding to the amount
+          of stations in the rail_nl object
         - printed is a bool that makes it print the tracks
-        - info is a bool that changes the bool to also return the list of list of strings
-          with the connections
+        - info is a bool that changes the bool to also return
+          the list of list of strings with the connections
         - power is a float used in the algorithm
 
     post:
@@ -46,27 +51,35 @@ def run_weighted(Area: Rail_NL, amount_trajects: int, max_time: int,
     track_info = []
     trajects = []
     for _ in range(0, amount_trajects):
-        track_info = weighted_track(Area, amount_stations, max_time, list_stations, printed, power)
+        track_info = weighted_track(Area, amount_stations, max_time,
+                                    list_stations, printed, power)
         time.append(track_info[0])
         trajects.append(track_info[2].traject_connections)
+
     time = sum(time)
 
     # Optimises the tracks
-    trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
-    fraction_done, time = run_trajects(Area, len(trajects), amount_stations, max_time, trajects)
+    trajects = removing_lines(Area, amount_trajects, amount_stations,
+                              max_time, trajects)
+
+    fraction_done, time = run_trajects(Area, len(trajects),
+                                       amount_stations, max_time, trajects)
 
     # returns the correct tracks
     if info:
         return time, len(trajects), fraction_done, trajects
-    return time, len(trajects), fraction_done
+    else:
+        return time, len(trajects), fraction_done
 
 
-def weighted_track(Area, amount_stations, max_time, list_stations, printed = True, power: float = 1,
-                    start: int = -1) -> tuple[int, Rail_NL, Traject]:
+def weighted_track(Area: Rail_NL, amount_stations: int, max_time: int,
+                   list_stations: list[str], printed: bool = True, power: float = 1,
+                   start: int = -1) -> tuple[int, Rail_NL, Traject]:
     """
-    runs the weighted track algorithm, if a start station is selected it starts there otherwise it starts from a random
-    point, the power is set too one if it isn't selected, increasing the power will make it closer to the regular greedy algorithm
-    more explanation in the README
+    Runs the weighted track algorithm, if a start station is selected it starts there
+    otherwise it starts from a random point, the power is set too one
+    if it isn't selected, increasing the power will make it closer
+    to the regular greedy algorithm more explanation in the README.
 
     pre:
         - Area is of type RailNL, it needs to contain the tracks already created
@@ -75,8 +88,8 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
         - list_station is the list of all the stations as a list of strings
         - printed is a bool, if True it prints the track when it is created
         - power is a float used in the calculation of probabilities
-        - start is an int corresponding to the index of the starting station, if its left at -1
-          it selects a random station to start
+        - start is an int corresponding to the index of the starting station,
+          if its left at -1 it selects a random station to start
 
     post:
         - returns the time the track takes as an int
@@ -99,30 +112,25 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
         list_stations_current = []
         for station_name in random_traject.current_station.connections:
             list_stations_current.append(station_name)
+
+        # initiate necessary variables
         list_possibilities = []
         summation = 0
 
         # Adds the info for all the connections regarding time and if already used
         # so that the probabilities can be calculated correctly
-        for i in range(len(random_traject.current_station.connections)):
-            if random_traject.current_station.connections[list_stations_current[i]].done == True:
-                if (random_traject.current_station.connections[list_stations_current[i]].time
-                     * 2 + random_traject.total_time < max_time):
-                    list_possibilities.append(
-                        [list_stations_current[i],
-                        (10 * random_traject.current_station.connections[list_stations_current[i]].time)
-                          ** power])
-                    summation += ((10 * random_traject.current_station.connections[list_stations_current[i]].time)
-                                   ** power)
+        for station in list_stations_current:
+            time_selected = random_traject.current_station.connections[station].time
+            if random_traject.current_station.connections[station].done:
+                if (time_selected * 2 + random_traject.total_time < max_time):
+                    list_possibilities.append([station,
+                                              (10 * time_selected) ** power])
+                    summation += ((10 * time_selected) ** power)
 
             else:
-                if (random_traject.current_station.connections[list_stations_current[i]].time +
-                random_traject.total_time < max_time):
-                    list_possibilities.append(
-                        [list_stations_current[i],
-                        random_traject.current_station.connections[list_stations_current[i]].time ** power])
-                    summation += ((random_traject.current_station.connections[list_stations_current[i]].time)
-                                   ** power)
+                if (time_selected + random_traject.total_time < max_time):
+                    list_possibilities.append([station, time_selected ** power])
+                    summation += ((time_selected) ** power)
 
         # Ends the track if no connections are found
         if len(list_possibilities) == 0:
@@ -139,10 +147,12 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
             probabilities = []
             for i in range(length):
                 fractions.append(1 / list_possibilities[i][1])
+
             total = sum(fractions)
 
             for j in range(length):
                 probabilities.append((fractions[j] / total) * 100)
+
             selected = random.randint(0, 100)
 
             # Choose the connection using the probabilities and a random generator
