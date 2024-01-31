@@ -17,11 +17,13 @@ If it is needed you can put in the starting station, if you did not it will use 
 It is necessary to provide a list of all the stations within the RailNL object to curcimvent errors
 ### greedy_best_comb.py:
 This version utilizes brute force to go trough all possible combinations of greedy tracks. For most people it is only possible to run this on the Holland data set as it will otherwise kill the process. It utilizes Itertools.permutations to calculate all possible combinations and runs them using run_greedy_track from greedy_random_start making use of the start option. This algorithm will provide you with the best outcome of greedy tracks. It will also only return the best combination.
+The algorithm also has an option longer that we always set on True, the false is only used by as an experiment to look at the possibility of implementing a genetic algorithm.
 ### double_greedy.py:
 double_greedy is a modified version of the greedy algorithm based upon our own heuristics. It differs from the regular because instead of looking ahead oe connection it looks for two. So it will loop trough all the connected stations and looks at their connections. It will move to the station which provides the shortest combined time (time it takes to move to first station and then continue to the next), it will not move two stations ahead at once.
 It differs with used connections to the first station differently than used connections to the second, for the first it is handled the same way as in the regular greedy algorithm. If the second connection is used (connection between the station that you can move to and the second station) and the first isn't it handles it by multiplying the amount of time used by the second station by two.
 ### weighted_greedy.py:
 weighted greedy is a semi random algorithm we created our self. It assigns probabilities of using a connection based upon the time the connection takes and whether it is already used. It assigns the probabilities the following way: $ p_i = \frac{\frac{1}{time_i^power}}{\sum_{j = 1}^{n}(\frac{1}{time_j^{power} \* punishment ^{done}})}$
+The results are improved by remove_ends and removing_lines
 ### Usage
 All algorithms can only be used from the root directory of the git.
 There they are performed by using main.py and then filling in the correct commandline arguments:
@@ -36,7 +38,14 @@ python3 main.py map greedy/greedy_random number {hist/all/fitter}
 ```
 python3 main.py map greedy/greedy_random time number
 ```
+
+functional example:
+```
+python3 main.py small greedy 1000
+```
+this will print out the best one of the 1000 times a set of greedy tracks is created
 #### greedy_best_comb
+This is used as follows:
 ```
 python3 main.py small greedy_optim
 ```
@@ -47,10 +56,19 @@ python3 main.py map double/double_greedy number {hist/all/fitter}
 ```
 python3 main.py map double/double_greedy number
 ```
+
+```
+python3 main.py map double time number
+```
+
+functional example:
+```
+python3 main.py large double time 10
+```
 #### Weighted greedy
 ```
-python3 main.py map weight number {hist/all/fitter}
+python3 main.py map weighted number {hist/all/fitter}
 ```
 ```
-python3 main.py map weight number
+python3 main.py map weighted time minutes_as_float
 ```
