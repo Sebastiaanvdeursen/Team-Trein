@@ -91,23 +91,34 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
         - modifies the area object also if you do not use the return
         - if printed it prints the created traject
     """
+    # if list of stations isn't put in it creates it as a list of stations
     if list_stations == ["empty"]:
         list_stations = []
         for station_name in Area.stations:
             list_stations.append(station_name)
+
+    # selects a starting point for the track if none is given
     if start == -1:
         random_number = random.randint(0, amount_stations - 1)
     else:
         random_number = start
 
+    # creates the traject object
     random_traject = Area.create_traject(list_stations[random_number], Area)
+
+    # creates the traject, it continues to add new connections until it passes the time limit
     went_back = 0
     while True:
         list_stations_current = []
+
+        # list of possible connections that can be added
         for station_name in random_traject.current_station.connections:
             list_stations_current.append(station_name)
         destination = ""
         time = 200
+
+        # select the shortest connection, if a connection is done it is placed in a seperate variable
+        # for both done and not done only the shortest is saved
         going_back = ""
         for i in range(len(random_traject.current_station.connections)):
             if random_traject.current_station.connections[list_stations_current[i]].done == True:
@@ -120,19 +131,23 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
                 destination = list_stations_current[i]
                 time = random_traject.current_station.connections[list_stations_current[i]].time
 
+        # make sure that you are not going back and forth between two stations
         if destination == "":
             went_back += 1
 
             if went_back > 1:
                 break
 
-            if (random_traject.total_time + random_traject.current_station.connections[going_back].time
+            # check if there is a done connection and if it's possible
+            if going_back == "":
+                break
+            elif (random_traject.total_time + random_traject.current_station.connections[going_back].time
                  > max_time):
                 break
-            if going_back != "":
-                random_traject.move(going_back)
             else:
-                break
+                random_traject.move(going_back)
+
+        # check if selected destination is possible, if possible move there otherwise break
         else:
             if (random_traject.total_time + random_traject.current_station.connections[destination].time
             > max_time):
@@ -140,6 +155,7 @@ def run_greedy_track_random(Area, amount_stations, max_time, used_for_hill_climb
             went_back = 0
             random_traject.move(destination)
 
+    # print the tracks if selected
     if used_for_hill_climbing == False and printed:
         random_traject.show_current_traject()
 

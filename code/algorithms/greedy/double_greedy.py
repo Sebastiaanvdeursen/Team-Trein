@@ -54,9 +54,9 @@ def double_greedy_random(Area: object, amount_trajects: int, max_time: int, amou
     trajects = removing_lines(Area, amount_trajects, amount_stations, max_time, trajects)
     fraction_done, Min, trajects = remove_end(Area, amount_stations, max_time, trajects)
 
-    return Min, len(trajects), fraction_done, trajects
+    return [Min, len(trajects), fraction_done, trajects]
 
-def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, list_stations: list[str], 
+def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, list_stations: list[str],
                                 printed: bool = False) -> [int, object, list[str]]:
     """
     Creates a track based upon the double greedy method
@@ -76,11 +76,11 @@ def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, li
     # create the track
     random_traject = Area.create_traject(list_stations[random_number], Area)
 
-    #start the creation process
+    # start the creation process
     went_back = 0
     while True:
 
-        #finds the possoble connections
+        # finds the possoble connections
         list_stations_current = []
         for station_name in random_traject.current_station.connections:
             list_stations_current.append(station_name)
@@ -91,20 +91,20 @@ def run_double_greedy_track(Area: Rail_NL, max_time: int, random_number: int, li
         for i in range(len(random_traject.current_station.connections)):
 
             # if you already used a connection it is saved here instead
-            if random_traject.current_station.connections[list_stations_current[i]].done == True:
+            if random_traject.current_station.connections[list_stations_current[i]].done:
                 going_back = list_stations_current[i]
 
             else:
                 for j in Area.stations[list_stations_current[i]].connections:
 
                     # seperate calculation of time if second connection is used
-                    if  Area.stations[list_stations_current[i]].connections[j].done == True:
+                    if  Area.stations[list_stations_current[i]].connections[j].done:
                         if (random_traject.current_station.connections[list_stations_current[i]].time +
                              3 * Area.stations[list_stations_current[i]].connections[j].time < time):
                             destination = list_stations_current[i]
                             time = 2 * random_traject.current_station.connections[list_stations_current[i]].time
 
-                    #save times of unused combinations
+                    # save times of unused combinations
                     elif (random_traject.current_station.connections[list_stations_current[i]].time +
                            Area.stations[list_stations_current[i]].connections[j].time < time):
                         destination = list_stations_current[i]
