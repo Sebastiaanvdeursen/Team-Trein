@@ -50,7 +50,8 @@ def double_greedy_random(Area: object, amount_trajects: int, max_time: int,
                 numbers.append(random_number)
                 break
 
-        info = run_double_greedy_track(Area, amount_stations, max_time, random_number, list_stations, printed)
+        info = run_double_greedy_track(Area, max_time,
+                                       random_number, list_stations, printed)
         trajects.append(info[2])
 
     # optimizes and gets the information
@@ -67,10 +68,12 @@ def run_double_greedy_track(Area: Rail_NL, max_time: int,
     creates a track based upon the double greedy method
 
     pre:
-        - Area is an object of type RailNL, where the other tracks are already loaded
+        - Area is an object of type RailNL,
+          where the other tracks are already loaded
         - max_time is an int corresponding to the maximum amount of time per track
         - random_number is an int corresponding to the index of the starting station
-        - list_stations is a list of strings with the names of all the stations in the RailNL object
+        - list_stations is a list of strings with the names
+          of all the stations in the RailNL object
         - printed is a bool, if printed it prints the track
 
     post:
@@ -87,6 +90,9 @@ def run_double_greedy_track(Area: Rail_NL, max_time: int,
 
         # finds the possoble connections
         list_stations_current = []
+        if len(random_traject.current_station.connections) == 0:
+            break
+
         for station_name in random_traject.current_station.connections:
             list_stations_current.append(station_name)
 
@@ -94,46 +100,49 @@ def run_double_greedy_track(Area: Rail_NL, max_time: int,
         time = 200
 
         # loops trough the connections two find the shortest combination
-        for i in range(len(random_traject.current_station.connections)):
-
+        for station in list_stations_current:
+            current_connections = random_traject.current_station.connections
             # if you already used a connection it is saved here instead
-            if random_traject.current_station.connections[list_stations_current[i]].done:
-                going_back = list_stations_current[i]
+            if current_connections[station].done:
+                going_back = station
 
             else:
-                for j in Area.stations[list_stations_current[i]].connections:
-
+                for j in Area.stations[station].connections:
+                    current_time = current_connections[station].time
+                    next_time = Area.stations[station].connections[j].time
                     # seperate calculation of time if second connection is used
-                    if Area.stations[list_stations_current[i]].connections[j].done:
-                        if (random_traject.current_station.connections[list_stations_current[i]].time +
-                             3 * Area.stations[list_stations_current[i]].connections[j].time < time):
-                            destination = list_stations_current[i]
-                            time = 2 * random_traject.current_station.connections[list_stations_current[i]].time
+                    if Area.stations[station].connections[j].done:
+                        if (current_time + 3 *  next_time < time):
+                            destination = station
+                            time = 2 * current_time
 
                     # save times of unused combinations
-                    elif (random_traject.current_station.connections[list_stations_current[i]].time +
-                           Area.stations[list_stations_current[i]].connections[j].time < time):
-                        destination = list_stations_current[i]
-                        time = random_traject.current_station.connections[list_stations_current[i]].time
+                    elif (current_time + next_time < time):
+                        destination = station
+                        time = current_time
 
-        # if no unused connection is found and you already used a used connection in the one before break
-        # else move there
+        # if no unused connection is found and you already used
+        # a used connection in the one before break else move there
+        total = random_traject.total_time
+
         if destination == "":
             went_back += 1
             if went_back > 1:
                 break
 
             # check if move is within time limit and move
-            if (random_traject.total_time + random_traject.current_station.connections[going_back].time >
+            if (total + current_connections[going_back].time >
                 max_time):
                 break
+
             random_traject.move(going_back)
 
         # if unused connections found move the shortest double connection
         else:
-            if (random_traject.total_time + random_traject.current_station.connections[destination].time >
-                 max_time):
+            if (total + current_connections[destination].time >
+                max_time):
                 break
+
             went_back = 0
             random_traject.move(destination)
 

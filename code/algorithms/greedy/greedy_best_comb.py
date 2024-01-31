@@ -14,8 +14,9 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
     """
     function that tries out all combinations of greedy tracks, the longer version
     will remake all tracks for all possible combinations, while longer == False
-    will use precalculated tracks, Longer == True creates new tracks for each permutation.
-    It returns the best combination it finds
+    will use precalculated tracks, Longer == True creates new tracks
+    for each permutation.
+    It returns the best combination it finds.
 
     pre:
     - takes an area object of type railNL, it has to be based upon the small map
@@ -33,95 +34,105 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
         - the len(list) as an int
         - fraction of connections used as a float
     """
-    #loads in the list of stations as strings
+    # Loads in the list of stations as strings
     list_stations = []
     for station_name in area.stations:
         list_stations.append(station_name)
 
-    # pre determines the routes for if longer is false, this is done using the greedy_track function
-    if longer == False:
+    # Pre determines the routes for if longer is false,
+    # this is done using the greedy_track function
+    if not longer:
         possible = []
         for i in range(0, amount_stations):
             # runs the greedy algorithm on each station with a clean area each time
-            possible.append(run_greedy_track_random(area, amount_stations, max_time, start = i, printed = False,
-                                                     list_stations = list_stations)[2].traject_connections)
+            output = run_greedy_track_random(area, amount_stations, max_time,
+                                             start=i, printed=False,
+                                             list_stations=list_stations)
+            possible.append(output[2].traject_connections)
             area.reset()
+
     results = []
 
-    # makes all the combinations/ permutations in to a list, depending on what is needed
+    # Makes all the combinations/ permutations in to a list, depending on what is needed
     if longer:
-        possible_trajects_combs = list(iter.permutations(range(amount_stations), amount_trajects - 3))
+        possible_trajects_combs = list(iter.permutations(range(amount_stations),
+                                                         amount_trajects - 3))
     else:
-        possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
-    amount = comb(amount_stations, amount_trajects)
+        possible_trajects_combs = list(iter.combinations(range(amount_stations),
+                                                         amount_trajects))
+        amount = comb(amount_stations, amount_trajects)
 
-    # if longer is false it loops to all possible combinations using the pre determined tracks
-    if longer == False:
+    # If longer is false it loops to all possible combinations using the pre determined tracks
+    if not longer:
         for i in range(amount):
             visit = []
 
-            # load in the correct list of strings to run the track
+            # Load in the correct list of strings to run the track
             for j in possible_trajects_combs[i]:
                 visit.append(possible[j])
 
-            # run the track and save the score
-            fraction_done, Min = run_trajects(area, amount_trajects, amount_stations, max_time, visit)
+            # Run the track and save the score
+            fraction_done, Min = run_trajects(area, amount_trajects, amount_stations,
+                                              max_time, visit)
             k = fraction_done * 10000 - (len(visit) * 100 + Min)
             results.append(k)
             area.reset()
 
-        #find the maximum value of all the combinations that where tried
+        # Find the maximum value of all the combinations that where tried
         max_index = results.index(max(results))
         area.reset()
-        time  = 0
+        time = 0
         solution = []
         for j in possible_trajects_combs[max_index]:
-            passed, time_track, track = run_greedy_track_random(area, amount_stations, max_time, False, False,
-                                                                 start = j, list_stations = list_stations)
+
+            info = run_greedy_track_random(area, amount_stations, max_time, False, False,
+                                           start=j, liststations=list_stations)
+            passed = info[0]
+            time_track = info[1]
+            track = info[3]
             time += time_track
             solution.append(track)
 
-    # runs trough all starting startion permutations and creates new tracks for each
-    if longer == True:
+    # Runs trough all starting startion permutations and creates new tracks for each
+    if longer:
         best_track = []
         best_score = 0
         for i in possible_trajects_combs:
             current = []
 
-            # reset the railNL object for each iteration
+            # Reset the railNL object for each iteration
             area.reset()
             for j in i:
                 info = run_greedy_track_random(area, amount_stations, max_time, False, False,
-                                                start = j, list_stations = list_stations)
+                                               start=j, liststations=list_stations)
                 time_track = info[0]
                 passed = info[2].traject_connections
                 current.append(passed)
 
-            # optimize the results and calculate the value
+            # Optimize the results and calculate the value
             current = removing_lines(area, len(current), amount_stations, max_time, current)
             current_fraction_done, current_time, current = remove_end(area, amount_stations, max_time, current)
             score = current_fraction_done * 10000 - (len(current) * 100 + current_time)
 
-            # saving the highest score/ best tracks
+            # Saving the highest score/ best tracks
             if score > best_score:
                 best_score = score
                 best_track = current
                 fraction_done = current_fraction_done
                 time = current_time
 
-    # calculates P for longer since it hasn't before
-    if longer == False:
+    # Calculates P for longer since it hasn't before
+    if not longer:
         n_done = 0
         for station in area.stations.values():
             for connection in station.connections.values():
-                if connection.done == True:
+                if connection.done:
                     n_done += 1
 
         fraction_done = (n_done / 2) / area.total_connections
 
-    #returns the correct info
-    if used_for_hill_climbing == False:
+    # Returns the correct info
+    if not used_for_hill_climbing:
         return time, len(best_track), fraction_done, best_track
-    if used_for_hill_climbing:
+    else:
         return solution
-
