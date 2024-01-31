@@ -2,7 +2,7 @@ from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_anne
 
 import pickle
 
-def timed_multiple(area, amount_trajects, max_time_train, amount_stations, time_to_run):
+def Test_simulated(area, amount_trajects, max_time_train, amount_stations, time_to_run):
     list_temperaturevalues = [600, 700, 800, 900]
     list_valuesexponent = [0.4125, 0.425, 0.4375]
     for j in range(len(list_temperaturevalues)):

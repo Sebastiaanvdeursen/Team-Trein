@@ -7,6 +7,7 @@ from code.algorithms.greedy.double_greedy import double_greedy_random
 from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_annealing
 from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
+from code.visualisation.plot_simulated import Plot_simulated
 from code.other.part1 import find_p
 from code.other.part5 import Part5
 from code.other.use_pickle import run_pickle
@@ -15,7 +16,7 @@ from experiments.plant_power.plant_experiment import timed_plant
 from experiments.weighted_greedy.experiment_weighted import timed_weighted
 from experiments.hill_climbing.test_hill_climbing import test_hill_climbing
 from experiments.hill_climbing_greedy.test_hill_climbing_greedy import test_hill_climbing_greedy
-from experiments.simulated_annealing.test_simulated import timed_multiple
+from experiments.simulated_annealing.test_simulated import Test_simulated
 from fitter import Fitter
 
 from code.classes.rail_NL import Rail_NL
@@ -148,6 +149,8 @@ if __name__ == "__main__":
             test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy":
             test_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+        elif sys.argv[2] == "test_simulated" or sys.argv[2] == "test_annealing":
+            Test_simulated(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "pickle":
             run_pickle()
 
@@ -155,10 +158,6 @@ if __name__ == "__main__":
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
                     Timed(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
-            elif sys.argv[3] == "timemultiple":
-                if len(sys.argv) > 4:
-                    timed_multiple(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
-
             elif len(sys.argv) > 4:
                 if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
                     iterate(area, amount_trajects, max_time, amount_stations, histogram = True)
@@ -171,32 +170,7 @@ if __name__ == "__main__":
 
         else:
             if sys.argv[2] == "simulatedplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 500, 0.40)
-                trajects = result[0]
-                count = 1
-                for a in trajects:
-                    stations_str = ', '.join(a)
-                    print(f"train_{count},\"[{stations_str}]\"")
-                    count += 1
-                print(f"score, {result[1]}")
-                scoresplot = result[2]
-                temperatureplot = result[3]
-                iterationstemperatureplot = range(len(temperatureplot))
-                iterationsplot = range(len(scoresplot))
-                plt.plot(iterationstemperatureplot, temperatureplot)
-                plt.plot(iterationsplot, scoresplot)
-                plt.xlabel('Iterations')
-                plt.ylabel('Score')
-                plt.title('Simulated Annealing for the Netherlands')
-                plt.show()
-
-            elif sys.argv[2] == "simulatedprobplot":
-                result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 2000, 0.50)
-                print(f"score, {result[1]}")
-                pacceptplot = result[4]
-                iterationsprobplot = range(len(pacceptplot))
-                plt.plot(iterationsprobplot, pacceptplot)
-                plt.show()
+                Plot_simulated(area, amount_trajects, amount_stations, max_time, 500, 0.4)
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 100)
@@ -207,7 +181,3 @@ if __name__ == "__main__":
 
             else:
                 print("usage python3 main.py size algorithm")
-    else:
-        Min, T, p = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations)
-        K = p*10000 - (T*100 + Min)
-        print(f"score,{K}")
