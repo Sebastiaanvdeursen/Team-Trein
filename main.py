@@ -76,7 +76,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
                                                    printed=False, info=True)
         elif sys.argv[2] == "greedy_optim":
             Min, T, p, current = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
-                                                         used_for_hill_climbing=False, longer=True)
+                                                         longer=True)
         elif sys.argv[2] == "double_greedy" or sys.argv[2] == "double":
             Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations,
                                                       False)
@@ -235,4 +235,4 @@ if __name__ == "__main__":
                     pickle.dump(results, f)
 
             else:
-                print("usage python3 main.py size algorithm")
+                print("please look at README for how to run")
