@@ -91,7 +91,7 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
     return p, Min, current_solution_list
 
 def generate_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
-                            greedy: bool, random_optim: bool) -> List[Traject]:
+                            greedy: bool = False, random_optim: bool = False) -> List[Traject]:
     """
     Generate a solution for the hill climbing optimization.
 
@@ -140,7 +140,7 @@ def evaluate_solution(solution: List[Traject], area: Rail_NL, amount_stations, m
     return K
 
 def get_neighbors(solution: List[Traject], area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int,
-                greedy: bool, random_optim: bool) -> List[List[Traject]]:
+                greedy: bool = False, random_optim: bool = False) -> List[List[Traject]]:
     """
     Generate neighbors for the hill climbing optimization.
 
