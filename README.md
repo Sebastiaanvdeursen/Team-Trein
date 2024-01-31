@@ -31,14 +31,18 @@ You can also opt to not include size, then one iteration will be ran.
 By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland. Using large_random randomizes three connections on the national map, small_random randomizes two connections on the Holland map. If you enter utrecht the large map will be used but Utrecht Centraal will be excluded.
 
 For algorithms you can choose between    
-find_p, annealing, random, random_optim, greedy_random, greedy_optim, double_greedy, hill_climbing, hill_climbing_greedy or hill_climbing_optim.
+find_p, annealing, random, random_optim, greedy_random, greedy_optim, double_greedy, hill_climbing, hill_climbing_greedy or hill_climbing_optim.   
 Adding hist to the command creates a histogram using the result, adding all also gives the average.
 
-You can also use main.py large/small algorithm time minutes, to make the algorithm run for a certain amount of time, it saves all the results in a pickle file and displays the top result.
+You can also run the command 
+```
+python main.py large/small algorithm time minutes 
+```
+to make the algorithm run for a certain amount of time, it saves all the results in a pickle file and displays the top result.
 
 To reproduce the experiment values of simulated annealing, run the following line:
 ```
-python main.py large simulated timemultiple 30
+python main.py large/small test_simulated 30
 ```
 This will give 16 pickle files, run use_pickle to obtain the results like written in the file simulated_annealing_experimentatie.
 
