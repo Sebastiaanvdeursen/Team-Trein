@@ -87,6 +87,7 @@ class Rail_NL:
         if self.removing != "":
             remove = self.remove_station()
         with open(filename) as csv_bestand:
+            line_count = 0
             csv_read = csv.reader(csv_bestand, delimiter=',')
             if self.randomizer:
                 station_names = []
@@ -97,7 +98,7 @@ class Rail_NL:
                     amount_connections = 89
                 for _ in range(3):
                     self.numbers.append(random.randint(1, amount_connections))
-            for line_count, row in enumerate(csv_read):
+            for row in csv_read:
                 if line_count != 0:
                     if self.randomizer:
                         change = []
@@ -120,6 +121,7 @@ class Rail_NL:
                         self.add_station(row[1])
                         self.add_connection_stations(row[0], row[1], int(float(row[2])))
                         self.add_connection_stations(row[1], row[0], int(float(row[2])))
+                line_count += 1
             if self.randomizer:
                 for start_station in change:
                     time = random.randint(5, 70)
