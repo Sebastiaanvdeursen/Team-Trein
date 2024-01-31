@@ -1,3 +1,13 @@
+"""
+Algorithms & Heuristics
+
+Group: Team-Trein
+
+This script acts as the central hub for our Rail_NL project. Here, you'll find a large range
+of algorithms to try and tackle the Rail_NL problem. Additionally, the script provides tools for 
+visualization, testing, and ways to evaluate the quality of the algorithms.
+"""
+
 from code.algorithms.random.random_alg import run_random_amount_of_trajects
 from code.algorithms.random.random_alg_opt import run_random_amount_of_trajects_opt
 from code.algorithms.greedy.greedy_random_start import run_greedy_random
@@ -27,36 +37,61 @@ import sys
 import pickle
 
 
-def iterate(area, amount_trajects, max_time, amount_stations,
+def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int,
             fitter: bool = False, histogram: bool = False, group_info: bool = False):
+    """
+    Perform multiple iterations of a specified algorithm and analyze the results.
+
+    pre:
+        - area: Instance of Rail_NL object.
+        - amount_trajects: Number of tracks.
+        - max_time: Maximum time allowed for one track.
+        - amount_stations: Number of stations in the railway network.
+        - fitter: Bool indicating whether to use Fitter function.
+        - histogram: Boolean indicating whether to generate and display a histogram of results.
+        - group_info: Boolean indicating whether to print group information.
+
+    post:
+        - results of each iteration are stored in 'results' list.
+        - the best-performing iteration's details are stored in 'best'.
+        - if 'fitter' is True, ouput of Fitter function is printed.
+        - If 'histogram' is True, a histogram of results is displayed.
+        - If 'group_info' is True, average score information is printed.
+        - Results are saved in 'results.pickle' file.
+    """
     results = []
     best = []
     for i in range(0, int(sys.argv[3])):
         if sys.argv[2] == "random":
-            Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time, amount_stations, 
-                                                               printed = False, info = True)
+            Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time,
+                                                               amount_stations, printed=False, info=True)
         elif sys.argv[2] == "random_optim":
-            Min, T, p, current = run_random_amount_of_trajects_opt(area, amount_trajects, max_time, amount_stations, 
-                                                                   printed = False, info = True)
+            Min, T, p, current = run_random_amount_of_trajects_opt(area, amount_trajects, max_time,
+                                                                   amount_stations, printed=False,
+                                                                   info=True)
         elif sys.argv[2] == "greedy_random" or sys.argv[2] == "greedy":
-            Min, T, p, current = run_greedy_random(area, amount_trajects, max_time, amount_stations, printed = False, info = True)
+            Min, T, p, current = run_greedy_random(area, amount_trajects, max_time, amount_stations,
+                                                   printed=False, info=True)
         elif sys.argv[2] == "greedy_optim":
             Min, T, p, current = run_greedy_combinations(area, amount_trajects, max_time, amount_stations,
-                                                        used_for_hill_climbing = False, longer = True)
+                                                         used_for_hill_climbing=False, longer=True)
         elif sys.argv[2] == "double_greedy" or sys.argv[2] == "double":
-            Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations, False)
+            Min, T, p, current = double_greedy_random(area, amount_trajects, max_time, amount_stations,
+                                                      False)
         elif sys.argv[2] == "weighted":
-            Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
+            Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False,
+                                              info=True)
         elif sys.argv[2] == "hill_climbing":
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
+                                            amount_neighbors=10)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_greedy":
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10,
-                                            greedy = True)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
+                                            amount_neighbors=10, greedy=True)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_optim":
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10, 
-                                            random_optim = True)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
+                                            amount_neighbors=10, random_optim=True)
             T = len(current)
         elif sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
             result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 500, 0.4)
@@ -71,7 +106,7 @@ def iterate(area, amount_trajects, max_time, amount_stations,
             best = current
 
     if fitter:
-        f = Fitter(results, distributions = ["norm"])
+        f = Fitter(results, distributions=["norm"])
         f.fit()
         f.summary()
 
@@ -112,7 +147,7 @@ if __name__ == "__main__":
             amount_trajects = 7
             amount_stations = 22
             max_time = 120
-            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer=True)
             amount_stations = area.get_amount_stations()
             made_area = True
         elif sys.argv[1] == "large_random":
@@ -120,7 +155,7 @@ if __name__ == "__main__":
             amount_trajects = 20
             amount_stations = 61
             max_time = 180
-            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer = True)
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, randomizer=True)
             amount_stations = area.get_amount_stations()
             made_area = True
         else:
@@ -128,10 +163,9 @@ if __name__ == "__main__":
             amount_trajects = 20
             amount_stations = 61
             max_time = 180
-            area = Rail_NL(map, amount_trajects, amount_stations, max_time, removing = sys.argv[1])
+            area = Rail_NL(map, amount_trajects, amount_stations, max_time, removing=sys.argv[1])
             amount_stations = area.get_amount_stations()
             made_area = True
-
 
     if not made_area:
         area = Rail_NL(map, amount_trajects, amount_stations, max_time)
@@ -151,7 +185,8 @@ if __name__ == "__main__":
         elif sys.argv[2] == "test_hill_climbing":
             test_hill_climbing(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_hill_climbing_greedy":
-            test_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
+            test_hill_climbing_greedy(area, amount_trajects, max_time, amount_stations,
+                                      float(sys.argv[3]))
         elif sys.argv[2] == "test_simulated" or sys.argv[2] == "test_annealing":
             Test_simulated(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "pickle":
@@ -163,9 +198,9 @@ if __name__ == "__main__":
                     Timed(area, amount_trajects, max_time, amount_stations, float(sys.argv[4]))
             elif len(sys.argv) > 4:
                 if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
-                    iterate(area, amount_trajects, max_time, amount_stations, histogram = True)
+                    iterate(area, amount_trajects, max_time, amount_stations, histogram=True)
                 elif sys.argv[4] == "all":
-                    iterate(area, amount_trajects, max_time, amount_stations, histogram = True, group_info = True)
+                    iterate(area, amount_trajects, max_time, amount_stations, histogram=True, group_info=True)
                 else:
                     iterate(area, amount_trajects, max_time, amount_stations)
             else:
