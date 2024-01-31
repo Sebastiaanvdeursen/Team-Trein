@@ -12,7 +12,7 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
                             used_for_hill_climbing: bool = False,
                             longer: bool = False) -> tuple[int,  int, float, list[list[str]]] | list[list[str]]:
     """
-    Function that tries out all combinations of greedy tracks, the longer version
+    function that tries out all combinations of greedy tracks, the longer version
     will remake all tracks for all possible combinations, while longer == False
     will use precalculated tracks, Longer == True creates new tracks for each permutation.
     It returns the best combination it finds
@@ -52,7 +52,7 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
     if longer:
         possible_trajects_combs = list(iter.permutations(range(amount_stations), amount_trajects - 3))
     else:
-        possible_trajects_Ss = list(iter.combinations(range(amount_stations), amount_trajects))
+        possible_trajects_combs = list(iter.combinations(range(amount_stations), amount_trajects))
     amount = comb(amount_stations, amount_trajects)
 
     # if longer is false it loops to all possible combinations using the pre determined tracks
@@ -120,3 +120,4 @@ def run_greedy_combinations(area: Rail_NL, amount_trajects: int, max_time: int, 
         return time, len(best_track), fraction_done, best_track
     if used_for_hill_climbing:
         return solution
+

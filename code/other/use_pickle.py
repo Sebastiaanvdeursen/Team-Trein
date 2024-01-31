@@ -6,6 +6,7 @@ import sys
 
 def run_pickle():
     if sys.argv[3] == "annealing" or sys.argv[3] == "simulated":
+
         # retrieve all pickle information of round 2 of experimentation
         list_temperaturevalues = [600, 700, 800, 900]
         list_valuesexponent = [0.4125, 0.425, 0.4375]
@@ -21,6 +22,7 @@ def run_pickle():
                 print(f"max, {max(results)}")
                 print(f"average, {sum(results) / len(results)}")
                 print(f"std, {np.std(results)}")
+
         # do the same for round 1 of experimentation
         list_temperaturevalues2 = [500, 1000, 1500, 2000]
         list_valuesexponent2 = [0.4, 0.45, 0.5, 0.55]
@@ -95,6 +97,7 @@ def run_pickle():
         print(f" 99.999999% = {math.log(0.00000001, 1- confidence_int)}")
 
     if sys.argv[3] == "hill_climbing" or sys.argv[3] == "hill_climbing_greedy":
+
         # make list containing the different colors of the lines in the plot
         colors = ["red", "green", "purple", "blue", "orange"]
         index = 0
@@ -104,8 +107,10 @@ def run_pickle():
         for q in range(len(list_amount_trajects)):
             list_averages = []
             for r in range(len(list_amount_neighbors)):
+        
                 # open the file, corresponding to this loops amount of trajects and neighbors
                 file = open(f'experiments/hill_climbing/pickle/results_{list_amount_trajects[q]}_{list_amount_neighbors[r]}.pickle', 'rb')
+
                 # extract the results from this file
                 results = pickle.load(file)
                 print(results)

@@ -13,12 +13,12 @@ from code.other.run import run_trajects
 from code.other.remove_unnecessary import removing_lines
 from code.other.remove_unnecessary import remove_end
 
-from code.classes.rail_NL import Rail_NL
-
 import math
 import random
 
-def simulated_annealing(area: object, amount_trajects: int, amount_stations: int, max_time: int, initial_temperature: float, 
+
+def simulated_annealing(area: object, amount_trajects: int,
+                        amount_stations: int, max_time: int, initial_temperature: float,
                         exponent_temp: float) -> tuple[list[list[str]], float, list[float], list[float], list[float]]:
     """
     Perform simulated annealing to optimize the railway schedule.
@@ -40,6 +40,7 @@ def simulated_annealing(area: object, amount_trajects: int, amount_stations: int
             - temperature_list: List of temperatures during the optimization process.
             - p_acceptlist: List of acceptance probabilities during the optimization process.
     """
+
     # Evaluate a starting position by generating a random solution and calculating what its score is
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
@@ -90,11 +91,12 @@ def simulated_annealing(area: object, amount_trajects: int, amount_stations: int
     for track in current_solution:
         finaltracks.append(track.traject_connections)
     area.reset()
-    # Remove tracks that decrease the score if we keep them, 
+
+    # Remove tracks that decrease the score if we keep them,
     # also remove end stations if they do not contribute to a higher score
     trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
     fraction_done, time, trajects = remove_end(area, amount_stations, max_time, trajects)
 
     area.reset()
     final_score = fraction_done * 10000 - (len(trajects) * 100 + time)
-    return trajects, final_score, scores, temperature_list, p_acceptlist
+    return fraction_done, time, trajects, final_score, scores, temperature_list, p_acceptlist
