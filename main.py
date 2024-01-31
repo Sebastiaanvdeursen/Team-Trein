@@ -90,7 +90,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
             T = len(current)
         elif sys.argv[2] == "hill_climbing_greedy":
             # use the best values according to experiment
-            amount_trajects = 14
+            amount_trajects = 18
             p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
                                             amount_neighbors=5, greedy=True)
             T = len(current)
