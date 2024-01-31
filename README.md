@@ -20,14 +20,14 @@ or
 ```
 conda install --file requirements.txt
 ```
-to get everything you need.
+to get everything set up.
 
 ### Usage
-to run an algorithm that find a regular solution:
+To run an algorithm that finds a regular solution please run:
 ```
 python main.py large/small iterate_algorithm number_of_iterations {all/hist}
 ```
-or by:
+or run:
 ```
 python main.py large/small iterate_algorithm time minutes
 ```
@@ -46,9 +46,10 @@ For iterate_algorithm you can choose between
 
 By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland.
 
-Adding hist after iterations to the command creates a histogram using the result, adding all also gives the average and uses plotter to add fitted lines. These results will be bad if to little iterations are run. This can only be used on iterations not on time.
+Adding hist after iterations to the command creates a histogram using the result, adding all also gives the average and uses plotter to add fitted lines. These results will be bad if too little iterations are run. This can only be used on iterations not on time.
+Adding hist or all is optional.
 
-to run the plant propagation algorithm you use:
+To run the plant propagation algorithm you use the code:
 ```
 python main.py large/small plant
 ```
@@ -56,23 +57,38 @@ To find a solution that uses all connections (part 1) use:
 ```
 python main.py large/small find_p
 ```
-to find a solution for part 5 of the project use:
+To find a solution for part 5 of the project use:
 ```
 python main.py large part5 > part5.csv
 ```
-this will print out a list, the lower the value the more important the connection with that index is.\
-to run an algorithm with a station removed use:
+This will print out a list. The lower the value the more important the connection with that index is.\
+To run an algorithm with a station removed use:
 ```
 python main.py station_name greedy number_of_iterations
 ```
-which will return the best result found in those iterations with the station excluded.
-to find the shortened version of the station names that consist of multiple words please look at
+Which will return the best result found in those iterations with the station excluded.
+To find the shortened version of the station names that consists of multiple words please look at the following list:
+- Utrecht: Utrecht Centraal
+- Almere: Almere Centrum
+- Amstel: Amsterdam Amstel
+- Centraal: Amsterdam Centraal
+- Sloterdijk: Amsterdam Sloterdijk
+- Zuid: Amsterdam Zuid
+- Arnhem: Arnhem Centraal
+- Den_haag: Den Haag Centraal
+- NOI: Den Haag Laan v NOI
+- HS: Den Haag HS
+- Leiden: Leiden Centraal
+- Alexander: Rotterdam Alexander
+- Rotterdam: Rotterdam Centraal
+- Blaak: Rotterdam Blaak
+- Schiedam: Schiedam Centrum
 
 To reproduce an experiment, run the following line:
 ```
-python main.py large/small [experiment] minutes
+python main.py large/small experiments minutes
 ```
-the following experiments are possible
+The following entries for experiments are possible
 - test_weighted
 - test_plant
 - test_simulated

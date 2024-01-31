@@ -231,14 +231,14 @@ class Rail_NL:
         elif self.removing == "Zuid":
             remove = "Amsterdam Zuid"
         elif self.removing == "Arnhem":
-            remove = "Amsterdam Centraal"
+            remove = "Arnhem Centraal"
         elif self.removing == "Den_haag":
             remove = "Den Haag Centraal"
         elif self.removing == "NOI":
             remove = "Den Haag Laan v NOI"
         elif self.removing == "HS":
             remove = "Den Haag HS"
-        elif self.removing == "leiden":
+        elif self.removing == "Leiden":
             remove = "Leiden Centraal"
         elif self.removing == "Alexander":
             remove = "Rotterdam Alexander"
