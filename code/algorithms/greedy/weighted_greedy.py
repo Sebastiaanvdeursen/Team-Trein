@@ -14,7 +14,7 @@ import random
 
 def run_weighted(Area: Rail_NL, amount_trajects: int, max_time: int,
                   amount_stations: int, printed: bool = True, info: bool = False,
-                    power: float = 1.6) -> [int, int, float, list[list[str]]] | [int, int, float]:
+                    power: float = 1.6) -> tuple[int, int, float, list[list[str]]] | tuple[int, int, float]:
     """
     runs the Weighted Greedy algorithm, to create the selected amount of tracks, for explanation of the workings
     please read the README in the folder with the code
@@ -57,12 +57,12 @@ def run_weighted(Area: Rail_NL, amount_trajects: int, max_time: int,
 
     # returns the correct tracks
     if info:
-        return [time, len(trajects), fraction_done, trajects]
-    return [time, len(trajects), fraction_done]
+        return time, len(trajects), fraction_done, trajects
+    return time, len(trajects), fraction_done
 
 
 def weighted_track(Area, amount_stations, max_time, list_stations, printed = True, power: float = 1,
-                    start: int = -1) -> [int, Rail_NL, Traject]:
+                    start: int = -1) -> tuple[int, Rail_NL, Traject]:
     """
     runs the weighted track algorithm, if a start station is selected it starts there otherwise it starts from a random
     point, the power is set too one if it isn't selected, increasing the power will make it closer to the regular greedy algorithm
@@ -161,4 +161,4 @@ def weighted_track(Area, amount_stations, max_time, list_stations, printed = Tru
 
     # Return the correct info
     time = random_traject.total_time
-    return [time, Area, random_traject]
+    return time, Area, random_traject
