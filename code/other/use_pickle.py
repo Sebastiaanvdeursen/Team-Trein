@@ -1,3 +1,7 @@
+"""
+code to use the pickle files we created
+"""
+
 import pickle
 import math
 import matplotlib.pyplot as plt
@@ -107,7 +111,7 @@ def run_pickle():
         for q in range(len(list_amount_trajects)):
             list_averages = []
             for r in range(len(list_amount_neighbors)):
-        
+
                 # open the file, corresponding to this loops amount of trajects and neighbors
                 file = open(f'experiments/hill_climbing/pickle/results_{list_amount_trajects[q]}_{list_amount_neighbors[r]}.pickle', 'rb')
 
