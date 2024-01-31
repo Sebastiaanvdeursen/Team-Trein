@@ -23,37 +23,72 @@ conda install --file requirements.txt
 to get everything you need.
 
 ### Usage
-Run the code by typing
+to run an algorithm that find a regular solution:
 ```
-python main.py large/large_random/small/small_random/utrecht algorithm size all/hist
+python main.py large/small iterate_algorithm number_of_iterations {all/hist}
 ```
-You can also opt to not include size, then one iteration will be ran.
-By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland. Using large_random randomizes three connections on the national map, small_random randomizes two connections on the Holland map. If you enter utrecht the large map will be used but Utrecht Centraal will be excluded.
+or by:
+```
+python main.py large/small algorithm time minutes
+```
+For iterate_algorithm you can choose between
+- annealing
+- random
+- random_optim
+- greedy_random
+- greedy_optim
+- double_greedy
+- hill_climbing
+- hill_climbing_greedy
+- hill_climbing_optim
+##### to look at the explanation of each of these options please look at the algorithms part.
 
-For algorithms you can choose between    
-find_p, annealing, random, random_optim, greedy_random, greedy_optim, double_greedy, hill_climbing, hill_climbing_greedy or hill_climbing_optim.   
-Adding hist to the command creates a histogram using the result, adding all also gives the average.
+By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland.
 
-You can also run the command 
-```
-python main.py large/small algorithm time minutes 
-```
-to make the algorithm run for a certain amount of time, it saves all the results in a pickle file and displays the top result.
+Adding hist after iterations to the command creates a histogram using the result, adding all also gives the average and uses plotter to add fitted lines. These results will be bad if to little iterations are run. This can only be used on iterations not on time.
 
-To reproduce the experiment values of simulated annealing, run the following line:
+to run the plant propagation algorithm you use:
 ```
-python main.py large/small test_simulated 30
+python main.py large/small plant
 ```
-This will give 16 pickle files, run use_pickle to obtain the results like written in the file simulated_annealing_experimentatie.
+To find a solution that uses all connections (part 1) use:
+```
+python main.py large/small find_p
+```
+to find a solution for part 5 of the project use:
+```
+python main.py large part5 > part5.csv
+```
+this will print out a list, the lower the value the more important the connection with that index is.\
+to run an algorithm with a station removed use:
+```
+python main.py station_name greedy number_of_iterations
+```
+which will return the best result found in those iterations with the station excluded.
+to find the shortened version of the station names that consist of multiple words please look at
+
+To reproduce an experiment, run the following line:
+```
+python main.py large/small [experiment] minutes
+```
+the following experiments are possible
+- test_weighted
+- test_plant
+- test_simulated
+- test_hill_climbing
+- test hill_climbing_greedy
+
+minutes is the amount of time spent per changed parameter not the amount of time spent on the experiment.
+### algorithms
 
 ### Structure
 The following list shows where you can find the most important files and folders of this project:
 - **/code:** holds all the code of our project
-    - **/code/algorithms:** posseses the code of all the algorithms we used
+    - **/code/algorithms:** posseses the code of all the algorithms we used, divided into subfolders
     - **/code/classes:** contains the 4 classes we use, this describes the inherent structure of our problem
     - **/code/visualisation:** contains the code for the visualisation of the stations and corresponding connections
 - **/data:** contains all the data files that are used to run the algorithms and perform the visualisation
-
+- **/docs:**
 ## Authors
 - Sebastiaan van Deursen
 - Mathijs Leons
