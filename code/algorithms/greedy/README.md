@@ -22,7 +22,7 @@ This version utilizes brute force to go trough all possible combinations of gree
 double_greedy is a modified version of the greedy algorithm based upon our own heuristics. It differs from the regular because instead of looking ahead oe connection it looks for two. So it will loop trough all the connected stations and looks at their connections. It will move to the station which provides the shortest combined time (time it takes to move to first station and then continue to the next), it will not move two stations ahead at once.
 It differs with used connections to the first station differently than used connections to the second, for the first it is handled the same way as in the regular greedy algorithm. If the second connection is used (connection between the station that you can move to and the second station) and the first isn't it handles it by multiplying the amount of time used by the second station by two.
 ### weighted_greedy
-weighted greedy is a semi random algorithm we created our self. It assigns probabilities of using a connection based upon the time the connection takes and whether it is already used. It assigns the probabilities the following way: $ p_i = \frac{\frac{1}{time_i^power}}{\sum_{j = 1}^{n}(\frac{1}{time_j^{power} * punishment ^{done}})}$
+weighted greedy is a semi random algorithm we created our self. It assigns probabilities of using a connection based upon the time the connection takes and whether it is already used. It assigns the probabilities the following way: $ p_i = \frac{\frac{1}{time_i^power}}{\sum_{j = 1}^{n}(\frac{1}{time_j^{power} \* punishment ^{done}})}$
 ## Usage
 All algorithms can only be used from the root directory of the git.
 There they are performed by using main.py and then filling in the correct commandline arguments:
@@ -32,7 +32,7 @@ There they are performed by using main.py and then filling in the correct comman
 *the / is used when the user can use either of the options, but not both at the same time.
 #### greedy_random_start:
 ```
-python3 main.py map greedy/greedy_random number {hist/all/fitter}\
+python3 main.py map greedy/greedy_random number {hist/all/fitter}
 ```
 ```
 python3 main.py map greedy/greedy_random time number
@@ -43,14 +43,14 @@ python3 main.py small greedy_optim
 ```
 #### double_greedy
 ```
-python3 main.py map double/double_greedy number {hist/all/fitter}\
+python3 main.py map double/double_greedy number {hist/all/fitter}
 ```
 ```
 python3 main.py map double/double_greedy number
 ```
 #### Weighted greedy
 ```
-python3 main.py map weight number {hist/all/fitter}\
+python3 main.py map weight number {hist/all/fitter}
 ```
 ```
 python3 main.py map weight number
