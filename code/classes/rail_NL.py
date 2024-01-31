@@ -83,6 +83,7 @@ class Rail_NL:
         post:
         - loads connections into the Rail_NL instance.
         """
+        self.total_connections = 0
         remove = ""
         if self.removing != "":
             remove = self.remove_station()
@@ -110,17 +111,20 @@ class Rail_NL:
                             self.add_station(row[1])
                             self.add_connection_stations(row[0], row[1], int(float(row[2])))
                             self.add_connection_stations(row[1], row[0], int(float(row[2])))
+                            self.total_connections += 1
                     if remove != "":
                         if row[0] != remove and row[1] != remove:
                             self.add_station(row[0])
                             self.add_station(row[1])
                             self.add_connection_stations(row[0], row[1], int(float(row[2])))
                             self.add_connection_stations(row[1], row[0], int(float(row[2])))
+                            self.total_connections += 1
                     else:
                         self.add_station(row[0])
                         self.add_station(row[1])
                         self.add_connection_stations(row[0], row[1], int(float(row[2])))
                         self.add_connection_stations(row[1], row[0], int(float(row[2])))
+                        self.total_connections += 1
                 line_count += 1
             if self.randomizer:
                 for start_station in change:
@@ -128,7 +132,7 @@ class Rail_NL:
                     destination = random.choice(station_names)
                     self.add_connection_stations(start_station, destination, time)
                     self.add_connection_stations(destination, start_station, time)
-        self.total_connections = line_count - 1
+                    self.total_connections += 1
 
     def add_station(self, station_name):
         """
