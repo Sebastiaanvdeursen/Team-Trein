@@ -23,7 +23,8 @@ double_greedy is a modified version of the greedy algorithm based upon our own h
 It differs with used connections to the first station differently than used connections to the second, for the first it is handled the same way as in the regular greedy algorithm. If the second connection is used (connection between the station that you can move to and the second station) and the first isn't it handles it by multiplying the amount of time used by the second station by two.
 ### weighted_greedy.py:
 weighted greedy is a semi random algorithm we created our self. It assigns probabilities of using a connection based upon the time the connection takes and whether it is already used. It assigns the probabilities the following way: $ p_i = \frac{\frac{1}{time_i^power}}{\sum_{j = 1}^{n}(\frac{1}{time_j^{power} \* punishment ^{done}})}$
-The results are improved by remove_ends and removing_lines
+The results are improved by remove_ends and removing_lines.
+The higher the power used the closer the sets of tracks are to greedy tracks.
 ### Usage
 All algorithms can only be used from the root directory of the git.
 There they are performed by using main.py and then filling in the correct commandline arguments:
