@@ -59,6 +59,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
         - If 'group_info' is True, average score information is printed.
         - Results are saved in 'results.pickle' file.
     """
+    first = True
     results = []
     best = []
     for i in range(0, int(sys.argv[3])):
@@ -99,16 +100,23 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
             Min = result[1]
             current = result[2]
             T = len(current)
+        else:
+            Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time,
+                                                               amount_stations, printed=False, info=True)
+            if first:
+                print("ran random since wrong algorithm was given")
+                first = False
         area.reset()
-        K = p*10000 - (T*100 + Min)
+        K = p * 10000 - (T * 100 + Min)
         results.append(K)
         if results[i] == max(results):
             best = current
 
     if fitter:
-        f = Fitter(results, distributions=["norm"])
+        f = Fitter(results, distributions=["norm", "gamma", "lognorm", "beta"])
         f.fit()
         f.summary()
+        plt.show()
 
     if histogram:
         plt.hist(results, int(20))
@@ -200,7 +208,7 @@ if __name__ == "__main__":
                 if sys.argv[4] == "hist" or sys.argv[4] == "histogram":
                     iterate(area, amount_trajects, max_time, amount_stations, histogram=True)
                 elif sys.argv[4] == "all":
-                    iterate(area, amount_trajects, max_time, amount_stations, histogram=True, group_info=True)
+                    iterate(area, amount_trajects, max_time, amount_stations, fitter = True, group_info=True)
                 else:
                     iterate(area, amount_trajects, max_time, amount_stations)
             else:
