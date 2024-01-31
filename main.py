@@ -18,6 +18,7 @@ from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_anne
 from code.algorithms.plant_propagation.plant_propagation import plant
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.visualization.plot_simulated import Plot_simulated
+from code.visualization.plot_hill_climbing import Plot_hill_climbing
 from code.visualization.visualization import visualization
 from code.other.part1 import find_p
 from code.other.part5 import Part5
@@ -221,6 +222,10 @@ if __name__ == "__main__":
         else:
             if sys.argv[2] == "simulatedplot":
                 Plot_simulated(area, amount_trajects, amount_stations, max_time, 500, 0.4)
+            
+            elif sys.argv[2] == "hill_climbing_plot":
+                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
+                                   greedy=False, random_optim=False)
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 400)
