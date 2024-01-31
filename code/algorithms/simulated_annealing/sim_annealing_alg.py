@@ -12,7 +12,7 @@ from code.classes.rail_NL import Rail_NL
 import math
 import random
 
-def simulated_annealing(area, amount_trajects, amount_stations, max_time, initial_temperature, exponent_temp):
+def simulated_annealing(area: object, amount_trajects: int, amount_stations: int, max_time: int, initial_temperature: float, exponent_temp: float):
     """
     Perform simulated annealing to optimize the railway schedule.
     Simulated annealing is an iterative algorithm that explores neighboring solutions
@@ -49,7 +49,7 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     # Loop through the total_iteraties 
     while iteraties < total_iteraties:
         scores.append(current_score)
-        neighbors = get_neighbors_random_opt(current_solution, area, amount_trajects, amount_stations, max_time, 1)
+        neighbors = get_neighbors_random_opt(current_solution, area, amount_trajects, amount_stations, max_time, 5)
         neighbor = random.choice(neighbors)
 
         tracks = []
@@ -91,26 +91,3 @@ def simulated_annealing(area, amount_trajects, amount_stations, max_time, initia
     lasttrajects_result = run_trajects(area, len(trajects), amount_stations, max_time, trajects)
     current_score = fraction_done * 10000 - (len(trajects) * 100 + time)
     return trajects, current_score, scores, temperature_list, p_acceptlist
-
-def get_neighbors(solution, area, amount_trajects, amount_stations, max_time):
-    """
-    This function generates neighboring solutions by randomly selecting a train route and replacing it
-    with a new random train route.
-
-    Preconditions:
-        - solution is a list representing the current solution of trajects.
-        - area is an instance of the Rail_NL class.
-        - amount_trajects is a positive integer representing the number of train routes.
-        - amount_stations is a positive integer representing the number of stations.
-        - max_time is a positive integer representing the maximum time duration for a train route.
-
-    Postconditions:
-        - Returns a list of neighboring solutions.
-    """
-    # Create a list of neighbors
-    neighbors = []
-    for i in range(amount_trajects):
-        neighbor = solution[:]
-        neighbor[i] = run_random_traject_opt(area, amount_stations, max_time, True)[2]
-        neighbors.append(neighbor)
-    return neighbors
