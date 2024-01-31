@@ -18,8 +18,8 @@ plot_simulated.py plots both the exponential temperature function and the score 
 ## File Structure
 
 - `visualisation.py`: Main script for visualization.
-- `plot_simulated`: (Ties hier wat schrijven)
-- `map/map_netherlands`: A png file containing a map of the Netherlands
+- `plot_simulated.py`: Script to plot the score and temperature function of the simulated annealing algorithm.
+- `map/map_netherlands`: A png file containing a map of the Netherlands.
 
 ## Usage
 
@@ -42,6 +42,6 @@ You can run the visualization for simulated annealing by running
 python main.py size simulatedplot
 ```
 With size having the input of either:
-- **/large:** 
+- **large:** 
 or
--**/small**
+- **small**
