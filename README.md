@@ -42,7 +42,7 @@ For iterate_algorithm you can choose between
 - hill_climbing_greedy
 - hill_climbing_optim
 
-##### to look at the explanation of each of these options please look at the algorithms part.
+##### to look at the explanation of each of these options please look at the algorithms part of this README below.
 
 By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland.
 
@@ -94,7 +94,7 @@ For algorithm you can fill in the following algorithms
 
 It does not matter if you type large or small, the pickle files will be ran anyway.
 
-### algorithms
+### Algorithms
 Here below is a list of explanations of the command-line arguments of the algorithms:
 - annealing represents the algorithm of simulated annealing
 - random represents running the completely random algorithm
@@ -113,7 +113,9 @@ The following list shows where you can find the most important files and folders
     - **/code/classes:** contains the 4 classes we use, this describes the inherent structure of our problem
     - **/code/visualisation:** contains the code for the visualisation of the stations and corresponding connections
 - **/data:** contains all the data files that are used to run the algorithms and perform the visualisation
-- **/docs:**
+- **/docs:** contains some documentation of the project
+- **/experiments:** contains all pickle files created through experimentation and experimentation results
+- **/solutions:** shows the best scores of all algorithms 
 ## Authors
 - Sebastiaan van Deursen
 - Mathijs Leons
