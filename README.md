@@ -29,7 +29,7 @@ python main.py large/small iterate_algorithm number_of_iterations {all/hist}
 ```
 or by:
 ```
-python main.py large/small algorithm time minutes
+python main.py large/small iterate_algorithm time minutes
 ```
 For iterate_algorithm you can choose between
 - annealing
@@ -41,7 +41,8 @@ For iterate_algorithm you can choose between
 - hill_climbing
 - hill_climbing_greedy
 - hill_climbing_optim
-##### to look at the explanation of each of these options please look at the algorithms part.
+
+##### to look at the explanation of each of these options please look at the algorithms part of this README below.
 
 By typing large you run the chosen algorithm on the Netherlands and by typing small you only use Holland.
 
@@ -79,7 +80,31 @@ the following experiments are possible
 - test hill_climbing_greedy
 
 minutes is the amount of time spent per changed parameter not the amount of time spent on the experiment.
-### algorithms
+
+To get the output from the pickle files run the following:
+```
+python main.py large/small pickle algorithm
+```
+For algorithm you can fill in the following algorithms   
+- simulated
+- weighted
+- plant
+- greedy
+- hill_climbing
+
+It does not matter if you type large or small, the pickle files will be ran anyway.
+
+### Algorithms
+Here below is a list of explanations of the command-line arguments of the algorithms:
+- annealing represents the algorithm of simulated annealing
+- random represents running the completely random algorithm
+- random_optim represents running the random algorithm which accounts for connections that have already been ridden
+- greedy_random runs the basic implementation of the greedy algorithm with random starting stations
+- greedy_optim runs the greedy algorithm that looks at all the possible combinations made by the greedy algorithm and picks the best
+- double_greedy runs the greedy algorithm with the heuristic of looking forward 2 connections
+- hill_climbing represents the hill climbing algorithm with a random start and random way of selecting neighbors
+- hill_climbing_greedy represents the hill climbing algorithm with a greedy start and greedy neighbors
+- hill_climbing_optim represents the hill climbing algorithm with a random optim start and random optim neighbors
 
 ### Structure
 The following list shows where you can find the most important files and folders of this project:
@@ -88,7 +113,9 @@ The following list shows where you can find the most important files and folders
     - **/code/classes:** contains the 4 classes we use, this describes the inherent structure of our problem
     - **/code/visualisation:** contains the code for the visualisation of the stations and corresponding connections
 - **/data:** contains all the data files that are used to run the algorithms and perform the visualisation
-- **/docs:**
+- **/docs:** contains some documentation of the project
+- **/experiments:** contains all pickle files created through experimentation and experimentation results
+- **/solutions:** shows the best scores of all algorithms 
 ## Authors
 - Sebastiaan van Deursen
 - Mathijs Leons

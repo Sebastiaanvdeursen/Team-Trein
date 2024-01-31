@@ -1,3 +1,9 @@
+"""
+runs a list of list to test out a created trajects, it adds it to the RailNL object
+and returns the score
+
+by: Mathijs Leons, Team-Trein
+"""
 from code.classes.traject import Traject
 from code.classes.rail_NL import Rail_NL
 
