@@ -85,6 +85,7 @@ To find the shortened version of the station names that consists of multiple wor
 - Rotterdam: Rotterdam Centraal
 - Blaak: Rotterdam Blaak
 - Schiedam: Schiedam Centrum
+check50 can't be used when a station is removed since the amount of connections changes and thus the p value is different from the regular.\
 
 To reproduce an experiment, run the following line:
 ```
