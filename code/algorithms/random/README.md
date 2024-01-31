@@ -19,6 +19,3 @@ python main.py small/large random/random_optim number_of_iterations
 ## Warning
 
 Run these algorithms only from main.py
-
-## Authors
-- Sebastiaan van Deursen
