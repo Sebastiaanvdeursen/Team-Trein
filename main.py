@@ -39,7 +39,7 @@ import pickle
 
 
 def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int,
-            fitter: bool = False, histogram: bool = False, group_info: bool = False, plot: bool = False):
+            fitter: bool = False, histogram: bool = False, group_info: bool = False, plot: bool = False) -> None:
     """
     Perform multiple iterations of a specified algorithm and analyze the results.
 
@@ -63,6 +63,8 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
     first = True
     results = []
     best = []
+
+    # Iterate over the correct algorithm
     for i in range(0, int(sys.argv[3])):
         if sys.argv[2] == "random":
             Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time,
@@ -106,17 +108,20 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
             current = result[2]
             T = len(current)
         else:
+            # If an incorrect algorithm is provided run random
             Min, T, p, current = run_random_amount_of_trajects(area, amount_trajects, max_time,
                                                                amount_stations, printed=False, info=True)
             if first:
                 print("ran random since wrong algorithm was given")
                 first = False
+        # Clean area and calculate score
         area.reset()
         K = p * 10000 - (T * 100 + Min)
         results.append(K)
         if results[i] == max(results):
             best = current
 
+    # Run the selected options
     if fitter:
         f = Fitter(results, distributions=["norm", "gamma", "lognorm", "beta"])
         f.fit()
@@ -127,6 +132,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
         plt.hist(results, int(20))
         plt.show()
 
+    # Print out in the correct style
     count = 1
     for a in best:
         stations_str = ', '.join(a)
@@ -137,12 +143,15 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
     if group_info:
         print(f"average = {sum(results) / int(sys.argv[3])}")
 
+    # Pickle the file
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
 
 
 # Main script
 if __name__ == "__main__":
+
+    # Load in the correct RailNL object
     made_area = False
     if len(sys.argv) > 1:
         if sys.argv[1] == "large":
@@ -185,12 +194,22 @@ if __name__ == "__main__":
     print("train,stations")
 
     if len(sys.argv) > 2:
+
+        # run the chosen option
         if sys.argv[2] == "find_p" or sys.argv[2] == "part1":
+
+            # used to find the answer to part 1
             find_p(area, amount_trajects, max_time, amount_stations)
         elif sys.argv[2] == "visualization" or sys.argv[2] == "vis":
+
+            # Runs the visualization
             visualization(sys.argv[1], "output.csv")
         elif sys.argv[2] == "part5":
+
+            # Solution to part 5
             Part5()
+
+        # test for experiments
         elif sys.argv[2] == "test_weighted":
             timed_weighted(area, amount_trajects, max_time, amount_stations, float(sys.argv[3]))
         elif sys.argv[2] == "test_plant":
@@ -205,6 +224,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "pickle":
             run_pickle()
 
+        # run timed or iterate
         elif len(sys.argv) > 3:
             if sys.argv[3] == "time":
                 if len(sys.argv) > 4:
@@ -222,7 +242,7 @@ if __name__ == "__main__":
         else:
             if sys.argv[2] == "simulatedplot":
                 Plot_simulated(area, amount_trajects, amount_stations, max_time, 500, 0.4)
-            
+
             elif sys.argv[2] == "hill_climbing_plot":
                 Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
                                    greedy=False, random_optim=False)
