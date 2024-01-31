@@ -41,6 +41,7 @@ For iterate_algorithm you can choose between
 - hill_climbing
 - hill_climbing_greedy
 - hill_climbing_optim
+- weighted
 
 ##### to look at the explanation of each of these options please look at the algorithms part of this README below.
 
@@ -102,7 +103,7 @@ To get the output from the pickle files run the following:
 ```
 python main.py large/small pickle pickled_algorithm
 ```
-For pickled_algorithm you can fill in the following algorithms   
+For pickled_algorithm you can fill in the following algorithms
 - simulated
 - weighted
 - plant
@@ -112,7 +113,7 @@ For pickled_algorithm you can fill in the following algorithms
 It does not matter if you type large or small, the pickle files will be ran anyway.
 
 ### Algorithms
-Here below is a list of explanations of the command-line arguments of the algorithms:
+Here below is a list of short explanations of the command-line arguments of the algorithms, for longer explanations of the algorithms please look at the README in the code folders:
 - annealing represents the algorithm of simulated annealing
 - random represents running the completely random algorithm
 - random_optim represents running the random algorithm which accounts for connections that have already been ridden
@@ -124,6 +125,7 @@ Here below is a list of explanations of the command-line arguments of the algori
 - hill_climbing_optim represents the hill climbing algorithm with a random optim start and random optim neighbors
 - plant is the plant propagation algorithm, it is ran a 1000 iterations and a graph is created
 - find_p finds a solution for part1 (using all possible connections) using the greedy algorithm
+- weighted is a semi random algorithm based upon our own heuristics for assigning probabilities
 
 ### Structure
 The following list shows where you can find the most important files and folders of this project:
@@ -134,7 +136,7 @@ The following list shows where you can find the most important files and folders
 - **/data:** contains all the data files that are used to run the algorithms and perform the visualisation
 - **/docs:** contains some documentation of the project
 - **/experiments:** contains all pickle files created through experimentation and experimentation results
-- **/solutions:** shows the best scores of all algorithms 
+- **/solutions:** shows the best scores of all algorithms
 
 ### Results
 #### Holland:
