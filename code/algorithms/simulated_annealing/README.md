@@ -10,9 +10,9 @@ decreases based on how much iterations are already done.
 
 ### Usage
 All algorithms can only be used from the root directory of the git.
-There they are performed by using main.py and then filling in the correct commandline arguments:
+There they are performed by using main.py and then filling in the correct commandline arguments.   
 Run the code by typing
 ```
 python3 main.py large/small simulated number
 ```
-For number you can fill in any amount of iterations.
+For number you can fill in any integer to run the algorithm as many times as you want. In each iteration of the algorithm, we try to improve the score 10000 times.
