@@ -38,8 +38,5 @@ python main.py small/large vis/visualization
 
 You can run the visualization for simulated annealing by running
 ```
-python main.py **size** simulatedplot
+python main.py small/large simulatedplot
 ```
-With **size** having the input of either:
-- **large**    
-- **small**
