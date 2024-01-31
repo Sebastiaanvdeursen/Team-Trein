@@ -75,7 +75,7 @@ def assign_colors(train_data: dict[str, list[str]]) -> dict[str, str]:
     post: Returns a dictionary mapping each train name to a randomly generated color.
     """
     train_colors = {}
-    colors = ["red", "green", "turqoise", "blue", "pink", "darkgreen", "orange", "yellow",
+    colors = ["red", "green", "turqoise", "blue", "pink", "purple", "orange", "yellow",
               "magenta", "saddlebrown", "lightcoral", "mediumslateblue", "forestgreen", "gold",
               "firebrick", "navy", "darkorange", "olive", "cyan", "purple"]
     # make a list palette, to store all the colors
@@ -102,11 +102,13 @@ def scatterplot(coords: str) -> tuple[figure, dict[str, list[float]]]:
     # read the coördinates data
     with open(f"data/Coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
-        for line_count, row in enumerate(csv_read):
+        line_count = 0
+        for row in csv_read:
             if line_count != 0:
                 # now link the station names to the x and y coördinates
                 # in the dictionary places
                 places[row[0]] = [float(row[1]), float(row[2])]
+            line_count += 1
 
     l_x = []
     l_y = []
@@ -116,7 +118,7 @@ def scatterplot(coords: str) -> tuple[figure, dict[str, list[float]]]:
         l_y.append(places[a][0])
 
     # add the map of the Netherlands as background image
-    p.image_url(url=['code/visualisation/map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
+    p.image_url(url=['code/visualization/map/map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
 
     # add the coördinates as black circles to the figure
     p.circle(l_x, l_y, color="red", size=4.5)
@@ -135,11 +137,13 @@ def draw_lines_connections(lines: str, places: dict[str, list[float]], p: figure
     # open the connections data
     with open(f"data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
+        line_count = 0
         # now draw a line for every connection
-        for line_count, row in enumerate(csv_file):
+        for row in csv_file:
             if line_count != 0:
                 p.line([places[row[0]][1], places[row[1]][1]], [places[row[0]][0], places[row[1]][0]],
                        color="black")
+            line_count += 1
     return p
 
 
@@ -204,7 +208,7 @@ def draw_lines_trajects(train_data: dict[str, list[str]], train_colors: dict[str
     show(p)
 
 
-def visualisation(command_arg: str):
+def visualization(command_arg: str, filename: str):
     # use command line arguments to choose between
     # Holland or the Netherlands
     if command_arg == "large":
@@ -220,9 +224,6 @@ def visualisation(command_arg: str):
 
     # draw the possible connection lines
     p = draw_lines_connections(lines, places, p)
-
-    # read the output data
-    input_filename = "output.csv"
 
     # get the train_data
     train_data = read_train_data(input_filename)
