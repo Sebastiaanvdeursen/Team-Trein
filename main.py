@@ -2,9 +2,7 @@ from code.algorithms.random.random_alg import run_random_amount_of_trajects
 from code.algorithms.random.random_alg_opt import run_random_amount_of_trajects_opt
 from code.algorithms.greedy.greedy_random_start import run_greedy_random
 from code.algorithms.greedy.greedy_best_comb import run_greedy_combinations
-from code.algorithms.hill_climbing.hill_climbing_greedy_alg import hill_climbing_greedy
 from code.algorithms.hill_climbing.hill_climbing_alg import hill_climbing
-from code.algorithms.hill_climbing.hill_climbing_opt_alg import hill_climbing_opt
 from code.algorithms.greedy.double_greedy import double_greedy_random
 from code.algorithms.simulated_annealing.sim_annealing_alg import simulated_annealing
 from code.algorithms.plant_propagation.plant_propagation import plant
@@ -48,19 +46,22 @@ def iterate(area, amount_trajects, max_time, amount_stations,
         elif sys.argv[2] == "weighted":
             Min, T, p, current = run_weighted(area, amount_trajects, max_time, amount_stations, False, info = True)
         elif sys.argv[2] == "hill_climbing":
-            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 100)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
             T = len(current)
         elif sys.argv[2] == "hill_climbing/greedy":
-            p, Min, current = hill_climbing_greedy(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10,
+                                            greedy = True)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_opt":
-            p, Min, current = hill_climbing_opt(area, amount_trajects, amount_stations, max_time, amount_neighbors = 100)
+            p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors = 10, 
+                                            random_optim = True)
             T = len(current)
         elif sys.argv[2] == "simulated" or sys.argv[2] == "annealing":
             result = simulated_annealing(area, amount_trajects, amount_stations, max_time, 500, 0.4)
             p = result[0]
             Min = result[1]
-            T = len(result[2])
+            current = result[2]
+            T = len(current)
         area.reset()
         K = p*10000 - (T*100 + Min)
         results.append(K)

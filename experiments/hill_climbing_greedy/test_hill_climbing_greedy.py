@@ -1,6 +1,6 @@
 import sys
 from code.classes.rail_NL import Rail_NL
-from code.algorithms.hill_climbing.hill_climbing_greedy_alg import hill_climbing_greedy
+from code.algorithms.hill_climbing.hill_climbing_alg import hill_climbing
 import time
 import pickle
 import numpy as np
@@ -35,7 +35,8 @@ def test_hill_climbing_greedy(area: Rail_NL, amount_trajects: int, max_time: int
             while True:
                 if (time.time() - start) / 60 > time_to_run:
                     break
-                result = hill_climbing_greedy(area, list_amount_trajects[i], amount_stations, max_time, amount_neighbors=list_amount_neighbors[j])
+                result = hill_climbing(area, list_amount_trajects[i], amount_stations, max_time, amount_neighbors=list_amount_neighbors[j], 
+                                        greedy = True)
                 current_traject = result[2]
 
                 # calculate the score (K)

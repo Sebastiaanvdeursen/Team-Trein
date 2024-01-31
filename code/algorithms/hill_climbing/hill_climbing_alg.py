@@ -45,7 +45,7 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
         greedy = False
 
     # generate a random solution
-    current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time, greedy, random_optim)
+    current_solution = generate_solution(area, amount_trajects, amount_stations, max_time, greedy, random_optim)
 
     # calculate the score of this solution
     current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
@@ -90,16 +90,18 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
 
     return p, Min, current_solution_list
 
-def generate_random_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
+def generate_solution(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
                             greedy: bool, random_optim: bool) -> List[Traject]:
     """
-    Generate a random solution for the hill climbing optimization.
+    Generate a solution for the hill climbing optimization.
 
     pre:
     - area is an instance of Rail_NL.
     - amount_trajects is a positive integer.
     - amount_stations is a positive integer.
     - max_time is a positive integer.
+    - greedy is a bool.
+    - random_optim is a bool.
 
     post:
     - Returns a list representing the random solution.

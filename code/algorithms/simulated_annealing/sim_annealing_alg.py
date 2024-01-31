@@ -7,8 +7,8 @@ decreases based on how much iterations are already done.
 By: Ties Veltman
 """
 from code.algorithms.hill_climbing.hill_climbing_alg import evaluate_solution
-from code.algorithms.hill_climbing.hill_climbing_alg import generate_random_solution
-from code.algorithms.hill_climbing.hill_climbing_opt_alg import get_neighbors_random_opt
+from code.algorithms.hill_climbing.hill_climbing_alg import generate_solution
+from code.algorithms.hill_climbing.hill_climbing_alg import get_neighbors
 from code.other.run import run_trajects
 from code.other.remove_unnecessary import removing_lines
 from code.other.remove_unnecessary import remove_end
@@ -42,7 +42,7 @@ def simulated_annealing(area: object, amount_trajects: int,
     """
 
     # Evaluate a starting position by generating a random solution and calculating what its score is
-    current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
+    current_solution = generate_solution(area, amount_trajects, amount_stations, max_time)
     current_score = evaluate_solution(current_solution, area, amount_stations, max_time)
     area.reset()
     temperature = initial_temperature
@@ -56,7 +56,7 @@ def simulated_annealing(area: object, amount_trajects: int,
     # Loop through the total amount of iterations
     while iterations < total_iterations:
         scores.append(current_score)
-        neighbors = get_neighbors_random_opt(current_solution, area, amount_trajects, amount_stations, max_time, 5)
+        neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time, 5, random_optim = True)
         neighbor = random.choice(neighbors)
 
         tracks = []
