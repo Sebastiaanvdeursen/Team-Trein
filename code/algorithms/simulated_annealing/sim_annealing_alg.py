@@ -1,8 +1,14 @@
-from code.algorithms.random.random_alg import run_random_amount_of_trajects
+"""
+Simulated annealing is an iterative algorithm which is very comparable to hill climbing,
+the only difference is that we can accept worse solutions with a certain probability.
+This probability is based on how much worse the solution is and on the value of a temperature function that
+decreases based on how much iterations are already done.
+
+By: Ties Veltman
+"""
 from code.algorithms.hill_climbing.hill_climbing_alg import evaluate_solution
 from code.algorithms.hill_climbing.hill_climbing_alg import generate_random_solution
 from code.algorithms.hill_climbing.hill_climbing_opt_alg import get_neighbors_random_opt
-from code.algorithms.random.random_alg_opt import run_random_traject_opt
 from code.other.run import run_trajects
 from code.other.remove_unnecessary import removing_lines
 from code.other.remove_unnecessary import remove_end
@@ -12,11 +18,12 @@ from code.classes.rail_NL import Rail_NL
 import math
 import random
 
-def simulated_annealing(area: object, amount_trajects: int, amount_stations: int, max_time: int, initial_temperature: float, exponent_temp: float):
+def simulated_annealing(area: object, amount_trajects: int, amount_stations: int, max_time: int, initial_temperature: float, 
+                        exponent_temp: float) -> tuple[list[list[str]], float, list[float], list[float], list[float]]:
     """
     Perform simulated annealing to optimize the railway schedule.
     Simulated annealing is an iterative algorithm that explores neighboring solutions
-    to find an optimal solution based on an acceptance probability of worse neihgbors.
+    to find an optimal solution based on an acceptance probability of worse neighbors.
 
     Preconditions:
         - area is an instance of the Rail_NL class.
@@ -32,7 +39,6 @@ def simulated_annealing(area: object, amount_trajects: int, amount_stations: int
             - scores: List of scores during the optimization process.
             - temperature_list: List of temperatures during the optimization process.
             - p_acceptlist: List of acceptance probabilities during the optimization process.
-        - Prints optimized train routes and their corresponding stations.
     """
     # Evaluate a starting position by generating a random solution and calculating what its score is
     current_solution = generate_random_solution(area, amount_trajects, amount_stations, max_time)
@@ -40,14 +46,14 @@ def simulated_annealing(area: object, amount_trajects: int, amount_stations: int
     area.reset()
     temperature = initial_temperature
 
-    total_iteraties = 10000
-    iteraties = 0
+    total_iterations = 10000
+    iterations = 0
     scores = []
     temperature_list = []
     p_acceptlist = []
 
-    # Loop through the total_iteraties 
-    while iteraties < total_iteraties:
+    # Loop through the total amount of iterations
+    while iterations < total_iterations:
         scores.append(current_score)
         neighbors = get_neighbors_random_opt(current_solution, area, amount_trajects, amount_stations, max_time, 5)
         neighbor = random.choice(neighbors)
@@ -76,18 +82,19 @@ def simulated_annealing(area: object, amount_trajects: int, amount_stations: int
             current_score = neighbor_score
 
         # Calculate the temperature value
-        temperature = initial_temperature / ((iteraties + 1) ** exponent_temp)
+        temperature = initial_temperature / ((iterations + 1) ** exponent_temp)
         temperature_list.append(temperature)
-        iteraties += 1
+        iterations += 1
 
     finaltracks = []
     for track in current_solution:
         finaltracks.append(track.traject_connections)
     area.reset()
+    # Remove tracks that decrease the score if we keep them, 
+    # also remove end stations if they do not contribute to a higher score
     trajects = removing_lines(area, amount_trajects, amount_stations, max_time, finaltracks)
     fraction_done, time, trajects = remove_end(area, amount_stations, max_time, trajects)
 
     area.reset()
-    lasttrajects_result = run_trajects(area, len(trajects), amount_stations, max_time, trajects)
-    current_score = fraction_done * 10000 - (len(trajects) * 100 + time)
-    return trajects, current_score, scores, temperature_list, p_acceptlist
+    final_score = fraction_done * 10000 - (len(trajects) * 100 + time)
+    return trajects, final_score, scores, temperature_list, p_acceptlist
