@@ -100,7 +100,7 @@ def scatterplot(coords: str) -> tuple[figure, dict[str, list[float]]]:
     p = figure(title="Scatter Plot", width=1100, height=850, x_axis_label="x", y_axis_label="y")
     places = {}
     # read the coördinates data
-    with open(f"../../data/Coordinates{coords}.csv") as data:
+    with open(f"data/Coordinates{coords}.csv") as data:
         csv_read = csv.reader(data, delimiter=',')
         for line_count, row in enumerate(csv_read):
             if line_count != 0:
@@ -116,7 +116,7 @@ def scatterplot(coords: str) -> tuple[figure, dict[str, list[float]]]:
         l_y.append(places[a][0])
 
     # add the map of the Netherlands as background image
-    p.image_url(url=['map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
+    p.image_url(url=['code/visualisation/map_netherlands.jpg'], x=3.05, y=53.7, w=4.4, h=3.1)
 
     # add the coördinates as black circles to the figure
     p.circle(l_x, l_y, color="red", size=4.5)
@@ -133,7 +133,7 @@ def draw_lines_connections(lines: str, places: dict[str, list[float]], p: figure
     post: Modifies the Bokeh plot to include lines connecting places based on the specified connections.
     """
     # open the connections data
-    with open(f"../../data/Connecties{lines}.csv") as line_info:
+    with open(f"data/Connecties{lines}.csv") as line_info:
         csv_file = csv.reader(line_info, delimiter=',')
         # now draw a line for every connection
         for line_count, row in enumerate(csv_file):
@@ -204,16 +204,12 @@ def draw_lines_trajects(train_data: dict[str, list[str]], train_colors: dict[str
     show(p)
 
 
-if __name__ == "__main__":
+def visualisation(command_arg: str):
     # use command line arguments to choose between
     # Holland or the Netherlands
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "large":
-            coords = "Long"
-            lines = "NL"
-        else:
-            coords = "Short"
-            lines = "Holland"
+    if command_arg == "large":
+        coords = "Long"
+        lines = "NL"
     else:
         coords = "Short"
         lines = "Holland"
@@ -226,7 +222,7 @@ if __name__ == "__main__":
     p = draw_lines_connections(lines, places, p)
 
     # read the output data
-    input_filename = "../../output.csv"
+    input_filename = "output.csv"
 
     # get the train_data
     train_data = read_train_data(input_filename)
