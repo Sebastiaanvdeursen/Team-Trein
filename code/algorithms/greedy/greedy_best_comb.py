@@ -1,3 +1,10 @@
+"""
+brute force method, with amount of possibilities reduced by only considering
+greedy tracks. Can only be used on Holland data set or will crash because of
+lack of RAM.
+
+By: Mathijs Leons, Team-Trein
+"""
 import itertools as iter
 from math import comb
 

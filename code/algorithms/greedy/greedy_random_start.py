@@ -1,7 +1,7 @@
 """
 performs the greedy algorithm to create one or more tracks in the RailNL object
 
-by: Mathijs Leons
+by: Mathijs Leons, Team-Trein
 """
 
 import random

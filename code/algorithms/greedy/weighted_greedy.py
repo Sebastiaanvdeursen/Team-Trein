@@ -3,7 +3,7 @@ Weighted greedy is a semi random algorithm based upon our own probability
 calculations the probabilities are based on the time the connection takes,
 the shorter the distance the higher the probability
 
-by: Mathijs Leons
+by: Mathijs Leons, Team-Trein
 """
 from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject

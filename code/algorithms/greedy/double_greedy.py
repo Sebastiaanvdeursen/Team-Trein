@@ -4,7 +4,7 @@ however we came up with our own heuristic of choosing the shortest
 path by looking forward 2 connections instead of one. It however moves
 forward only one station and than looks again
 
-By: Mathijs Leons
+By: Mathijs Leons, Team-Trein
 """
 from code.classes.rail_NL import Rail_NL
 from code.other.remove_unnecessary import remove_end

@@ -1,3 +1,12 @@
+"""
+Plant propagation is used to find improvements in sets of tracks
+each iteration it selects the best sets and creates runners based on them.
+The selection is done tournament style, this means that the 30 sets are
+seperated in 5 list of 6 and only the highest score in each list makes it
+through. Runners are made using weighted_greedy and run_greedy.
+
+By: Mathijs Leons, Team-Trein
+"""
 from code.algorithms.greedy.greedy_random_start import run_greedy_track_random
 from code.algorithms.greedy.weighted_greedy import run_weighted
 from code.algorithms.greedy.weighted_greedy import weighted_track
@@ -141,6 +150,8 @@ class plant:
             i += 1
         print(f"score,{score}")
         plt.plot(range(self.iterations + 1), self.data)
+        plt.xlabel("Iterations")
+        plt.ylabel("score")
         plt.show()
 
     def create_children(self) -> None:
