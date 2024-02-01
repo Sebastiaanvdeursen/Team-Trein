@@ -113,6 +113,18 @@ For pickled_algorithm you can fill in the following algorithms
 
 It does not matter if you type large or small, the pickle files will be ran anyway.
 
+To get the output for visualization, follows these steps:
+
+First output your solution to output.csv in the main directory. Example:
+```
+python main.py small random 1 > output.csv
+```
+
+Then run the visualization as follows (if you ran small, choose small. If you ran large, choose large):
+```
+python main.py small/large vis/visualization
+```
+
 ### Algorithms
 Here below is a list of short explanations of the command-line arguments of the algorithms, for longer explanations of the algorithms please look at the README in the code folders:
 - annealing represents the algorithm of simulated annealing
