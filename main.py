@@ -250,7 +250,7 @@ if __name__ == "__main__":
             elif sys.argv[2] == "hill_climbing_plot":
                 Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
                                    greedy=False, random_optim=False)
-            
+
             elif sys.argv[2] == "hill_climbing_greedy_plot":
                 Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
                                    greedy=True, random_optim=False)
