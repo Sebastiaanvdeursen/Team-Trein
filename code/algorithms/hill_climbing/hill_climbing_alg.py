@@ -27,6 +27,8 @@ from code.algorithms.random.random_alg_opt import run_random_traject_opt
 from code.other.remove_unnecessary import removing_lines
 from code.other.run import run_trajects
 
+import random
+
 
 def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int = 1,
                   greedy: bool = False, random_optim: bool = False,
@@ -73,14 +75,13 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
 
         eval_sol = evaluate_solution(best_neighbor, area, amount_stations, max_time)
 
-        if plot:
-            score_list.append(eval_sol)
-
         # if best neighbor is better than current solution, replace current_solution
         # by best neighbor and start again
         if eval_sol > current_score:
             current_solution = best_neighbor
             current_score = eval_sol
+            if plot:
+                score_list.append(eval_sol)
             area.reset()
 
         # if not, stop algorithm

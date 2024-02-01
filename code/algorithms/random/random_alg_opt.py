@@ -12,6 +12,8 @@ By: Sebastiaan van Deursen
 
 from code.classes.rail_NL import Rail_NL
 from code.classes.traject import Traject
+from code.other.remove_unnecessary import removing_lines
+from code.other.run import run_trajects
 import random
 
 
@@ -73,7 +75,7 @@ def run_random_traject_opt(area: Rail_NL, amount_stations: int, max_time: int, u
     return time, area, random_traject
 
 
-def run_random_amount_of_trajects_opt(Area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True,
+def run_random_amount_of_trajects_opt(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations: int, printed: bool = True,
                                       info: bool = False) -> tuple[int, int, float, list[list[str]]] | tuple[int, int, float]:
     """
     Generate a random amount of train trajectories for a given railway network with optimized conditions.
@@ -96,21 +98,22 @@ def run_random_amount_of_trajects_opt(Area: Rail_NL, amount_trajects: int, max_t
 
     time = []
     trajects = []
+    solution = []
     for i in range(0, random_number):
-        track_info = run_random_traject_opt(Area, amount_stations, max_time, printed=printed)
+        track_info = run_random_traject_opt(area, amount_stations, max_time, printed=printed)
         time.append(track_info[0])
+        solution.append(track_info[2].traject_connections)
         if info:
             trajects.append(track_info[2].traject_connections)
 
-    # calculate the fraction of done trajects
-    n_done = 0
-    for station in Area.stations.values():
-        for connection in station.connections.values():
-            if connection.done:
-                n_done += 1
+    solution = removing_lines(area, len(solution), amount_stations, max_time, solution)
 
-    fraction_done = (n_done / 2) / Area.total_connections
+    area.reset()
+
+    # find p, Min  for the solution
+    p, Min = run_trajects(area, len(solution), amount_stations, max_time, solution, False)
+
     if info:
-        return sum(time), random_number, fraction_done, trajects
+        return Min, len(solution), p, solution
     else:
-        return sum(time), random_number, fraction_done
+        return Min, len(solution), p

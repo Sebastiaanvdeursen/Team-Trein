@@ -98,6 +98,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
                                             amount_neighbors=5, greedy=True)
             T = len(current)
         elif sys.argv[2] == "hill_climbing_optim":
+            amount_trajects = 14
             p, Min, current = hill_climbing(area, amount_trajects, amount_stations, max_time,
                                             amount_neighbors=10, random_optim=True)
             T = len(current)
@@ -129,7 +130,10 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
         plt.show()
 
     if histogram:
-        plt.hist(results, int(20))
+        plt.hist(results, bins = int(100))
+        plt.title(f"Histogram for {sys.argv[3]} iterations")
+        plt.xlabel("Score Value (K)")
+        plt.ylabel("Frequency (amount observed)")
         plt.show()
 
     # Print out in the correct style
@@ -203,7 +207,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "visualization" or sys.argv[2] == "vis":
 
             # Runs the visualization
-            visualization(sys.argv[1], "output.csv")
+            visualization(sys.argv[1], filename="output.csv")
         elif sys.argv[2] == "part5":
 
             # Solution to part 5
@@ -246,6 +250,10 @@ if __name__ == "__main__":
             elif sys.argv[2] == "hill_climbing_plot":
                 Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
                                    greedy=False, random_optim=False)
+            
+            elif sys.argv[2] == "hill_climbing_greedy_plot":
+                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
+                                   greedy=True, random_optim=False)
 
             elif sys.argv[2] == "plant":
                 plantprop = plant(area, amount_trajects, max_time, amount_stations, 400)

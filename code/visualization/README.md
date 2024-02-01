@@ -22,7 +22,7 @@ plot_simulated.py plots both the exponential temperature function and the score 
 
 ## Usage
 
-### Main visualization
+### Visualization
 
 First output your solution to output.csv in the main directory. Example:
 ```
@@ -39,4 +39,10 @@ python main.py small/large vis/visualization
 You can run the visualization for simulated annealing by running
 ```
 python main.py small/large simulatedplot
+```
+
+### Hill Climbing improvement visualization
+You can run the visualization for hill climbing by running
+```
+python main.py small/large hill_climbing_plot
 ```
