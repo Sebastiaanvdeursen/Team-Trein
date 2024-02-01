@@ -41,5 +41,8 @@ def Plot_hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int
     plt.plot(x_list, score_list, color="blue")
     plt.xlabel('Number of current iteration of Hill Climbing algorithm')
     plt.ylabel('Score')
-    plt.title('Hill Climbing improvement of score through iterations for whole Netherlands and 10 neighbours per track')
+    if not greedy and not random_optim:
+        plt.title('Hill Climbing improvement of score through iterations for whole Netherlands and 10 neighbours per track')
+    if greedy:
+        plt.title('Hill Climbing Greedy improvement of score through iterations for whole Netherlands and 10 neighbours per track')
     plt.show()
