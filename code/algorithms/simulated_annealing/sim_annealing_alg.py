@@ -56,7 +56,7 @@ def simulated_annealing(area: object, amount_trajects: int,
     # Loop through the total amount of iterations
     while iterations < total_iterations:
         scores.append(current_score)
-        neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time, 5, random_optim = True)
+        neighbors = get_neighbors(current_solution, area, amount_trajects, amount_stations, max_time, 1, random_optim = True)
         neighbor = random.choice(neighbors)
 
         tracks = []
