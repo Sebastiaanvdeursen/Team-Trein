@@ -34,7 +34,7 @@ def Plot_hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int
     - Plots the improvement of the score through iterations.
     """
     result = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors,
-                           plot=True)
+                           greedy, random_optim, plot=True)
     score_list = result[3]
     x_list = range(1, len(score_list) + 1)
     plt.scatter(x_list, score_list, color="red")
