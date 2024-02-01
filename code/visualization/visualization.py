@@ -226,7 +226,7 @@ def visualization(command_arg: str, filename: str):
     p = draw_lines_connections(lines, places, p)
 
     # get the train_data
-    train_data = read_train_data(input_filename)
+    train_data = read_train_data(filename)
 
     # get the traject colors
     train_colors = assign_colors(train_data)

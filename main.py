@@ -130,7 +130,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
         plt.show()
 
     if histogram:
-        plt.hist(results, int(20))
+        plt.hist(results, bins = int(100))
         plt.title(f"Histogram for {sys.argv[3]} iterations")
         plt.xlabel("Score Value (K)")
         plt.ylabel("Frequency (amount observed)")
@@ -207,7 +207,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "visualization" or sys.argv[2] == "vis":
 
             # Runs the visualization
-            visualization(sys.argv[1], "output.csv")
+            visualization(sys.argv[1], filename="output.csv")
         elif sys.argv[2] == "part5":
 
             # Solution to part 5
