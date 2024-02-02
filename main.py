@@ -130,7 +130,7 @@ def iterate(area: Rail_NL, amount_trajects: int, max_time: int, amount_stations:
         plt.show()
 
     if histogram:
-        plt.hist(results, bins = int(100))
+        plt.hist(results, bins = int(100), range=[0,1000])
         plt.title(f"Histogram for {sys.argv[3]} iterations")
         plt.xlabel("Score Value (K)")
         plt.ylabel("Frequency (amount observed)")
@@ -248,11 +248,11 @@ if __name__ == "__main__":
                 Plot_simulated(area, amount_trajects, amount_stations, max_time, 500, 0.4)
 
             elif sys.argv[2] == "hill_climbing_plot":
-                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
+                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, 1000, amount_neighbors=10,
                                    greedy=False, random_optim=False)
             
             elif sys.argv[2] == "hill_climbing_greedy_plot":
-                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors=10,
+                Plot_hill_climbing(area, amount_trajects, amount_stations, max_time, 100, amount_neighbors=10,
                                    greedy=True, random_optim=False)
 
             elif sys.argv[2] == "plant":

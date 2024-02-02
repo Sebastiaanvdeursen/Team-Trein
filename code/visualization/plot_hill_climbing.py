@@ -15,7 +15,7 @@ from code.classes.rail_NL import Rail_NL
 import matplotlib.pyplot as plt
 
 
-def Plot_hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int,
+def Plot_hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, number_iterations,
                        amount_neighbors: int, greedy: bool, random_optim: bool):
     """
     Perform hill climbing optimization and plot the improvement of the score through iterations.
@@ -33,16 +33,15 @@ def Plot_hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int
     - Performs hill climbing optimization on the given parameters.
     - Plots the improvement of the score through iterations.
     """
-    result = hill_climbing(area, amount_trajects, amount_stations, max_time, amount_neighbors,
+    result = hill_climbing(area, amount_trajects, amount_stations, max_time, number_iterations, amount_neighbors,
                            greedy, random_optim, plot=True)
     score_list = result[3]
     x_list = range(1, len(score_list) + 1)
-    plt.scatter(x_list, score_list, color="red")
     plt.plot(x_list, score_list, color="blue")
-    plt.xlabel('Number of current iteration of Hill Climbing algorithm')
+    plt.xlabel('Iterations')
     plt.ylabel('Score')
     if not greedy and not random_optim:
-        plt.title('Hill Climbing improvement of score through iterations for whole Netherlands and 10 neighbours per track')
+        plt.title('Hill Climbing Random Netherlands')
     if greedy:
-        plt.title('Hill Climbing Greedy improvement of score through iterations for whole Netherlands and 10 neighbours per track')
+        plt.title('Hill Climbing Greedy Netherlands')
     plt.show()

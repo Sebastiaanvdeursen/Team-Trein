@@ -75,7 +75,7 @@ def assign_colors(train_data: dict[str, list[str]]) -> dict[str, str]:
     post: Returns a dictionary mapping each train name to a randomly generated color.
     """
     train_colors = {}
-    colors = ["red", "green", "turqoise", "blue", "pink", "purple", "orange", "yellow",
+    colors = ["red", "green", "lightgreen", "blue", "pink", "purple", "orange", "yellow",
               "magenta", "saddlebrown", "lightcoral", "mediumslateblue", "forestgreen", "gold",
               "firebrick", "navy", "darkorange", "olive", "cyan", "purple"]
     # make a list palette, to store all the colors

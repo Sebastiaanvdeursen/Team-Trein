@@ -30,8 +30,8 @@ from code.other.run import run_trajects
 import random
 
 
-def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, amount_neighbors: int = 1,
-                  greedy: bool = False, random_optim: bool = False,
+def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max_time: int, number_iterations = 100,
+                  amount_neighbors: int = 1, greedy: bool = False, random_optim: bool = False,
                   plot: bool = False) -> tuple[float, int, list[list[str]]] | tuple[float, int, list[list[str]], list[float]]:
     """
     Perform hill climbing optimization to improve a random solution.
@@ -64,6 +64,7 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
     # set all the connections to "not done"
     area.reset()
 
+    i = 1
     # run algorithm until no improvements are found
     while True:
         # make neighbours
@@ -82,11 +83,14 @@ def hill_climbing(area: Rail_NL, amount_trajects: int, amount_stations: int, max
             current_score = eval_sol
             if plot:
                 score_list.append(eval_sol)
-            area.reset()
 
-        # if not, stop algorithm
-        else:
+        elif i > number_iterations:
             break
+        else:
+            if plot:
+                score_list.append(current_score)
+        area.reset()
+        i += 1
 
     # remove the trajects that make K lower
     current_solution = removing_lines(area, len(current_solution), amount_stations, max_time, current_solution)
