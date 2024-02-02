@@ -6,7 +6,7 @@ This directory contains the implementation of a Hill Climbing algorithm. The alg
 
 ## Overview
 
-The Hill Climbing algorithm optimizes a combination of train tracks. The algorithm starts by generating a solution. Then, for every track in this solution, the algorithm creates a certain (chosen) amount of neighbours. These neighbours are the same as the solution, except one of the tracks has been replaced. Then the algorithm finds the neighbour with the highest score. If this score is higher than the original score, replace the original solution by this "best neighbor" and repeat. If not, the algorithm stops and returns the values of the current solution. Users can explore three different options for initializing the algorithm:
+The Hill Climbing algorithm optimizes a combination of train tracks. The algorithm starts by generating a solution. Then, for every track in this solution, the algorithm creates a certain (chosen) amount of neighbours. These neighbours are the same as the solution, except one of the tracks has been replaced. Then the algorithm finds the neighbour with the highest score. If this score is higher than the original score, replace the original solution by this "best neighbor" and repeat. If not, keep going until the number of iterations is achieved:
 
 1. **Greedy Initialization:** The algorithm starts with a greedy track and replaces tracks by greedy tracks.
 2. **Random Optimization Initialization:** The algorithm starts with a random optimized track and replaces tracks by random optimized tracks.
